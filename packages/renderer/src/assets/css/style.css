@@ -1,0 +1,20 @@
+body {
+  font-family: 'Inter', sans-serif;
+  @apply bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100;
+}
+.dark * {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+button,
+input,
+textarea,
+select {
+  &:focus {
+    outline: none;
+  }
+}
+
+option {
+  @apply dark:bg-gray-700;
+}
