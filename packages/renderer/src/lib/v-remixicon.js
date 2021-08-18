@@ -17,7 +17,15 @@ import {
 	riLink,
 	riLinkUnlinkM,
 	riFullscreenLine,
-	riNodeTree
+	riNodeTree,
+	riSearch2Line,
+	riBookletLine,
+	riAddLine,
+	riPriceTag3Line,
+	riArchiveLine,
+	riMoonClearLine,
+	riSettings3Line,
+	riFileAddLine,
 } from 'v-remixicon/icons';
 
 VRemixIcon.add({
@@ -38,7 +46,15 @@ VRemixIcon.add({
 	riLink,
 	riLinkUnlinkM,
 	riFullscreenLine,
-	riNodeTree
+	riNodeTree,
+	riSearch2Line,
+	riBookletLine,
+	riAddLine,
+	riPriceTag3Line,
+	riArchiveLine,
+	riMoonClearLine,
+	riSettings3Line,
+	riFileAddLine,
 });
 
 export default VRemixIcon;

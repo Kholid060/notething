@@ -437,6 +437,15 @@
   resolved "https://registry.yarnpkg.com/@tiptap/extension-paragraph/-/extension-paragraph-2.0.0-beta.17.tgz#f8f0263359b95dec9c10078699697908568d9be9"
   integrity sha512-qCQVCf9c2hgaeIdfy22PaoZyW5Vare/1aGkOEAaZma5RjrUbV9hrRKwoW9LsDjnh1EN1fIeKdg02yEhnHWtG8A==
 
+"@tiptap/extension-placeholder@^2.0.0-beta.27":
+  version "2.0.0-beta.27"
+  resolved "https://registry.yarnpkg.com/@tiptap/extension-placeholder/-/extension-placeholder-2.0.0-beta.27.tgz#582e02be78f89de12e11d28202545fb22f7ceb9b"
+  integrity sha512-63tlsRh5mPcwYu+reUDJuV/OwOu+kDHpWSCW5YYK0ErT3jsvIROukzVMvTDQlpPncEPCLU2DyzCU1XBYOgYPKw==
+  dependencies:
+    prosemirror-model "^1.14.3"
+    prosemirror-state "^1.3.4"
+    prosemirror-view "^1.19.0"
+
 "@tiptap/extension-strike@^2.0.0-beta.17":
   version "2.0.0-beta.17"
   resolved "https://registry.yarnpkg.com/@tiptap/extension-strike/-/extension-strike-2.0.0-beta.17.tgz#2280ea4e8c50189c2729814d2ae484e58c712a36"

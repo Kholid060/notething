@@ -1,12 +1,10 @@
 <template>
-  <p>hello from home</p>
-  <note-editor />
+  <div class="container py-5">
+    <p>hello from home</p>
+  </div>
 </template>
 <script>
-import NoteEditor from '../components/note/NoteEditor.vue';
-
 export default {
-  components: { NoteEditor },
   setup() {},
 };
 </script>

@@ -2,7 +2,7 @@
   <component
     :is="tag"
     role="button"
-    class="ui-button relative transition focus:ring-2"
+    class="ui-button h-10 relative transition focus:ring-2"
     :class="[
       color ? color : variants[variant],
       icon ? 'p-2' : 'py-2 px-4',

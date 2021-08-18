@@ -3,6 +3,7 @@
     class="
       bg-opacity-90
       text-gray-600
+      dark:text-gray-300
       pl-12
       bg-gray-50
       dark:bg-gray-900 dark:text-gray-50
@@ -94,7 +95,7 @@
         class="transition h-full hoverable px-2"
         @click="insertImage"
       >
-        <v-remix name="riImageLine" />
+        <v-remixicon name="riImageLine" />
       </button>
       <button
         :class="

@@ -18,3 +18,7 @@ select {
 option {
   @apply dark:bg-gray-700;
 }
+
+.v-remixicon {
+  display: inline-block;
+}

@@ -37,6 +37,7 @@ import Link from '@tiptap/extension-link';
 import Image from '@tiptap/extension-image';
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
 import Code from '@tiptap/extension-code';
+import Placeholder from '@tiptap/extension-placeholder';
 import lowlight from 'lowlight';
 import CodeBlockComponent from './exts/CodeBlockComponent.vue';
 import '@/assets/css/one-dark.css';
@@ -86,6 +87,7 @@ export default {
           Typography,
           Underline,
           Image,
+          Placeholder,
           Code.configure({ HTMLAttributes: { class: 'inline-code' } }),
           Link.configure({
             openOnClick: false,
@@ -125,6 +127,18 @@ export default {
 .ProseMirror pre,
 .ProseMirror .inline-code {
   @apply bg-black bg-opacity-5 rounded-lg dark:bg-gray-200 dark:bg-opacity-5;
+  font-family: 'JetBrains Mono', monospace;
+  tab-size: 2;
+  color: inherit;
+  font-variant-ligatures: normal;
+}
+.ProseMirror h1, 
+.ProseMirror h2, 
+.ProseMirror h3, 
+.ProseMirror h4, 
+.ProseMirror h5, 
+.ProseMirror h6 {
+  @apply dark:text-white;
 }
 
 .ProseMirror {
@@ -140,17 +154,18 @@ export default {
   .inline-code {
     @apply py-0.5 px-1 rounded;
   }
+  p.is-editor-empty:first-child::before {
+    content: attr(data-placeholder);
+    float: left;
+    @apply text-gray-400 dark:text-gray-700;
+    pointer-events: none;
+    height: 0;
+  }
   img {
     @apply rounded;
   }
-  pre,
-  code {
-    font-family: 'JetBrains Mono', monospace;
-    tab-size: 2;
-    color: inherit;
-  }
   mark {
-    background-color: theme('colors.yellow.200');
+    @apply bg-yellow-200 dark:bg-yellow-100;
   }
 }
 </style>

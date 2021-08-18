@@ -1,16 +1,19 @@
 <template>
-  <aside class="w-12 border-r fixed h-full left-0 top-0 z-40"></aside>
+  <app-sidebar />
   <main class="pl-12">
     <router-view />
   </main>
 </template>
 <script>
 import { useRouter } from 'vue-router';
+import AppSidebar from './components/app/AppSidebar.vue';
+
 export default {
+  components: { AppSidebar },
   setup() {
     const router = useRouter();
 
-    router.replace('/note/anu');
+    // router.replace('/note/anu');
   },
 };
 </script>

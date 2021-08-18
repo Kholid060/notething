@@ -1,6 +1,7 @@
 import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
+import compsUi from './lib/comps-ui';
 import VRemixIcon from './lib/v-remixicon';
 import './assets/css/fonts.css';
 import './assets/css/tailwind.css';

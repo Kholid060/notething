@@ -11,6 +11,9 @@ module.exports = {
         secondary: '#4F46E5', // Indigo 600
         gray: colors.gray,
       },
+      container: {
+        center: true,
+      },
     },
   },
   variants: {
