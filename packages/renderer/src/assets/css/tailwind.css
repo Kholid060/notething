@@ -5,3 +5,6 @@
 .hoverable {
   @apply hover:bg-gray-800 hover:bg-opacity-5 dark:hover:bg-gray-200 dark:hover:bg-opacity-5;
 }
+.bg-input {
+  @apply bg-gray-800 bg-opacity-5 hover:bg-opacity-10 dark:hover:bg-gray-200 dark:hover:bg-opacity-5 focus:ring-2 focus:ring-primary;
+}

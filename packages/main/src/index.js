@@ -1,4 +1,4 @@
-import { app, BrowserWindow, dialog, protocol } from 'electron';
+import { app, BrowserWindow, dialog, protocol, nativeTheme } from 'electron';
 import { ipcMain } from 'electron-better-ipc';
 import { join, normalize } from 'path';
 import { URL } from 'url';
@@ -115,6 +115,7 @@ if (env.PROD) {
 ipcMain.answerRenderer('helper:open-dialog', (props) => dialog.showOpenDialog(props));
 ipcMain.answerRenderer('helper:get-path', (name) => app.getPath(name));
 ipcMain.answerRenderer('helper:copy-file', ({ path, dest }) => copy(path, dest));
+ipcMain.answerRenderer('helper:is-dark-theme', () => nativeTheme.shouldUseDarkColors);
 
 ipcMain.answerRenderer('storage:get', ({ name, key, def }) => store[name].get(key, def));
 ipcMain.answerRenderer('storage:set', ({ name, key, value }) => store[name].set(key, value));

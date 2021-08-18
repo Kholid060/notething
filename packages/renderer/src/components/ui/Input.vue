@@ -1,34 +1,37 @@
 <template>
   <div class="inline-block input-ui">
     <label class="relative">
-      <span v-if="label" class="text-sm text-gray-200 mb-1 ml-1">
+      <span
+        v-if="label"
+        class="text-sm dark:text-gray-200 text-gray-600 mb-1 ml-1"
+      >
         {{ label }}
       </span>
       <div class="flex items-center">
         <slot name="prepend">
           <v-remixicon
             v-if="prependIcon"
-            class="ml-2 text-gray-300 absolute left-0"
+            class="ml-2 dark:text-gray-200 text-gray-600 absolute left-0"
             :name="prependIcon"
           ></v-remixicon>
         </slot>
         <input
+          v-autofocus="autofocus"
+          v-bind="{ readonly: disabled || readonly || null, placeholder, type }"
           class="
-            py-[0.4rem]
+            py-2
             px-4
             rounded-lg
             w-full
-            border-2
-            bg-transparent
-            focus:border-primary
-            dark:focus:border-secondary
+            bg-input bg-transparent
+            focus:ring-primary
+            dark:focus:ring-secondary
             transition
           "
           :class="{
             'opacity-75 pointer-events-none': disabled,
             'pl-10': prependIcon || $slots.prepend,
           }"
-          v-bind="{ readonly: disabled || readonly || null, placeholder, type }"
           :value="modelValue"
           @input="emitValue($event.target.value)"
         />
@@ -38,12 +41,21 @@
 </template>
 <script>
 export default {
+  directives: {
+    autofocus: (el, { value }) => {
+      if (value) el.focus();
+    },
+  },
   props: {
     disabled: {
       type: Boolean,
       default: false,
     },
     readonly: {
+      type: Boolean,
+      default: false,
+    },
+    autofocus: {
       type: Boolean,
       default: false,
     },

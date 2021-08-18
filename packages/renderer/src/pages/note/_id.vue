@@ -1,7 +1,7 @@
 <template>
-  <div class="max-w-3xl mx-auto relative mt-20">
+  <div class="max-w-3xl mx-auto relative">
     <note-editor v-slot="{ editor }">
-      <note-menu v-if="editor" v-bind="{ editor }" />
+      <note-menu v-if="editor" v-bind="{ editor }" class="mb-6" />
       <input
         class="text-4xl block font-bold bg-transparent mb-4"
         placeholder="Untitled note"

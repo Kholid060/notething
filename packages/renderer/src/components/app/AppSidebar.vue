@@ -1,33 +1,55 @@
 <template>
-	<aside class="w-12 border-r fixed text-center flex flex-col items-center h-full left-0 top-0 z-40 bg-gray-50 dark:bg-gray-900 py-6">
-		<button
-      class="transition py-3 w-full text-white dark:bg-secondary bg-primary"
+  <aside
+    class="
+      w-16
+      text-gray-600
+      dark:text-gray-200
+      bg-white
+      dark:bg-gray-800
+      fixed
+      text-center
+      flex flex-col
+      items-center
+      h-full
+      left-0
+      top-0
+      z-40
+      dark:bg-gray-900
+      py-4
+    "
+  >
+    <button
+      class="transition p-2 mb-4 text-primary bg-input rounded-lg"
     >
-			<v-remixicon name="riFileAddLine" />
+      <v-remixicon name="riFileAddLine" />
     </button>
     <router-link
       v-for="nav in navs"
       :key="nav.name"
       :to="nav.path"
       active-class="text-primary dark:text-primary"
-      class="transition hoverable py-3 w-full"
+      class="transition dark:hover:text-white hover:text-gray-800 p-2 mb-4"
     >
-			<v-remixicon :name="nav.icon" />
+      <v-remixicon :name="nav.icon" />
     </router-link>
     <div class="flex-grow"></div>
     <button
-      class="transition hoverable py-3 w-full"
+      :class="[theme.currentTheme.value === 'dark' ? 'text-primary' : 'dark:hover:text-white hover:text-gray-800']"
+      class="transition p-2 mb-4"
+      @click="theme.setTheme(theme.currentTheme.value === 'dark' ? 'light' : 'dark')"
     >
       <v-remixicon name="riMoonClearLine" />
     </button>
-    <button
-      class="transition hoverable py-3 w-full"
-    >
+    <button class="transition dark:hover:text-white hover:text-gray-800 p-2">
       <v-remixicon name="riSettings3Line" />
     </button>
-	</aside>
+  </aside>
 </template>
 <script setup>
+import { useTheme } from '@/composable/theme';
+
+const theme = useTheme();
+
 const navs = [
   { name: 'Notes', path: '/', icon: 'riBookletLine' },
   { name: 'Labels', path: '/labels', icon: 'riPriceTag3Line' },

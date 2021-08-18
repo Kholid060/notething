@@ -4,35 +4,35 @@
       bg-opacity-90
       text-gray-600
       dark:text-gray-300
-      pl-12
       bg-gray-50
       dark:bg-gray-900 dark:text-gray-50
       overflow-x-auto
-      h-10
       border-b
-      fixed
       z-20
       top-0
       w-full
       left-0
+      h-12
+      sticky
+      top-0
     "
   >
-    <div class="w-full px-6 h-full flex items-center w-full">
-      <input
+    <div class="w-full py-1 h-full flex items-center justify-between w-full">
+      <!-- <input
         type="number"
         class="
           hoverable
           appearance-none
           h-full
           bg-transparent
-          px-2
+          px-2 rounded-lg
           w-20
           text-center
         "
         value="16"
         min="1"
         title="Font size"
-      />
+      /> -->
       <button
         :class="
           editor.isActive('paragraph')
@@ -40,7 +40,7 @@
             : 'hover:text-gray-800 dark:hover:text-white'
         "
         title="Paragraph (Ctrl+alt+0)"
-        class="transition h-full hoverable px-2"
+        class="transition h-full hoverable px-2 rounded-lg"
         @click="editor.chain().focus().setParagraph().run()"
       >
         <v-remixicon name="riParagraph" />
@@ -54,7 +54,7 @@
             : 'hover:text-gray-800 dark:hover:text-white'
         "
         :title="`Heading ${heading} (Ctrl+alt+${heading})`"
-        class="transition h-full hoverable px-2"
+        class="transition h-full hoverable px-2 rounded-lg"
         @click="editor.chain().focus().toggleHeading({ level: heading }).run()"
       >
         <v-remixicon :name="`riH${heading}`" />
@@ -69,7 +69,7 @@
             : 'hover:text-gray-800 dark:hover:text-white'
         "
         :title="action.title"
-        class="transition h-full hoverable px-2"
+        class="transition h-full hoverable px-2 rounded-lg"
         @click="action.handler"
       >
         <v-remixicon :name="action.icon" />
@@ -84,7 +84,7 @@
             : 'hover:text-gray-800 dark:hover:text-white'
         "
         :title="action.title"
-        class="transition h-full hoverable px-2"
+        class="transition h-full hoverable px-2 rounded-lg"
         @click="action.handler"
       >
         <v-remixicon :name="action.icon" />
@@ -92,7 +92,7 @@
       <hr class="border-r mx-4" style="height: 65%" />
       <button
         title="Image"
-        class="transition h-full hoverable px-2"
+        class="transition h-full hoverable px-2 rounded-lg"
         @click="insertImage"
       >
         <v-remixicon name="riImageLine" />
@@ -104,7 +104,7 @@
             : 'hover:text-gray-800 dark:hover:text-white'
         "
         title="Link"
-        class="transition h-full hoverable px-2"
+        class="transition h-full hoverable px-2 rounded-lg"
         @click="editor.chain().focus().toggleLink({ href: '' }).run()"
       >
         <v-remixicon name="riLink" />
@@ -112,20 +112,19 @@
       <button
         v-if="editor.isActive('link')"
         title="Remove link"
-        class="transition h-full hoverable px-2"
+        class="transition h-full hoverable px-2 rounded-lg"
         @click="
           editor.chain().focus().extendMarkRange('link').unsetLink().run()
         "
       >
         <v-remixicon name="riLinkUnlinkM" />
       </button>
-      <div class="flex-grow"></div>
-      <button class="hoverable px-2 h-full mr-1">
+      <!-- <button class="hoverable px-2 rounded-lg h-full mr-1">
         <v-remixicon name="riFullscreenLine" />
       </button>
-      <button class="hoverable px-2 h-full">
+      <button class="hoverable px-2 rounded-lg h-full">
         <v-remixicon name="riNodeTree" />
-      </button>
+      </button> -->
     </div>
   </div>
 </template>

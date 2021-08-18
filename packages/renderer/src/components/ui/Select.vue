@@ -3,28 +3,37 @@
     <label v-if="label" :for="selectId" class="text-gray-200 text-sm ml-2">
       {{ label }}
     </label>
-    <select
-      :id="selectId"
+    <div
       class="
+        flex
+        items-center
         rounded-lg
         w-full
         block
         transition
-        bg-gray-100 bg-opacity-5
+        bg-input
         appearance-none
         focus:outline-none
-        hover:bg-opacity-10
-        px-4
-        py-2
+        relative
       "
-      :value="modelValue"
-      @change="emitValue"
     >
-      <option v-if="placeholder" value="" disabled selected>
-        {{ placeholder }}
-      </option>
-      <slot></slot>
-    </select>
+      <select
+        :id="selectId"
+        class="px-4 bg-transparent py-2 z-10 appearance-none w-full h-full"
+        :value="modelValue"
+        @change="emitValue"
+      >
+        <option v-if="placeholder" value="" disabled selected>
+          {{ placeholder }}
+        </option>
+        <slot></slot>
+      </select>
+      <v-remixicon
+        size="28"
+        name="riArrowDropDownLine"
+        class="absolute text-gray-600 dark:text-gray-200 right-0"
+      />
+    </div>
   </div>
 </template>
 <script>

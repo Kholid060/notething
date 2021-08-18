@@ -106,8 +106,11 @@ export default {
         ],
       });
 
+      editor.value.on('update', (event) => {
+        console.log(event);
+      });
+
       window.addEventListener('click', linkClickHandler);
-      console.log({ a: editor.value });
     });
     onBeforeUnmount(() => {
       editor.value.destroy();
@@ -132,11 +135,11 @@ export default {
   color: inherit;
   font-variant-ligatures: normal;
 }
-.ProseMirror h1, 
-.ProseMirror h2, 
-.ProseMirror h3, 
-.ProseMirror h4, 
-.ProseMirror h5, 
+.ProseMirror h1,
+.ProseMirror h2,
+.ProseMirror h3,
+.ProseMirror h4,
+.ProseMirror h5,
 .ProseMirror h6 {
   @apply dark:text-white;
 }
