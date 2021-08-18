@@ -6,11 +6,11 @@
       </span>
       <div class="flex items-center">
         <slot name="prepend">
-          <v-mdi
+          <v-remixicon
             v-if="prependIcon"
             class="ml-2 text-gray-300 absolute left-0"
             :name="prependIcon"
-          ></v-mdi>
+          ></v-remixicon>
         </slot>
         <input
           class="

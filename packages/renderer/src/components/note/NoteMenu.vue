@@ -42,7 +42,7 @@
         class="transition h-full hoverable px-2"
         @click="editor.chain().focus().setParagraph().run()"
       >
-        <v-mdi name="mdiFormatParagraph" />
+        <v-remixicon name="riParagraph" />
       </button>
       <button
         v-for="heading in [1, 2]"
@@ -56,7 +56,7 @@
         class="transition h-full hoverable px-2"
         @click="editor.chain().focus().toggleHeading({ level: heading }).run()"
       >
-        <v-mdi :name="`mdiFormatHeader${heading}`" />
+        <v-remixicon :name="`riH${heading}`" />
       </button>
       <hr class="border-r mx-4" style="height: 65%" />
       <button
@@ -71,7 +71,7 @@
         class="transition h-full hoverable px-2"
         @click="action.handler"
       >
-        <v-mdi :name="action.icon" />
+        <v-remixicon :name="action.icon" />
       </button>
       <hr class="border-r mx-4" style="height: 65%" />
       <button
@@ -86,7 +86,7 @@
         class="transition h-full hoverable px-2"
         @click="action.handler"
       >
-        <v-mdi :name="action.icon" />
+        <v-remixicon :name="action.icon" />
       </button>
       <hr class="border-r mx-4" style="height: 65%" />
       <button
@@ -94,7 +94,7 @@
         class="transition h-full hoverable px-2"
         @click="insertImage"
       >
-        <v-mdi name="mdi-image-outline" />
+        <v-remix name="riImageLine" />
       </button>
       <button
         :class="
@@ -106,7 +106,7 @@
         class="transition h-full hoverable px-2"
         @click="editor.chain().focus().toggleLink({ href: '' }).run()"
       >
-        <v-mdi name="mdi-link-variant" />
+        <v-remixicon name="riLink" />
       </button>
       <button
         v-if="editor.isActive('link')"
@@ -116,14 +116,14 @@
           editor.chain().focus().extendMarkRange('link').unsetLink().run()
         "
       >
-        <v-mdi name="mdi-link-variant-remove" />
+        <v-remixicon name="riLinkUnlinkM" />
       </button>
       <div class="flex-grow"></div>
       <button class="hoverable px-2 h-full mr-1">
-        <v-mdi name="mdiImageFilterCenterFocusWeak" />
+        <v-remixicon name="riFullscreenLine" />
       </button>
       <button class="hoverable px-2 h-full">
-        <v-mdi name="mdiFileTreeOutline" />
+        <v-remixicon name="riNodeTree" />
       </button>
     </div>
   </div>
@@ -152,28 +152,28 @@ export default {
       {
         name: 'ordered-list',
         title: 'Bold (Ctrl+Shift+7)',
-        icon: 'mdiFormatListNumbered',
+        icon: 'riListOrdered',
         activeState: 'orderedList',
         handler: () => props.editor.chain().focus().toggleOrderedList().run(),
       },
       {
         name: 'bullet-list',
         title: 'Bullet list (Ctrl+Shift+8)',
-        icon: 'mdiFormatListBulleted',
+        icon: 'riListUnordered',
         activeState: 'bulletList',
         handler: () => props.editor.chain().focus().toggleBulletList().run(),
       },
       {
         name: 'blockquote',
         title: 'Blockquote (Ctrl+Shift+B)',
-        icon: 'mdiFormatQuoteCloseOutline',
+        icon: 'riDoubleQuotesR',
         activeState: 'blockquote',
         handler: () => props.editor.chain().focus().toggleBlockquote().run(),
       },
       {
         name: 'code-block',
         title: 'Code Block (Ctrl+Alt+C)',
-        icon: 'mdiXml',
+        icon: 'riCodeBoxLine',
         activeState: 'codeBlock',
         handler: () => props.editor.chain().focus().toggleCodeBlock().run(),
       },
@@ -182,42 +182,42 @@ export default {
       {
         name: 'bold',
         title: 'Bold (Ctrl+B)',
-        icon: 'mdi-format-bold',
+        icon: 'riBold',
         activeState: 'bold',
         handler: () => props.editor.chain().focus().toggleBold().run(),
       },
       {
         name: 'italic',
         title: 'Italic (Ctrl+I)',
-        icon: 'mdi-format-italic',
+        icon: 'riItalic',
         activeState: 'italic',
         handler: () => props.editor.chain().focus().toggleItalic().run(),
       },
       {
         name: 'underline',
         title: 'Underline (Ctrl+U)',
-        icon: 'mdi-format-underline',
+        icon: 'riUnderline',
         activeState: 'underline',
         handler: () => props.editor.chain().focus().toggleUnderline().run(),
       },
       {
         name: 'strikethrough',
         title: 'Strikethrough (Ctrl+Shift+X)',
-        icon: 'mdi-format-strikethrough',
+        icon: 'riStrikethrough2',
         activeState: 'strike',
         handler: () => props.editor.chain().focus().toggleStrike().run(),
       },
       {
         name: 'inline-code',
         title: 'Inline Block (Ctrl+E)',
-        icon: 'mdiCodeTags',
+        icon: 'riCodeLine',
         activeState: 'code',
         handler: () => props.editor.chain().focus().toggleCode().run(),
       },
       {
         name: 'highlight',
         title: 'Highlight (Ctrl+Shift+H)',
-        icon: 'mdiGreasePencil',
+        icon: 'riMarkPenLine',
         activeState: 'highlight',
         handler: () => props.editor.chain().focus().toggleHighlight().run(),
       },
