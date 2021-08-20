@@ -61,7 +61,10 @@ export const useNoteStore = defineStore('note', {
     },
     delete(id) {
       return new Promise((resolve) => {
-        console.log(id);
+        const lastEditedNote = localStorage.getItem('lastNoteEdit');
+
+        if (lastEditedNote === id) localStorage.removeItem('lastNoteEdit');
+
         delete this.data[id];
 
         storage.delete(`notes.${id}`).then(() => resolve(id));

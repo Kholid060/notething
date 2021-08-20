@@ -90,7 +90,6 @@ export default {
     watch(
       () => noteStore.data,
       () => {
-        console.log(noteStore.notes);
         state.notes = noteStore.notes.map(extractNoteContent);
       },
       { immediate: true, deep: true }

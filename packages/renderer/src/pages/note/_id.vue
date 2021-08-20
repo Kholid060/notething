@@ -8,7 +8,7 @@
       @input="updateNote({ title: $event.target.value })"
     />
     <note-editor
-      :id="note.id"
+      :id="$route.params.id"
       :model-value="note.content"
       @update="updateNote({ content: $event })"
       @init="editor = $event"
@@ -16,7 +16,7 @@
   </div>
 </template>
 <script>
-import { shallowRef, computed } from 'vue';
+import { shallowRef, computed, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useNoteStore } from '@/store/note';
 import { useStorage } from '@/composable/storage';
@@ -31,10 +31,10 @@ export default {
     const storage = useStorage();
     const noteStore = useNoteStore();
 
-    const noteId = router.currentRoute.value.params.id;
-
     const editor = shallowRef(null);
-    const note = computed(() => noteStore.getById(noteId));
+    const note = computed(() =>
+      noteStore.getById(router.currentRoute.value.params.id)
+    );
 
     const updateNote = debounce((data) => {
       Object.assign(data, { updatedAt: Date.now() });
@@ -42,9 +42,20 @@ export default {
       noteStore.update(note.value.id, data);
     }, 250);
 
-    storage.get(`notes.${noteId}`).then((data) => {
-      if (!data) router.push('/');
-    });
+    watch(
+      () => router.currentRoute.value.params.id,
+      (noteId) => {
+        if (!noteId) return;
+
+        localStorage.setItem('lastNoteEdit', noteId);
+
+        storage.get(`notes.${noteId}`).then((data) => {
+          if (!data) router.push('/');
+          else localStorage.setItem('lastNoteEdit', noteId);
+        });
+      },
+      { immediate: true }
+    );
 
     return {
       note,

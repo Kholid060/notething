@@ -26,6 +26,7 @@
     <button
       class="transition dark:hover:text-white hover:text-gray-800 p-2 mb-4"
       :class="{ 'text-primary': $route.name === 'Note' }"
+      @click="openLastEdited"
     >
       <v-remixicon name="riFileEditLine" />
     </button>
@@ -72,6 +73,11 @@ const navs = [
   { name: 'Archive', path: '/archive', icon: 'riArchiveLine' },
 ];
 
+function openLastEdited() {
+  const noteId = localStorage.getItem('lastNoteEdit');
+  console.log(noteId);
+  if (noteId) router.push(`/note/${noteId}`);
+}
 function addNote() {
   noteStore.add().then(({ id }) => {
     router.push(`/note/${id}`);
