@@ -32,6 +32,8 @@ import {
   riBookmarkLine,
   riBookmarkFill,
   riFileEditLine,
+  riSortAsc,
+  riSortDesc,
 } from 'v-remixicon/icons';
 
 VRemixIcon.add({
@@ -67,6 +69,8 @@ VRemixIcon.add({
   riBookmarkLine,
   riBookmarkFill,
   riFileEditLine,
+  riSortAsc,
+  riSortDesc,
 });
 
 export default VRemixIcon;

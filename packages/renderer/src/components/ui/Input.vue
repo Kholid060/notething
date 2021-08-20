@@ -18,16 +18,7 @@
         <input
           v-autofocus="autofocus"
           v-bind="{ readonly: disabled || readonly || null, placeholder, type }"
-          class="
-            py-2
-            px-4
-            rounded-lg
-            w-full
-            bg-input bg-transparent
-            focus:ring-primary
-            dark:focus:ring-secondary
-            transition
-          "
+          class="py-2 px-4 rounded-lg w-full bg-input bg-transparent transition"
           :class="{
             'opacity-75 pointer-events-none': disabled,
             'pl-10': prependIcon || $slots.prepend,

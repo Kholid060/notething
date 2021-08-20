@@ -1,6 +1,8 @@
 function invokeEvent(name, param) {
   const { ipcRenderer } = window.electron;
 
+  if (param.value) param.value = JSON.parse(JSON.stringify(param.value));
+
   return ipcRenderer.callMain(`storage:${name}`, param);
 }
 

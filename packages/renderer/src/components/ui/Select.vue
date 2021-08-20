@@ -11,12 +11,18 @@
         w-full
         block
         transition
+        focus-within:ring-2
         bg-input
         appearance-none
         focus:outline-none
         relative
       "
     >
+      <v-remixicon
+        v-if="prependIcon"
+        :name="prependIcon"
+        class="absolute text-gray-600 dark:text-gray-200 left-0"
+      />
       <select
         :id="selectId"
         class="px-4 bg-transparent py-2 z-10 appearance-none w-full h-full"
@@ -46,6 +52,10 @@ export default {
       default: '',
     },
     label: {
+      type: String,
+      default: '',
+    },
+    prependIcon: {
       type: String,
       default: '',
     },
@@ -79,6 +89,6 @@ export default {
 }
 .ui-select option,
 .ui-select optgroup {
-  background-color: theme('colors.gray.700');
+  @apply bg-gray-100 dark:bg-gray-700;
 }
 </style>

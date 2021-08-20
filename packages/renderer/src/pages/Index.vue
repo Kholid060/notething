@@ -26,11 +26,11 @@
       "
     >
       <home-note-card
-        v-for="note in notes"
+        v-for="note in notes.all"
         :key="note.id"
         v-bind="{ note }"
-        @delete="deleteNote"
-        @update="updateNote(note.id, $event)"
+        @delete="noteStore.delete(note.id)"
+        @update="noteStore.update(note.id, $event)"
       />
     </div>
   </div>
@@ -45,46 +45,52 @@ import { extensions } from '@/lib/tiptap';
 export default {
   components: { HomeNoteCard },
   setup() {
-    const sorts = [{ name: 'name', id: 'name' }];
+    const sorts = [{ name: 'Title', id: 'title' }];
 
     const noteStore = useNoteStore();
 
     const state = reactive({
       notes: [],
       query: '',
+      sortBy: 'createdAt',
+      sortType: 'asc',
     });
 
-    const notes = computed(() =>
-      state.notes.filter(
-        ({ title, content, isArchived }) =>
+    const notes = computed(() => filterNotes(state.notes));
+
+    function filterNotes(notes) {
+      const filteredNotes = {
+        all: [],
+        bookmarked: [],
+      };
+
+      notes.forEach((note) => {
+        const { title, content, isArchived, isBookmarked } = note;
+        const isMatch =
           (title.toLocaleLowerCase().includes(state.query) ||
             content.includes(state.query)) &&
-          !isArchived
-      )
-    );
+          !isArchived;
 
+        if (isMatch) {
+          isBookmarked
+            ? filteredNotes.bookmarked.push(note)
+            : filteredNotes.all.push(note);
+        }
+      });
+
+      return filteredNotes;
+    }
     function extractNoteContent(note) {
       const html = generateHTML(note.content, extensions);
       const textStr = html.replace(/(<([^>]+)>)/gi, ' ').toLocaleLowerCase();
 
       return { ...note, content: textStr };
     }
-    function updateNote(id, data) {
-      noteStore.$patch({
-        data: {
-          [id]: data,
-        },
-      });
-    }
-    function deleteNote(id) {
-      noteStore.$patch((state) => {
-        delete state.data[id];
-      });
-    }
 
     watch(
       () => noteStore.data,
       () => {
+        console.log(noteStore.notes);
         state.notes = noteStore.notes.map(extractNoteContent);
       },
       { immediate: true, deep: true }
@@ -94,8 +100,7 @@ export default {
       notes,
       state,
       sorts,
-      updateNote,
-      deleteNote,
+      noteStore,
     };
   },
 };

@@ -7,16 +7,33 @@
   <bubble-menu
     v-if="editor"
     v-bind="{ editor, shouldShow: bubbleMenuShouldShow }"
-    class="bg-white dark:bg-gray-800 px-4 py-2 rounded-lg border shadow-xl"
+    class="
+      bg-white
+      dark:bg-gray-800
+      px-4
+      py-2
+      rounded-lg
+      border
+      shadow-xl
+      flex
+      items-center
+    "
   >
+    <button
+      class="mr-2 text-gray-600 dark:text-gray-200"
+      title="Remove link"
+      @click="editor.chain().focus().unsetLink().run()"
+    >
+      <v-remixicon name="riLinkUnlinkM" />
+    </button>
     <input
-      :value="currentLinkVal"
+      v-model="currentLinkVal"
       type="url"
       placeholder="URL"
-      class="w-40 mr-2 bg-transparent"
+      class="w-40 bg-transparent"
       @keyup.enter="updateCurrentLink"
-      @input="currentLinkVal = $event.target.value"
     />
+    <hr class="h-6 border-r mx-4" />
     <button @click="updateCurrentLink">Save</button>
   </bubble-menu>
 </template>
@@ -65,6 +82,7 @@ export default {
       editor.value
         .chain()
         .focus()
+        .extendMarkRange('link')
         .setLink({ href: currentLinkVal.value })
         .run();
     }

@@ -1,4 +1,4 @@
-.ProseMirror pre,stri
+.ProseMirror pre,
 .ProseMirror .inline-code {
   @apply bg-black bg-opacity-5 rounded-lg dark:bg-opacity-30;
   font-family: 'JetBrains Mono', monospace;
@@ -25,6 +25,7 @@
 }
 
 .ProseMirror {
+  min-height:  400px;
   &-selectednode {
     @apply ring-2 ring-primary transition;
   }

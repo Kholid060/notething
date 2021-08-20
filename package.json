@@ -72,7 +72,7 @@
     "pinia": "^2.0.0-rc.4",
     "tiny-emitter": "^2.1.0",
     "tippy.js": "^6.3.1",
-    "v-remixicon": "^0.0.8",
+    "v-remixicon": "^0.0.9",
     "vue": "^3.2.2",
     "vue-masonry": "^0.13.0",
     "vue-mdijs": "^0.5.12",

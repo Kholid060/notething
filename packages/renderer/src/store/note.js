@@ -1,43 +1,70 @@
 import { defineStore } from 'pinia';
 import { nanoid } from 'nanoid';
-import { noteData } from '@/utils/dummy-data';
+import { useStorage } from '../composable/storage';
+
+const storage = useStorage();
 
 export const useNoteStore = defineStore('note', {
   state: () => ({
-    data: {
-      anu: {
-        id: 'anu',
-        title: 'halo',
-        content: noteData,
-        labels: [],
-        createdAt: Date.now(),
-        isBookmarked: false,
-        isArchived: false,
-      },
-    },
+    data: {},
   }),
   getters: {
-    notes: (state) => Object.values(state.data),
+    notes: (state) =>
+      Object.entries(state.data).map(([id, value]) => ({
+        ...value,
+        id: value.id ?? id,
+      })),
     getById: (state) => (id) => state.data[id],
   },
   actions: {
+    retrieve() {
+      return new Promise((resolve) => {
+        storage.get('notes', {}).then((data) => {
+          console.log(data);
+          this.data = data;
+
+          resolve(data);
+        });
+      });
+    },
     add(note = {}) {
       return new Promise((resolve) => {
         const id = nanoid();
 
         this.data[id] = {
           id,
-          title: 'Untitled note',
+          title: '',
           content: { type: 'doc', content: [] },
           labels: [],
           createdAt: Date.now(),
+          updatedAt: Date.now(),
           isBookmarked: false,
           isArchived: false,
           ...note,
         };
+        console.log(this.data);
 
-        resolve(this.data[id]);
-        console.log(this.data[id]);
+        storage.set('notes', this.data).then(() => resolve(this.data[id]));
+      });
+    },
+    update(id, data = {}) {
+      return new Promise((resolve) => {
+        this.data[id] = {
+          ...this.data[id],
+          ...data,
+        };
+        console.log(id, data);
+        storage
+          .set(`notes.${id}`, this.data[id])
+          .then(() => resolve(this.data[id]));
+      });
+    },
+    delete(id) {
+      return new Promise((resolve) => {
+        console.log(id);
+        delete this.data[id];
+
+        storage.delete(`notes.${id}`).then(() => resolve(id));
       });
     },
   },

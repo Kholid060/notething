@@ -1,16 +1,14 @@
 <template>
-  <ui-card
-    class="hover:ring-2 group hover:ring-gray-700 transition flex flex-col"
-  >
+  <ui-card class="hover:ring-2 group transition flex flex-col">
     <router-link
       :to="`/note/${note.id}`"
-      class="font-semibold text-lg mb-1 block line-clamp"
+      class="font-semibold text-lg block line-clamp"
     >
       {{ note.title }}
     </router-link>
     <router-link
       :to="`/note/${note.id}`"
-      class="text-gray-600 block dark:text-gray-100 flex-1"
+      class="text-gray-600 block dark:text-gray-100 flex-1 mt-1"
       style="min-height: 64px"
     >
       {{ truncateContent(note.content) || 'No content' }}

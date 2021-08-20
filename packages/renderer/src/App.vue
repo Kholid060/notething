@@ -5,21 +5,18 @@
   </main>
 </template>
 <script>
-/* eslint-disable */
-import { useRouter } from 'vue-router';
-import { useTheme } from '@/composable/theme';
-import storeWatcher from '@/utils/store-watcher';
+import { useTheme } from './composable/theme';
+import { useStore } from './store';
 import AppSidebar from './components/app/AppSidebar.vue';
 
 export default {
   components: { AppSidebar },
   setup() {
-    const router = useRouter();
     const theme = useTheme();
+    const store = useStore();
 
-    // router.replace('/note/anu');
     theme.loadTheme();
-    storeWatcher();
+    store.retrieve();
   },
 };
 </script>
