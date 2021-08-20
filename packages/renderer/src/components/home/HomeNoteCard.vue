@@ -48,7 +48,7 @@
         <v-remixicon name="riDeleteBin6Line" />
       </button>
       <div class="flex-grow"></div>
-      <p class="text-overflow">{{ formatDate(note.date) }}</p>
+      <p class="text-overflow">{{ formatDate(note.createdAt) }}</p>
     </div>
   </ui-card>
 </template>
@@ -70,6 +70,7 @@ function truncateContent(content) {
   return truncated + (content.length > 160 ? '...' : '');
 }
 function formatDate(date) {
+  console.log(new Date(date));
   return dayjs(date).fromNow();
 }
 </script>

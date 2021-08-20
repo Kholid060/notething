@@ -16,7 +16,6 @@
       </ui-select>
     </div>
     <div
-      ref="macyContainer"
       class="
         grid grid-cols-1
         md:grid-cols-2
@@ -25,6 +24,22 @@
         gap-4
       "
     >
+      <template v-if="notes.bookmarked.length !== 0">
+        <p class="col-span-full text-gray-600 dark:text-gray-200">Bookmarked</p>
+        <home-note-card
+          v-for="note in notes.bookmarked"
+          :key="note.id"
+          v-bind="{ note }"
+          @delete="noteStore.delete(note.id)"
+          @update="noteStore.update(note.id, $event)"
+        />
+      </template>
+      <p
+        :class="{ 'mt-4': notes.bookmarked.length !== 0 }"
+        class="col-span-full text-gray-600 dark:text-gray-200"
+      >
+        All
+      </p>
       <home-note-card
         v-for="note in notes.all"
         :key="note.id"
