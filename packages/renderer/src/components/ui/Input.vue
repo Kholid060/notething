@@ -33,7 +33,7 @@
             'pl-10': prependIcon || $slots.prepend,
           }"
           :value="modelValue"
-          @input="emitValue($event.target.value)"
+          @input="emitValue"
         />
       </div>
     </label>
@@ -47,6 +47,9 @@ export default {
     },
   },
   props: {
+    modelModifiers: {
+      default: () => ({}),
+    },
     disabled: {
       type: Boolean,
       default: false,
@@ -82,7 +85,13 @@ export default {
   },
   emits: ['update:modelValue', 'change'],
   setup(props, { emit }) {
-    function emitValue(value) {
+    function emitValue(event) {
+      let { value } = event.target;
+
+      if (props.modelModifiers.lowercase) {
+        value = value.toLocaleLowerCase();
+      }
+
       emit('update:modelValue', value);
       emit('change', value);
     }

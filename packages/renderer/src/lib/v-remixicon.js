@@ -27,7 +27,11 @@ import {
   riSettings3Line,
   riFileAddLine,
   riArrowDropDownLine,
-  riFolderLine
+  riFolderLine,
+  riDeleteBin6Line,
+  riBookmarkLine,
+  riBookmarkFill,
+  riFileEditLine,
 } from 'v-remixicon/icons';
 
 VRemixIcon.add({
@@ -58,7 +62,11 @@ VRemixIcon.add({
   riSettings3Line,
   riFileAddLine,
   riArrowDropDownLine,
-  riFolderLine
+  riFolderLine,
+  riDeleteBin6Line,
+  riBookmarkLine,
+  riBookmarkFill,
+  riFileEditLine,
 });
 
 export default VRemixIcon;

@@ -39,5 +39,5 @@ export function useTheme() {
     setTheme,
     loadTheme,
     currentTheme,
-  }
+  };
 }

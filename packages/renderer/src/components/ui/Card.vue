@@ -9,13 +9,11 @@
       rounded-lg
       transition-transform
       ui-card
+      p-4
     "
     :class="{ 'hover:shadow-xl hover:-translate-y-1': hover }"
   >
-    <slot name="image"></slot>
-    <div class="p-4">
-      <slot></slot>
-    </div>
+    <slot></slot>
   </component>
 </template>
 <script>

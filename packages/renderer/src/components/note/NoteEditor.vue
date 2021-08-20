@@ -1,19 +1,19 @@
 <template>
   <slot v-bind="{ editor }" />
   <editor-content
-    class="prose dark:text-gray-200 max-w-none prose-indigo"
+    class="prose dark:text-gray-100 max-w-none prose-indigo"
     :editor="editor"
   />
   <bubble-menu
     v-if="editor"
     v-bind="{ editor, shouldShow: bubbleMenuShouldShow }"
-    class="bg-white px-4 py-2 rounded-lg border"
+    class="bg-white dark:bg-gray-800 px-4 py-2 rounded-lg border shadow-xl"
   >
     <input
       :value="currentLinkVal"
       type="url"
       placeholder="URL"
-      class="w-40 mr-2"
+      class="w-40 mr-2 bg-transparent"
       @keyup.enter="updateCurrentLink"
       @input="currentLinkVal = $event.target.value"
     />
@@ -22,24 +22,13 @@
 </template>
 
 <script>
-import { onMounted, onBeforeUnmount, shallowRef } from 'vue';
-import {
-  Editor,
-  EditorContent,
-  VueNodeViewRenderer,
-  BubbleMenu,
-} from '@tiptap/vue-3';
-import StarterKit from '@tiptap/starter-kit';
-import Highlight from '@tiptap/extension-highlight';
-import Typography from '@tiptap/extension-typography';
-import Underline from '@tiptap/extension-underline';
-import Link from '@tiptap/extension-link';
-import Image from '@tiptap/extension-image';
-import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
-import Code from '@tiptap/extension-code';
-import Placeholder from '@tiptap/extension-placeholder';
+import { onMounted, onBeforeUnmount, shallowRef, watch } from 'vue';
+import { EditorContent, VueNodeViewRenderer, BubbleMenu } from '@tiptap/vue-3';
 import lowlight from 'lowlight';
+import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
 import CodeBlockComponent from './exts/CodeBlockComponent.vue';
+import Placeholder from '@tiptap/extension-placeholder';
+import tiptap from '@/lib/tiptap';
 import '@/assets/css/one-dark.css';
 import '@/assets/css/one-light.css';
 
@@ -48,7 +37,18 @@ export default {
     BubbleMenu,
     EditorContent,
   },
-  setup() {
+  props: {
+    modelValue: {
+      type: [String, Object],
+      default: '',
+    },
+    id: {
+      type: String,
+      default: '',
+    },
+  },
+  emits: ['init', 'update', 'update:modelValue'],
+  setup(props, { emit }) {
     const editor = shallowRef(null);
     const currentLinkVal = shallowRef('');
 
@@ -76,28 +76,20 @@ export default {
       }
     }
 
+    watch(
+      () => props.id,
+      () => {
+        editor.value.commands.setContent(props.modelValue);
+        editor.value.commands.focus();
+      }
+    );
+
     onMounted(() => {
-      editor.value = new Editor({
-        content:
-          '<p>I’m running tiptap with Vue.js. 🎉</p><a href="https://google.com">aaaa</a>',
+      editor.value = tiptap({
+        content: props.modelValue,
         autofocus: true,
         extensions: [
-          StarterKit,
-          Highlight,
-          Typography,
-          Underline,
-          Image,
           Placeholder,
-          Code.configure({ HTMLAttributes: { class: 'inline-code' } }),
-          Link.configure({
-            openOnClick: false,
-            HTMLAttributes: {
-              target: '_blank',
-              rel: 'noopener noreferrer nofollow',
-              'tiptap-url': 'true',
-              title: 'Shift+Click to open URL',
-            },
-          }),
           CodeBlockLowlight.extend({
             addNodeView() {
               return VueNodeViewRenderer(CodeBlockComponent);
@@ -106,8 +98,13 @@ export default {
         ],
       });
 
-      editor.value.on('update', (event) => {
-        console.log(event);
+      emit('init', editor.value);
+
+      editor.value.on('update', () => {
+        const data = editor.value.getJSON();
+
+        emit('update', data);
+        emit('update:modelValue', data);
       });
 
       window.addEventListener('click', linkClickHandler);
@@ -126,49 +123,4 @@ export default {
   },
 };
 </script>
-<style lang="postcss">
-.ProseMirror pre,
-.ProseMirror .inline-code {
-  @apply bg-black bg-opacity-5 rounded-lg dark:bg-gray-200 dark:bg-opacity-5;
-  font-family: 'JetBrains Mono', monospace;
-  tab-size: 2;
-  color: inherit;
-  font-variant-ligatures: normal;
-}
-.ProseMirror h1,
-.ProseMirror h2,
-.ProseMirror h3,
-.ProseMirror h4,
-.ProseMirror h5,
-.ProseMirror h6 {
-  @apply dark:text-white;
-}
-
-.ProseMirror {
-  &-selectednode {
-    @apply ring-2 ring-primary transition;
-  }
-  & > :first-child {
-    margin-top: 0;
-  }
-  &:focus {
-    outline: none;
-  }
-  .inline-code {
-    @apply py-0.5 px-1 rounded;
-  }
-  p.is-editor-empty:first-child::before {
-    content: attr(data-placeholder);
-    float: left;
-    @apply text-gray-400 dark:text-gray-700;
-    pointer-events: none;
-    height: 0;
-  }
-  img {
-    @apply rounded;
-  }
-  mark {
-    @apply bg-yellow-200 dark:bg-yellow-100;
-  }
-}
-</style>
+<style src="@/assets/css/editor.css"></style>

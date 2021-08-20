@@ -14,14 +14,20 @@
       left-0
       top-0
       z-40
-      dark:bg-gray-900
       py-4
     "
   >
     <button
       class="transition p-2 mb-4 text-primary bg-input rounded-lg"
+      @click="addNote"
     >
       <v-remixicon name="riFileAddLine" />
+    </button>
+    <button
+      class="transition dark:hover:text-white hover:text-gray-800 p-2 mb-4"
+      :class="{ 'text-primary': $route.name === 'Note' }"
+    >
+      <v-remixicon name="riFileEditLine" />
     </button>
     <router-link
       v-for="nav in navs"
@@ -34,9 +40,15 @@
     </router-link>
     <div class="flex-grow"></div>
     <button
-      :class="[theme.currentTheme.value === 'dark' ? 'text-primary' : 'dark:hover:text-white hover:text-gray-800']"
+      :class="[
+        theme.currentTheme.value === 'dark'
+          ? 'text-primary dark:text-secondary'
+          : 'dark:hover:text-white hover:text-gray-800',
+      ]"
       class="transition p-2 mb-4"
-      @click="theme.setTheme(theme.currentTheme.value === 'dark' ? 'light' : 'dark')"
+      @click="
+        theme.setTheme(theme.currentTheme.value === 'dark' ? 'light' : 'dark')
+      "
     >
       <v-remixicon name="riMoonClearLine" />
     </button>
@@ -46,13 +58,23 @@
   </aside>
 </template>
 <script setup>
+import { useRouter } from 'vue-router';
+import { useNoteStore } from '@/store/note';
 import { useTheme } from '@/composable/theme';
 
 const theme = useTheme();
+const router = useRouter();
+const noteStore = useNoteStore();
 
 const navs = [
   { name: 'Notes', path: '/', icon: 'riBookletLine' },
   { name: 'Labels', path: '/labels', icon: 'riPriceTag3Line' },
   { name: 'Archive', path: '/archive', icon: 'riArchiveLine' },
 ];
+
+function addNote() {
+  noteStore.add().then(({ id }) => {
+    router.push(`/note/${id}`);
+  });
+}
 </script>

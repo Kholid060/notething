@@ -1,8 +1,8 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Users\what\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add @tiptap/extension-image
+  C:\Program Files\nodejs\node.exe C:\Users\what\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add day.js
 
 PATH: 
-  C:\Python39\Scripts\;C:\Python39\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\Git\cmd;C:\Program Files\nodejs\;C:\ProgramData\chocolatey\bin;C:\Users\what\AppData\Local\Microsoft\WindowsApps;C:\Users\what\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\what\AppData\Roaming\npm
+  C:\Python39\Scripts\;C:\Python39\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\Git\cmd;C:\Program Files\nodejs\;C:\ProgramData\chocolatey\bin;C:\Users\what\AppData\Local\Microsoft\WindowsApps;C:\Users\what\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\what\AppData\Roaming\npm;C:\Program Files\heroku\bin
 
 Yarn version: 
   1.22.11
@@ -14,7 +14,17 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: EBUSY: resource busy or locked, unlink 'H:\note-taking\node_modules\electron\dist\icudtl.dat'
+  Error: https://registry.yarnpkg.com/day.js: Not found
+      at Request.params.callback [as _callback] (C:\Users\what\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:66992:18)
+      at Request.self.callback (C:\Users\what\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:140763:22)
+      at Request.emit (node:events:394:28)
+      at Request.<anonymous> (C:\Users\what\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:141735:10)
+      at Request.emit (node:events:394:28)
+      at IncomingMessage.<anonymous> (C:\Users\what\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:141657:12)
+      at Object.onceWrapper (node:events:513:28)
+      at IncomingMessage.emit (node:events:406:35)
+      at endReadableNT (node:internal/streams/readable:1331:12)
+      at processTicksAndRejections (node:internal/process/task_queues:83:21)
 
 npm manifest: 
   {
@@ -68,19 +78,29 @@ npm manifest:
       "@headlessui/vue": "^1.4.0",
       "@mdi/js": "^5.9.55",
       "@tailwindcss/typography": "^0.4.1",
+      "@tiptap/extension-code": "^2.0.0-beta.16",
       "@tiptap/extension-code-block-lowlight": "^2.0.0-beta.34",
       "@tiptap/extension-highlight": "^2.0.0-beta.15",
+      "@tiptap/extension-image": "^2.0.0-beta.15",
       "@tiptap/extension-link": "^2.0.0-beta.19",
+      "@tiptap/extension-placeholder": "^2.0.0-beta.27",
       "@tiptap/extension-typography": "^2.0.0-beta.14",
       "@tiptap/extension-underline": "^2.0.0-beta.16",
       "@tiptap/starter-kit": "^2.0.0-beta.97",
       "@tiptap/vue-3": "^2.0.0-beta.52",
       "crypto-js": "^4.1.1",
+      "electron-better-ipc": "^2.0.1",
       "electron-store": "^8.0.0",
       "electron-updater": "^4.4.5",
+      "fs-extra": "^10.0.0",
       "lowlight": "1.20.0",
+      "macy": "^2.5.1",
       "mousetrap": "^1.6.5",
+      "nanoid": "^3.1.25",
       "pinia": "^2.0.0-rc.4",
+      "tiny-emitter": "^2.1.0",
+      "tippy.js": "^6.3.1",
+      "v-remixicon": "^0.0.8",
       "vue": "^3.2.2",
       "vue-masonry": "^0.13.0",
       "vue-mdijs": "^0.5.12",
@@ -497,6 +517,11 @@ Lockfile:
     dependencies:
       prosemirror-state "^1.3.4"
   
+  "@tiptap/extension-image@^2.0.0-beta.15":
+    version "2.0.0-beta.15"
+    resolved "https://registry.yarnpkg.com/@tiptap/extension-image/-/extension-image-2.0.0-beta.15.tgz#07bdc23c9804c830a394f78242648dd7783a469e"
+    integrity sha512-iMwQ154RPefOxgqTTHjOA735YWesyjBhYvD9fFxRDctM2vLxEYYYFOENXEBCFLNAr94gfaxefCEdkuNYHl9H7g==
+  
   "@tiptap/extension-italic@^2.0.0-beta.15":
     version "2.0.0-beta.15"
     resolved "https://registry.yarnpkg.com/@tiptap/extension-italic/-/extension-italic-2.0.0-beta.15.tgz#9a81f686cf221110478935596f0b47a76d4c2f45"
@@ -525,6 +550,15 @@ Lockfile:
     version "2.0.0-beta.17"
     resolved "https://registry.yarnpkg.com/@tiptap/extension-paragraph/-/extension-paragraph-2.0.0-beta.17.tgz#f8f0263359b95dec9c10078699697908568d9be9"
     integrity sha512-qCQVCf9c2hgaeIdfy22PaoZyW5Vare/1aGkOEAaZma5RjrUbV9hrRKwoW9LsDjnh1EN1fIeKdg02yEhnHWtG8A==
+  
+  "@tiptap/extension-placeholder@^2.0.0-beta.27":
+    version "2.0.0-beta.27"
+    resolved "https://registry.yarnpkg.com/@tiptap/extension-placeholder/-/extension-placeholder-2.0.0-beta.27.tgz#582e02be78f89de12e11d28202545fb22f7ceb9b"
+    integrity sha512-63tlsRh5mPcwYu+reUDJuV/OwOu+kDHpWSCW5YYK0ErT3jsvIROukzVMvTDQlpPncEPCLU2DyzCU1XBYOgYPKw==
+    dependencies:
+      prosemirror-model "^1.14.3"
+      prosemirror-state "^1.3.4"
+      prosemirror-view "^1.19.0"
   
   "@tiptap/extension-strike@^2.0.0-beta.17":
     version "2.0.0-beta.17"
@@ -2003,6 +2037,13 @@ Lockfile:
     dependencies:
       jake "^10.6.1"
   
+  electron-better-ipc@^2.0.1:
+    version "2.0.1"
+    resolved "https://registry.yarnpkg.com/electron-better-ipc/-/electron-better-ipc-2.0.1.tgz#982a4468e814f9f19308c7865a148c6dca5e218a"
+    integrity sha512-S/h2vjQjev9FVicGnZeuP2wH/ycO9pOv63JGaTjYB2m5JcKDuXHAM713YmnmDC+VVXP7mh1Y9rtxi6BoNK7YJA==
+    dependencies:
+      serialize-error "^8.1.0"
+  
   electron-builder@^22.11.7:
     version "22.11.7"
     resolved "https://registry.yarnpkg.com/electron-builder/-/electron-builder-22.11.7.tgz#cd97a0d9f6e6d388112e66b4376de431cca4d596"
@@ -3419,6 +3460,11 @@ Lockfile:
     dependencies:
       yallist "^4.0.0"
   
+  macy@^2.5.1:
+    version "2.5.1"
+    resolved "https://registry.yarnpkg.com/macy/-/macy-2.5.1.tgz#0dcd4643944809585ccc8f5ff07fb8705d98d7db"
+    integrity sha512-+y4WYyh3rl4G8UczZP30pXxhLQRZ941QcaDmWoGefzUBXdwNW8TOhjjN1g5i/VG3SmiSsHgpjVXhlnZ84P2QMw==
+  
   magic-string@^0.25.7:
     version "0.25.7"
     resolved "https://registry.yarnpkg.com/magic-string/-/magic-string-0.25.7.tgz#3f497d6fd34c669c6798dcb821f2ef31f5445051"
@@ -3547,7 +3593,7 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/ms/-/ms-2.1.2.tgz#d09d1f357b443f493382a8eb3ccd183872ae6009"
     integrity sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==
   
-  nanoid@^3.1.23:
+  nanoid@^3.1.23, nanoid@^3.1.25:
     version "3.1.25"
     resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.1.25.tgz#09ca32747c0e543f0e1814b7d3793477f9c8e152"
     integrity sha512-rdwtIXaXCLFAQbnfqDRnI6jaRHp9fTcYBjtFKE8eezcZ7LuLjhUaQGNeMXf1HmRoCH32CLz6XwX0TtxEOS/A3Q==
@@ -4383,7 +4429,7 @@ Lockfile:
     dependencies:
       type-fest "^0.13.1"
   
-  serialize-error@^8.0.0:
+  serialize-error@^8.0.0, serialize-error@^8.1.0:
     version "8.1.0"
     resolved "https://registry.yarnpkg.com/serialize-error/-/serialize-error-8.1.0.tgz#3a069970c712f78634942ddd50fbbc0eaebe2f67"
     integrity sha512-3NnuWfM6vBYoy5gZFvHiYsVbafvI9vZv/+jlIigFn4oP4zjNPK3LhcY0xSCgeb1a5L8jO71Mit9LlNoi2UfDDQ==
@@ -4720,6 +4766,11 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/through/-/through-2.3.8.tgz#0dd4c9ffaabc357960b1b724115d7e0e86a2e1f5"
     integrity sha1-DdTJ/6q8NXlgsbckEV1+Doai4fU=
   
+  tiny-emitter@^2.1.0:
+    version "2.1.0"
+    resolved "https://registry.yarnpkg.com/tiny-emitter/-/tiny-emitter-2.1.0.tgz#1d1a56edfc51c43e863cbb5382a72330e3555423"
+    integrity sha512-NB6Dk1A9xgQPMoGqC5CVXn123gWyte215ONT5Pp5a0yt4nlEoO1ZWeCwpncaekPHXO60i47ihFnZPiRPjRMq4Q==
+  
   tippy.js@^6.3.1:
     version "6.3.1"
     resolved "https://registry.yarnpkg.com/tippy.js/-/tippy.js-6.3.1.tgz#3788a007be7015eee0fd589a66b98fb3f8f10181"
@@ -4906,6 +4957,11 @@ Lockfile:
     version "8.3.2"
     resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.2.tgz#80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
     integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
+  
+  v-remixicon@^0.0.8:
+    version "0.0.8"
+    resolved "https://registry.yarnpkg.com/v-remixicon/-/v-remixicon-0.0.8.tgz#00c50a49171053c74b10d6da588c84f66d82bdde"
+    integrity sha512-FOpCIzq8C1Me64Lny894GenE8ykPW6diG2c6wypBJeh7rHV7rTrh/zj+HR2dmX5vEyOIsr5btG/1j5q9OpWJLg==
   
   v8-compile-cache@^2.0.3:
     version "2.3.0"
