@@ -9,11 +9,30 @@
         prepend-icon="riSearch2Line"
         placeholder="Search..."
       />
-      <ui-select class="w-32">
-        <option>halo?</option>
-        <option>halo?</option>
-        <option>halo?</option>
-      </ui-select>
+      <ui-popover>
+        <template #trigger>
+          <ui-button>
+            <p class="mr-4">{{ sorts[state.sortBy] }}</p>
+            <v-remixicon size="26" name="riArrowDropDownLine" class="-mr-2" />
+          </ui-button>
+        </template>
+        <ui-list class="space-y-1 w-48">
+          <ui-list-item
+            v-for="(name, id) in sorts"
+            :key="id"
+            :active="id === state.sortBy"
+            class="cursor-pointer"
+            @click="setActiveSort(id)"
+          >
+            <span class="flex-1">{{ name }}</span>
+            <v-remixicon
+              v-show="id === state.sortBy"
+              :rotate="state.sortOrder === 'asc' ? 180 : 0"
+              name="riArrowDownLine"
+            />
+          </ui-list-item>
+        </ui-list>
+      </ui-popover>
     </div>
     <div
       class="
@@ -60,7 +79,11 @@ import { extensions } from '@/lib/tiptap';
 export default {
   components: { HomeNoteCard },
   setup() {
-    const sorts = [{ name: 'Title', id: 'title' }];
+    const sorts = {
+      title: 'Alphabetical',
+      createdAt: 'Created date',
+      updatedAt: 'Last updated',
+    };
 
     const noteStore = useNoteStore();
 
@@ -68,18 +91,29 @@ export default {
       notes: [],
       query: '',
       sortBy: 'createdAt',
-      sortType: 'asc',
+      sortOrder: 'asc',
     });
 
     const notes = computed(() => filterNotes(state.notes));
 
     function filterNotes(notes) {
+      const sortedNotes = notes.sort((a, b) => {
+        let comparison = 0;
+        const key = state.sortBy;
+        const varA = typeof a[key] === 'string' ? a[key].toUpperCase() : a[key];
+        const varB = typeof b[key] === 'string' ? b[key].toUpperCase() : b[key];
+
+        if (varA > varB) comparison = 1;
+        else if (varA < varB) comparison = -1;
+
+        return state.sortOrder === 'desc' ? comparison * -1 : comparison;
+      });
       const filteredNotes = {
         all: [],
         bookmarked: [],
       };
 
-      notes.forEach((note) => {
+      sortedNotes.forEach((note) => {
         const { title, content, isArchived, isBookmarked } = note;
         const isMatch =
           (title.toLocaleLowerCase().includes(state.query) ||
@@ -101,6 +135,12 @@ export default {
 
       return { ...note, content: textStr };
     }
+    function setActiveSort(id) {
+      if (state.sortBy === id)
+        state.sortOrder = state.sortOrder === 'asc' ? 'desc' : 'asc';
+
+      state.sortBy = id;
+    }
 
     watch(
       () => noteStore.data,
@@ -115,6 +155,7 @@ export default {
       state,
       sorts,
       noteStore,
+      setActiveSort,
     };
   },
 };

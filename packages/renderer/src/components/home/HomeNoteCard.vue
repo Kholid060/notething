@@ -70,7 +70,6 @@ function truncateContent(content) {
   return truncated + (content.length > 160 ? '...' : '');
 }
 function formatDate(date) {
-  console.log(new Date(date));
   return dayjs(date).fromNow();
 }
 </script>
