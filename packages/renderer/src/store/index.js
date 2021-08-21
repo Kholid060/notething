@@ -2,6 +2,9 @@ import { defineStore } from 'pinia';
 import { useNoteStore } from './note';
 
 export const useStore = defineStore('main', {
+  state: () => ({
+    inFocusMode: false,
+  }),
   actions: {
     retrieve() {
       return new Promise((resolve) => {

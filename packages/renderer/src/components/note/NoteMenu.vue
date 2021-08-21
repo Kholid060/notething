@@ -16,6 +16,7 @@
       sticky
       top-0
     "
+    :class="{ 'opacity-0 hover:opacity-100 transition': store.inFocusMode }"
   >
     <div class="w-full h-full flex items-center justify-between w-full">
       <!-- <input
@@ -25,7 +26,7 @@
           appearance-none
           h-full
           bg-transparent
-          h-10 px-2 rounded-lg
+          h-8 px-1 rounded-lg
           w-20
           text-center
         "
@@ -34,13 +35,9 @@
         title="Font size"
       /> -->
       <button
-        :class="
-          editor.isActive('paragraph')
-            ? 'text-primary dark:text-secondary'
-            : 'hover:text-gray-800 dark:hover:text-white'
-        "
+        :class="{ 'is-active': editor.isActive('paragraph') }"
         title="Paragraph (Ctrl+alt+0)"
-        class="transition hoverable h-10 px-2 rounded-lg"
+        class="transition hoverable h-8 px-1 rounded-lg"
         @click="editor.chain().focus().setParagraph().run()"
       >
         <v-remixicon name="riParagraph" />
@@ -48,78 +45,68 @@
       <button
         v-for="heading in [1, 2]"
         :key="heading"
-        :class="
-          editor.isActive('heading', { level: heading })
-            ? 'text-primary dark:text-secondary'
-            : 'hover:text-gray-800 dark:hover:text-white'
-        "
+        :class="{ 'is-active': editor.isActive('heading', { level: heading }) }"
         :title="`Heading ${heading} (Ctrl+alt+${heading})`"
-        class="transition hoverable h-10 px-2 rounded-lg"
+        class="transition hoverable h-8 px-1 rounded-lg"
         @click="editor.chain().focus().toggleHeading({ level: heading }).run()"
       >
         <v-remixicon :name="`riH${heading}`" />
       </button>
-      <hr class="border-r mx-4 h-8" />
+      <hr class="border-r mx-2 h-6" />
       <button
         v-for="action in textFormatting"
         :key="action.name"
-        :class="
-          editor.isActive(action.activeState)
-            ? 'text-primary dark:text-secondary'
-            : 'hover:text-gray-800 dark:hover:text-white'
-        "
+        :class="{ 'is-active': editor.isActive(action.activeState) }"
         :title="action.title"
-        class="transition hoverable h-10 px-2 rounded-lg"
+        class="transition hoverable h-8 px-1 rounded-lg"
         @click="action.handler"
       >
         <v-remixicon :name="action.icon" />
       </button>
-      <hr class="border-r mx-4 h-8" />
+      <hr class="border-r mx-2 h-6" />
       <button
         v-for="action in lists"
         :key="action.name"
-        :class="
-          editor.isActive(action.activeState)
-            ? 'text-primary dark:text-secondary'
-            : 'hover:text-gray-800 dark:hover:text-white'
-        "
+        :class="{ 'is-active': editor.isActive(action.activeState) }"
         :title="action.title"
-        class="transition hoverable h-10 px-2 rounded-lg"
+        class="transition hoverable h-8 px-1 rounded-lg"
         @click="action.handler"
       >
         <v-remixicon :name="action.icon" />
       </button>
-      <hr class="border-r mx-4 h-8" />
+      <hr class="border-r mx-2 h-6" />
       <button
         title="Image"
-        class="transition hoverable h-10 px-2 rounded-lg"
+        class="transition hoverable h-8 px-1 rounded-lg"
         @click="insertImage"
       >
         <v-remixicon name="riImageLine" />
       </button>
       <button
-        :class="
-          editor.isActive('link')
-            ? 'text-primary dark:text-secondary'
-            : 'hover:text-gray-800 dark:hover:text-white'
-        "
+        :class="{ 'is-active': editor.isActive('link') }"
         title="Link"
-        class="transition hoverable h-10 px-2 rounded-lg"
+        class="transition hoverable h-8 px-1 rounded-lg"
         @click="editor.chain().focus().toggleLink({ href: '' }).run()"
       >
         <v-remixicon name="riLink" />
       </button>
-      <!-- <button class="hoverable h-10 px-2 rounded-lg h-full mr-1">
-        <v-remixicon name="riFullscreenLine" />
+      <hr class="border-r mx-2 h-6" />
+      <button
+        :class="{ 'is-active': store.inFocusMode }"
+        class="hoverable h-8 px-1 rounded-lg h-full"
+        @click="toggleFocusMode"
+      >
+        <v-remixicon name="riFocus3Line" />
       </button>
-      <button class="hoverable h-10 px-2 rounded-lg h-full">
+      <button class="hoverable h-8 px-1 rounded-lg h-full">
         <v-remixicon name="riNodeTree" />
-      </button> -->
+      </button>
     </div>
   </div>
 </template>
 <script>
 import { useStorage } from '@/composable/storage';
+import { useStore } from '@/store';
 
 export default {
   props: {
@@ -213,6 +200,7 @@ export default {
       },
     ];
 
+    const store = useStore();
     const storage = useStorage();
 
     function insertImage() {
@@ -235,7 +223,6 @@ export default {
               dest: path.join(dataDir, 'notes-assets', fileName),
             });
 
-            console.log(dataDir, `assets:${fileName}`);
             props.editor
               .chain()
               .focus()
@@ -246,17 +233,36 @@ export default {
           }
         });
     }
+    function toggleFocusMode() {
+      store.inFocusMode = !store.inFocusMode;
+
+      if (store.inFocusMode) {
+        document.documentElement.requestFullscreen();
+        props.editor.commands.focus();
+      } else {
+        document.exitFullscreen();
+      }
+    }
 
     return {
+      store,
       lists,
       headings,
       insertImage,
       textFormatting,
+      toggleFocusMode,
     };
   },
 };
 </script>
 <style scoped>
+button {
+  @apply hover:text-gray-800 dark:hover:text-white;
+}
+button.is-active {
+  @apply text-primary dark:text-secondary hover:text-primary dark:hover:text-secondary;
+}
+
 input[type='number'] {
   &::-webkit-outer-spin-button,
   &::-webkit-inner-spin-button {

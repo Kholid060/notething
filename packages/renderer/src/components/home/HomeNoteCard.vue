@@ -2,7 +2,7 @@
   <ui-card class="hover:ring-2 group transition flex flex-col">
     <router-link
       :to="`/note/${note.id}`"
-      class="font-semibold text-lg block line-clamp"
+      class="font-semibold text-lg block line-clamp leading-tight"
     >
       {{ note.title }}
     </router-link>

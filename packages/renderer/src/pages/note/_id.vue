@@ -47,11 +47,13 @@ export default {
       (noteId) => {
         if (!noteId) return;
 
-        localStorage.setItem('lastNoteEdit', noteId);
-
         storage.get(`notes.${noteId}`).then((data) => {
-          if (!data) router.push('/');
-          else localStorage.setItem('lastNoteEdit', noteId);
+          if (!data) {
+            router.push('/');
+          } else {
+            document.title = `${data.title.slice(0, 260)} - App Name`;
+            localStorage.setItem('lastNoteEdit', noteId);
+          }
         });
       },
       { immediate: true }

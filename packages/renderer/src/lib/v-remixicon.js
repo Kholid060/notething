@@ -33,6 +33,7 @@ import {
   riBookmarkFill,
   riFileEditLine,
   riArrowDownLine,
+  riFocus3Line,
   riInboxUnarchiveLine,
 } from 'v-remixicon/icons';
 
@@ -70,6 +71,7 @@ VRemixIcon.add({
   riBookmarkFill,
   riFileEditLine,
   riArrowDownLine,
+  riFocus3Line,
   riInboxUnarchiveLine,
 });
 

@@ -1,6 +1,6 @@
 <template>
-  <app-sidebar />
-  <main class="pl-16">
+  <app-sidebar v-if="!store.inFocusMode" />
+  <main :class="{ 'pl-16': !store.inFocusMode }">
     <router-view />
   </main>
 </template>
@@ -25,6 +25,10 @@ export default {
     if (lastNoteEdit) {
       router.push(`/note/${lastNoteEdit}`);
     }
+
+    return {
+      store,
+    };
   },
 };
 </script>
