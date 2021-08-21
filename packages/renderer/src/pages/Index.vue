@@ -43,29 +43,26 @@
         gap-4
       "
     >
-      <template v-if="notes.bookmarked.length !== 0">
-        <p class="col-span-full text-gray-600 dark:text-gray-200">Bookmarked</p>
+      <template
+        v-for="name in $route.query.archived
+          ? ['archived']
+          : ['bookmarked', 'all']"
+        :key="name"
+      >
+        <p
+          class="col-span-full text-gray-600 dark:text-gray-200 capitalize"
+          :class="{ 'mt-2': name === 'all' }"
+        >
+          {{ name }}
+        </p>
         <home-note-card
-          v-for="note in notes.bookmarked"
+          v-for="note in notes[name]"
           :key="note.id"
           v-bind="{ note }"
           @delete="noteStore.delete(note.id)"
           @update="noteStore.update(note.id, $event)"
         />
       </template>
-      <p
-        :class="{ 'mt-4': notes.bookmarked.length !== 0 }"
-        class="col-span-full text-gray-600 dark:text-gray-200"
-      >
-        All
-      </p>
-      <home-note-card
-        v-for="note in notes.all"
-        :key="note.id"
-        v-bind="{ note }"
-        @delete="noteStore.delete(note.id)"
-        @update="noteStore.update(note.id, $event)"
-      />
     </div>
   </div>
 </template>
@@ -74,6 +71,7 @@ import { computed, reactive, watch } from 'vue';
 import { generateHTML } from '@tiptap/core';
 import HomeNoteCard from '@/components/home/HomeNoteCard.vue';
 import { useNoteStore } from '@/store/note';
+import { sortArray } from '@/utils/helper';
 import { extensions } from '@/lib/tiptap';
 
 export default {
@@ -94,33 +92,31 @@ export default {
       sortOrder: 'asc',
     });
 
-    const notes = computed(() => filterNotes(state.notes));
+    const sortedNotes = computed(() =>
+      sortArray({
+        data: state.notes,
+        order: state.sortOrder,
+        key: state.sortBy,
+      })
+    );
+    const notes = computed(() => filterNotes(sortedNotes.value));
 
     function filterNotes(notes) {
-      const sortedNotes = notes.sort((a, b) => {
-        let comparison = 0;
-        const key = state.sortBy;
-        const varA = typeof a[key] === 'string' ? a[key].toUpperCase() : a[key];
-        const varB = typeof b[key] === 'string' ? b[key].toUpperCase() : b[key];
-
-        if (varA > varB) comparison = 1;
-        else if (varA < varB) comparison = -1;
-
-        return state.sortOrder === 'desc' ? comparison * -1 : comparison;
-      });
       const filteredNotes = {
         all: [],
+        archived: [],
         bookmarked: [],
       };
 
-      sortedNotes.forEach((note) => {
+      notes.forEach((note) => {
         const { title, content, isArchived, isBookmarked } = note;
         const isMatch =
-          (title.toLocaleLowerCase().includes(state.query) ||
-            content.includes(state.query)) &&
-          !isArchived;
+          title.toLocaleLowerCase().includes(state.query) ||
+          content.includes(state.query);
 
         if (isMatch) {
+          if (isArchived) return filteredNotes.archived.push(note);
+
           isBookmarked
             ? filteredNotes.bookmarked.push(note)
             : filteredNotes.all.push(note);

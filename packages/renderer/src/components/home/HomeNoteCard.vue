@@ -15,6 +15,7 @@
     </router-link>
     <div class="flex z-10 items-center mt-4 text-gray-600 dark:text-gray-200">
       <button
+        v-if="!note.isArchived"
         class="hover:text-gray-900 mr-2 dark:hover:text-white transition"
         @click="$emit('update', { isBookmarked: !note.isBookmarked })"
       >
@@ -33,7 +34,9 @@
         "
         @click="$emit('update', { isArchived: !note.isArchived })"
       >
-        <v-remixicon name="riArchiveLine" />
+        <v-remixicon
+          :name="note.isArchived ? 'riInboxUnarchiveLine' : 'riArchiveLine'"
+        />
       </button>
       <button
         class="

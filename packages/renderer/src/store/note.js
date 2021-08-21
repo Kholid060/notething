@@ -9,11 +9,7 @@ export const useNoteStore = defineStore('note', {
     data: {},
   }),
   getters: {
-    notes: (state) =>
-      Object.entries(state.data).map(([id, value]) => ({
-        ...value,
-        id: value.id ?? id,
-      })),
+    notes: (state) => Object.values(state.data),
     getById: (state) => (id) => state.data[id],
   },
   actions: {

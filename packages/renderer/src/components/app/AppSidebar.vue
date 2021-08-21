@@ -34,7 +34,9 @@
       v-for="nav in navs"
       :key="nav.name"
       :to="nav.path"
-      active-class="text-primary dark:text-primary"
+      :class="{
+        'text-primary dark:text-primary': $route.fullPath === nav.path,
+      }"
       class="transition dark:hover:text-white hover:text-gray-800 p-2 mb-4"
     >
       <v-remixicon :name="nav.icon" />
@@ -70,12 +72,12 @@ const noteStore = useNoteStore();
 const navs = [
   { name: 'Notes', path: '/', icon: 'riBookletLine' },
   { name: 'Labels', path: '/labels', icon: 'riPriceTag3Line' },
-  { name: 'Archive', path: '/archive', icon: 'riArchiveLine' },
+  { name: 'Archive', path: '/?archived=true', icon: 'riArchiveLine' },
 ];
 
 function openLastEdited() {
   const noteId = localStorage.getItem('lastNoteEdit');
-  console.log(noteId);
+
   if (noteId) router.push(`/note/${noteId}`);
 }
 function addNote() {
