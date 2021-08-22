@@ -1,9 +1,8 @@
 .ProseMirror pre,
 .ProseMirror .inline-code {
-  @apply bg-black bg-opacity-5 rounded-lg dark:bg-opacity-30 !important;
+  @apply bg-black bg-opacity-5 rounded-lg dark:bg-opacity-30 text-gray-700 dark:text-gray-200 !important;
   font-family: 'JetBrains Mono', monospace;
   tab-size: 2;
-  color: #383a42 !important;
   font-variant-ligatures: normal;
 }
 .ProseMirror a {
@@ -22,6 +21,9 @@
 .ProseMirror h5,
 .ProseMirror h6 {
   @apply dark:text-white;
+}
+.ProseMirror .mention {
+  @apply py-0.5 px-1 rounded-md bg-primary text-primary bg-opacity-10 dark:text-blue-400;
 }
 
 .ProseMirror {

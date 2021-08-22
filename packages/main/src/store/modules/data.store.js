@@ -6,7 +6,7 @@ const schema = {
 	notes: {
 		type: 'object',
     patternProperties: {
-    '[A-Za-z0-9_-]': {
+      '[A-Za-z0-9_-]': {
       	type: 'object',
       	properties: {
       		id: { type: 'string', default: '' },
@@ -21,6 +21,18 @@ const schema = {
       },
     },
 	},
+  labels: {
+    type: 'object',
+    patternProperties: {
+      '[A-Za-z0-9_-]': {
+        type: 'object',
+        properties: {
+          id: { type: 'string', default: '' },
+          name: { type: 'string', default: '' },
+        },
+      },
+    },
+  },
 };
 
 export default new Store({

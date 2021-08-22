@@ -7,7 +7,7 @@ export const defaultOptions = {
 };
 
 export default function (el, options = {}) {
-  el.setAttribute('vtooltip', '');
+  el.setAttribute && el.setAttribute('vtooltip', '');
 
   const instance = tippy(el, {
     ...defaultOptions,

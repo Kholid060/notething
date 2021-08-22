@@ -1,14 +1,19 @@
 <template>
-  <ui-card class="hover:ring-2 group transition flex flex-col">
+  <ui-card class="hover:ring-2 group transition flex flex-col" padding="p-5">
     <router-link
       :to="`/note/${note.id}`"
       class="font-semibold text-lg block line-clamp leading-tight"
     >
       {{ note.title }}
     </router-link>
+    <div class="text-primary dark:text-blue-400 mt-1 text-overflow w-full">
+      <span v-for="label in note.labels" :key="label.id">
+        #{{ label.name }}
+      </span>
+    </div>
     <router-link
       :to="`/note/${note.id}`"
-      class="text-gray-600 block dark:text-gray-100 flex-1 mt-1"
+      class="text-gray-600 block dark:text-gray-100 flex-1"
       style="min-height: 64px"
     >
       {{ truncateText(note.content, 160) || 'No content' }}

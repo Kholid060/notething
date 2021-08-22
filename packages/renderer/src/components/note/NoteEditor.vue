@@ -43,9 +43,9 @@ import { onMounted, onBeforeUnmount, shallowRef, watch } from 'vue';
 import { EditorContent, VueNodeViewRenderer, BubbleMenu } from '@tiptap/vue-3';
 import lowlight from 'lowlight';
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
-import CodeBlockComponent from './exts/CodeBlockComponent.vue';
 import Placeholder from '@tiptap/extension-placeholder';
 import tiptap from '@/lib/tiptap';
+import CodeBlockComponent from '@/lib/tiptap/exts/CodeBlockComponent.vue';
 import '@/assets/css/one-dark.css';
 import '@/assets/css/one-light.css';
 
@@ -124,7 +124,7 @@ export default {
         emit('update', data);
         emit('update:modelValue', data);
       });
-
+      console.log(editor);
       window.addEventListener('click', linkClickHandler);
     });
     onBeforeUnmount(() => {

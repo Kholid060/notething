@@ -41,3 +41,17 @@ export function truncateText(str, limit) {
 
   return truncated + (str.length > limit ? '...' : '');
 }
+
+export function extractNoteText(content) {
+  let text = '';
+
+  for (const value of content) {
+    const trimmedText = (value.text || '').trim();
+
+    if (trimmedText !== '') text += `${trimmedText} `;
+
+    if (value.content) text += extractNoteText(value.content);
+  }
+
+  return text;
+}

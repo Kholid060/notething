@@ -54,6 +54,7 @@
     "@tiptap/extension-highlight": "^2.0.0-beta.15",
     "@tiptap/extension-image": "^2.0.0-beta.15",
     "@tiptap/extension-link": "^2.0.0-beta.19",
+    "@tiptap/extension-mention": "^2.0.0-beta.68",
     "@tiptap/extension-placeholder": "^2.0.0-beta.27",
     "@tiptap/extension-typography": "^2.0.0-beta.14",
     "@tiptap/extension-underline": "^2.0.0-beta.16",

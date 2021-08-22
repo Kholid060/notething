@@ -16,7 +16,6 @@ export const useNoteStore = defineStore('note', {
     retrieve() {
       return new Promise((resolve) => {
         storage.get('notes', {}).then((data) => {
-          console.log(data);
           this.data = data;
 
           resolve(data);
@@ -48,7 +47,7 @@ export const useNoteStore = defineStore('note', {
           ...this.data[id],
           ...data,
         };
-        console.log(id, data);
+
         storage
           .set(`notes.${id}`, this.data[id])
           .then(() => resolve(this.data[id]));
@@ -66,4 +65,19 @@ export const useNoteStore = defineStore('note', {
       });
     },
   },
+  /*addLabel(id, labelId, type = 'add') {
+    return new Promise((resolve) => {
+      if (this.data[id]) {
+        const labelIndex = this.data[id].labels.indexOf(labelId);
+
+        labelIndex !== -1
+          ? this.data[id].labels.splice(labelIndex, 1)
+          : this.data[id].labels.push(labelId);
+
+        storage
+          .set(`notes.${id}`, this.data[id])
+          .then(() => resolve(labelId));
+      }
+    });
+  }*/
 });

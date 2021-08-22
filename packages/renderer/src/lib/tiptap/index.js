@@ -6,6 +6,7 @@ import Underline from '@tiptap/extension-underline';
 import Link from '@tiptap/extension-link';
 import Image from '@tiptap/extension-image';
 import Code from '@tiptap/extension-code';
+import Suggestion from '@/lib/tiptap/exts/suggestion';
 
 export const extensions = [
   StarterKit,
@@ -13,6 +14,7 @@ export const extensions = [
   Typography,
   Underline,
   Image,
+  Suggestion,
   Code.configure({ HTMLAttributes: { class: 'inline-code' } }),
   Link.configure({
     openOnClick: false,

@@ -68,11 +68,10 @@
 </template>
 <script>
 import { computed, reactive, watch } from 'vue';
-import { generateHTML } from '@tiptap/core';
 import HomeNoteCard from '@/components/home/HomeNoteCard.vue';
 import { useNoteStore } from '@/store/note';
-import { sortArray, stripTags } from '@/utils/helper';
-import { extensions } from '@/lib/tiptap';
+import { useLabelStore } from '@/store/label';
+import { sortArray, extractNoteText } from '@/utils/helper';
 
 export default {
   components: { HomeNoteCard },
@@ -84,6 +83,7 @@ export default {
     };
 
     const noteStore = useNoteStore();
+    const labelStore = useLabelStore();
 
     const state = reactive({
       notes: [],
@@ -126,10 +126,10 @@ export default {
       return filteredNotes;
     }
     function extractNoteContent(note) {
-      const html = generateHTML(note.content, extensions);
-      const textStr = stripTags(html).toLocaleLowerCase();
+      const text = extractNoteText(note.content.content).toLocaleLowerCase();
+      const labels = labelStore.getByIds(note.labels);
 
-      return { ...note, content: textStr };
+      return { ...note, content: text, labels };
     }
     function setActiveSort(id) {
       if (state.sortBy === id)

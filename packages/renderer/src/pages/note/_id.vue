@@ -17,7 +17,7 @@
 </template>
 <script>
 import { shallowRef, computed, watch } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter, onBeforeRouteLeave } from 'vue-router';
 import { useNoteStore } from '@/store/note';
 import { useStorage } from '@/composable/storage';
 import { debounce } from '@/utils/helper';
@@ -58,6 +58,22 @@ export default {
       },
       { immediate: true }
     );
+
+    onBeforeRouteLeave(() => {
+      const labels = new Set();
+      const labelEls =
+        editor.value?.options.element.querySelectorAll(
+          '[data-mention]:not([labelid=""])'
+        ) ?? [];
+
+      Array.from(labelEls).forEach((el) => {
+        labels.add(el.getAttribute('labelid'));
+      });
+
+      noteStore.update(router.currentRoute.value.params.id, {
+        labels: [...labels],
+      });
+    });
 
     return {
       note,

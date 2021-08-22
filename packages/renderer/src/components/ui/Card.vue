@@ -9,9 +9,8 @@
       rounded-lg
       transition-transform
       ui-card
-      p-4
     "
-    :class="{ 'hover:shadow-xl hover:-translate-y-1': hover }"
+    :class="[padding, { 'hover:shadow-xl hover:-translate-y-1': hover }]"
   >
     <slot></slot>
   </component>
@@ -22,6 +21,10 @@ export default {
     hover: {
       type: Boolean,
       default: false,
+    },
+    padding: {
+      type: String,
+      default: 'p-4',
     },
     tag: {
       type: String,
