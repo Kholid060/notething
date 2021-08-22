@@ -23,7 +23,7 @@ hue-6-2: #e6c07b
     display: block;
     overflow-x: auto;
     padding: 0.5em;
-    color: #abb2bf;
+    color: #abb2bf !important;
     background: #282c34;
   }
 

@@ -10,7 +10,7 @@
         m-2
         rounded
         bg-opacity-5 bg-black
-        dark:bg-white dark:bg-opacity-10
+        dark:bg-gray-300 dark:bg-opacity-5
       "
     >
       <option :value="null">auto</option>

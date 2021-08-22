@@ -71,7 +71,7 @@ import { computed, reactive, watch } from 'vue';
 import { generateHTML } from '@tiptap/core';
 import HomeNoteCard from '@/components/home/HomeNoteCard.vue';
 import { useNoteStore } from '@/store/note';
-import { sortArray } from '@/utils/helper';
+import { sortArray, stripTags } from '@/utils/helper';
 import { extensions } from '@/lib/tiptap';
 
 export default {
@@ -127,7 +127,7 @@ export default {
     }
     function extractNoteContent(note) {
       const html = generateHTML(note.content, extensions);
-      const textStr = html.replace(/(<([^>]+)>)/gi, ' ').toLocaleLowerCase();
+      const textStr = stripTags(html).toLocaleLowerCase();
 
       return { ...note, content: textStr };
     }

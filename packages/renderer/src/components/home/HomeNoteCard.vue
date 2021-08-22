@@ -11,7 +11,7 @@
       class="text-gray-600 block dark:text-gray-100 flex-1 mt-1"
       style="min-height: 64px"
     >
-      {{ truncateContent(note.content) || 'No content' }}
+      {{ truncateText(note.content, 160) || 'No content' }}
     </router-link>
     <div class="flex z-10 items-center mt-4 text-gray-600 dark:text-gray-200">
       <button
@@ -58,6 +58,7 @@
 <script setup>
 /* eslint-disable no-undef */
 import dayjs from '@/lib/dayjs';
+import { truncateText } from '@/utils/helper';
 
 defineProps({
   note: {
@@ -67,11 +68,6 @@ defineProps({
 });
 defineEmits(['update', 'delete']);
 
-function truncateContent(content) {
-  const truncated = content.slice(0, 160);
-
-  return truncated + (content.length > 160 ? '...' : '');
-}
 function formatDate(date) {
   return dayjs(date).fromNow();
 }

@@ -31,3 +31,13 @@ export function sortArray({ data, key, order = 'asc' }) {
 
   return sortedData;
 }
+
+export function stripTags(str) {
+  return str.replace(/(<([^>]+)>)/gi, ' ');
+}
+
+export function truncateText(str, limit) {
+  const truncated = str.slice(0, limit);
+
+  return truncated + (str.length > limit ? '...' : '');
+}

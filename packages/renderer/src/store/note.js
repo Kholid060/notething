@@ -38,7 +38,6 @@ export const useNoteStore = defineStore('note', {
           isArchived: false,
           ...note,
         };
-        console.log(this.data);
 
         storage.set('notes', this.data).then(() => resolve(this.data[id]));
       });

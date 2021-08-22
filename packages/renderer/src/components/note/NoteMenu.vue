@@ -1,7 +1,6 @@
 <template>
   <div
     class="
-      bg-opacity-90
       text-gray-600
       dark:text-gray-300
       bg-gray-50
@@ -94,27 +93,45 @@
       <button
         :class="{ 'is-active': store.inFocusMode }"
         class="hoverable h-8 px-1 rounded-lg h-full"
+        title="Focus mode"
         @click="toggleFocusMode"
       >
         <v-remixicon name="riFocus3Line" />
       </button>
-      <button class="hoverable h-8 px-1 rounded-lg h-full">
-        <v-remixicon name="riNodeTree" />
-      </button>
+      <ui-popover @show="getHeadingsTree">
+        <template #trigger>
+          <button
+            :class="{ 'is-active': tree }"
+            class="hoverable h-8 px-1 rounded-lg h-full"
+            title="Headings tree"
+          >
+            <v-remixicon name="riNodeTree" />
+          </button>
+        </template>
+        <note-menu-headings-tree :headings="headingsTree" />
+      </ui-popover>
     </div>
   </div>
 </template>
 <script>
+import { shallowRef } from 'vue';
 import { useStorage } from '@/composable/storage';
 import { useStore } from '@/store';
+import NoteMenuHeadingsTree from './NoteMenuHeadingsTree.vue';
 
 export default {
+  components: { NoteMenuHeadingsTree },
   props: {
     editor: {
       type: Object,
       default: () => ({}),
     },
+    tree: {
+      type: Boolean,
+      default: false,
+    },
   },
+  emits: ['update:tree'],
   setup(props) {
     const headings = [
       { name: 'Paragraphs', id: 'paragraph' },
@@ -203,6 +220,20 @@ export default {
     const store = useStore();
     const storage = useStorage();
 
+    const headingsTree = shallowRef([]);
+
+    function getHeadingsTree() {
+      const editorEl = props.editor.options.element;
+      const headingEls = editorEl.querySelectorAll('h1, h2, h3, h4');
+      const headingsArr = Array.from(headingEls).map((heading) => ({
+        el: heading,
+        tag: heading.tagName,
+        top: heading.offsetTop,
+        text: heading.innerText.slice(0, 120),
+      }));
+
+      headingsTree.value = headingsArr;
+    }
     function insertImage() {
       const { ipcRenderer, path } = window.electron;
 
@@ -249,6 +280,8 @@ export default {
       lists,
       headings,
       insertImage,
+      headingsTree,
+      getHeadingsTree,
       textFormatting,
       toggleFocusMode,
     };
