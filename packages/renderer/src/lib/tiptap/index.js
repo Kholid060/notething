@@ -22,7 +22,7 @@ export const extensions = [
       target: '_blank',
       rel: 'noopener noreferrer nofollow',
       'tiptap-url': 'true',
-      title: 'Shift+Click to open URL',
+      title: 'Alt+Click to open URL',
     },
   }),
 ];

@@ -38,6 +38,7 @@
           v-for="note in notes[name]"
           :key="note.id"
           v-bind="{ note }"
+          @update:label="state.activeLabel = $event"
           @delete="noteStore.delete(note.id)"
           @update="noteStore.update(note.id, $event)"
         />
@@ -46,7 +47,7 @@
   </div>
 </template>
 <script>
-import { computed, reactive, watch, onMounted } from 'vue';
+import { computed, reactive, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import HomeNoteCard from '@/components/home/HomeNoteCard.vue';
 import HomeNoteFilter from '@/components/home/HomeNoteFilter.vue';
@@ -94,7 +95,7 @@ export default {
         const isMatch =
           title.toLocaleLowerCase().includes(state.query) ||
           content.includes(state.query);
-        console.log(labelFilter, state.activeLabel, labels);
+
         if (isMatch && labelFilter) {
           if (isArchived) return filteredNotes.archived.push(note);
 
@@ -108,9 +109,8 @@ export default {
     }
     function extractNoteContent(note) {
       const text = extractNoteText(note.content.content).toLocaleLowerCase();
-      const labels = labelStore.getByIds(note.labels);
 
-      return { ...note, content: text, labels };
+      return { ...note, content: text };
     }
     function setActiveSort(id) {
       if (state.sortBy === id)
@@ -131,14 +131,15 @@ export default {
       },
       { immediate: true, deep: true }
     );
-
-    onMounted(() => {
-      const labelQuery = route.query.label;
-
-      if (labelQuery) {
-        state.activeLabel = labelQuery;
-      }
-    });
+    watch(
+      () => route.query.label,
+      (label) => {
+        if (label) {
+          state.activeLabel = decodeURIComponent(label);
+        }
+      },
+      { immediate: true }
+    );
 
     return {
       notes,

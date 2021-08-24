@@ -6,8 +6,19 @@
     >
       {{ note.title }}
     </router-link>
-    <div class="text-primary dark:text-blue-400 mt-1 text-overflow w-full">
-      <span v-for="label in note.labels" :key="label"> #{{ label }} </span>
+    <div
+      v-if="note.labels.length !== 0"
+      class="text-primary dark:text-blue-400 mt-2 mb-1 line-clamp w-full"
+    >
+      <span
+        v-for="label in note.labels"
+        :key="label"
+        :to="`/?label=${label}`"
+        class="inline-block mr-2 hover:underline cursor-pointer"
+        @click="$emit('update:label', label)"
+      >
+        #{{ label }}
+      </span>
     </div>
     <router-link
       :to="`/note/${note.id}`"
@@ -69,7 +80,7 @@ defineProps({
     default: () => ({}),
   },
 });
-defineEmits(['update', 'delete']);
+defineEmits(['update', 'delete', 'update:label']);
 
 function formatDate(date) {
   return dayjs(date).fromNow();

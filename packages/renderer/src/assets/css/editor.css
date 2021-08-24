@@ -9,7 +9,7 @@
   @apply dark:text-blue-400 !important;
 }
 .ProseMirror strong {
-  @apply dark:text-white !important;
+  @apply dark:text-white;
 }
 .ProseMirror blockquote {
   @apply dark:border-gray-700 dark:text-gray-100;

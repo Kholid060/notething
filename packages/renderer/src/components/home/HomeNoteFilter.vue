@@ -14,7 +14,7 @@
           <v-remixicon
             :name="label ? 'riCloseLine' : 'riPriceTag3Line'"
             class="mr-1 -ml-1"
-            @click="$emit('update:label', '')"
+            @click.stop="$emit('update:label', '')"
           />
           <p class="mr-4 text-overflow flex-1">{{ label || 'Select label' }}</p>
           <v-remixicon size="28" name="riArrowDropDownLine" class="-mr-2" />

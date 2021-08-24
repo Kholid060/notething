@@ -39,6 +39,7 @@ import {
   riSortAsc,
   riSortDesc,
   riCloseLine,
+  riSave3Line,
 } from 'v-remixicon/icons';
 
 VRemixIcon.add({
@@ -81,6 +82,7 @@ VRemixIcon.add({
   riSortAsc,
   riSortDesc,
   riCloseLine,
+  riSave3Line,
 });
 
 export default VRemixIcon;

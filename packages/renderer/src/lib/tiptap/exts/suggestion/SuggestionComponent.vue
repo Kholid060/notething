@@ -62,7 +62,6 @@ const items = computed(() =>
 );
 
 function onKeyDown({ event }) {
-  console.log(labelStore.data);
   if (event.key === 'ArrowUp') {
     upHandler();
     return true;

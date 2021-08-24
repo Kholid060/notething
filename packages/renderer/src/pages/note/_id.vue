@@ -1,5 +1,23 @@
 <template>
   <div v-if="note" class="max-w-3xl mx-auto relative">
+    <button
+      v-if="$route.query.linked && !store.inFocusMode"
+      class="left-0 ml-24 mt-4 fixed group"
+      @click="$router.back()"
+    >
+      <v-remixicon
+        name="riArrowDownLine"
+        class="
+          mr-2
+          -ml-1
+          group-hover:-translate-x-1
+          transform
+          transition
+          rotate-90
+        "
+      />
+      <span>Previous note</span>
+    </button>
     <note-menu v-if="editor" v-bind="{ editor }" class="mb-6" />
     <input
       :value="note.title"
@@ -17,9 +35,10 @@
 </template>
 <script>
 import { shallowRef, computed, watch } from 'vue';
-import { useRouter, onBeforeRouteLeave } from 'vue-router';
+import { useRouter, onBeforeRouteLeave, useRoute } from 'vue-router';
 import { useNoteStore } from '@/store/note';
 import { useLabelStore } from '@/store/label';
+import { useStore } from '@/store';
 import { useStorage } from '@/composable/storage';
 import { debounce } from '@/utils/helper';
 import NoteEditor from '@/components/note/NoteEditor.vue';
@@ -28,15 +47,16 @@ import NoteMenu from '@/components/note/NoteMenu.vue';
 export default {
   components: { NoteEditor, NoteMenu },
   setup() {
+    const store = useStore();
+    const route = useRoute();
     const router = useRouter();
     const storage = useStorage();
     const noteStore = useNoteStore();
     const labelStore = useLabelStore();
 
     const editor = shallowRef(null);
-    const note = computed(() =>
-      noteStore.getById(router.currentRoute.value.params.id)
-    );
+
+    const note = computed(() => noteStore.getById(route.params.id));
 
     const updateNote = debounce((data) => {
       Object.assign(data, { updatedAt: Date.now() });
@@ -45,7 +65,7 @@ export default {
     }, 250);
 
     watch(
-      () => router.currentRoute.value.params.id,
+      () => route.params.id,
       (noteId) => {
         if (!noteId) return;
 
@@ -68,17 +88,18 @@ export default {
 
       Array.from(labelEls).forEach((el) => {
         const labelId = el.dataset.id;
-        console.log(labelId, labelStore.data.includes(labelId));
+
         if (labelStore.data.includes(labelId)) labels.add(labelId);
       });
 
-      noteStore.update(router.currentRoute.value.params.id, {
+      noteStore.update(route.params.id, {
         labels: [...labels],
       });
     });
 
     return {
       note,
+      store,
       editor,
       updateNote,
     };

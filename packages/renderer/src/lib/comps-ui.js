@@ -1,3 +1,5 @@
+import ExpandTransition from '../components/transitions/ExpandTransition.vue';
+
 const uiComponents = import.meta.globEager('../components/ui/*.vue');
 
 function registerComponents(app, components, prefix) {
@@ -11,5 +13,7 @@ function registerComponents(app, components, prefix) {
 }
 
 export default function (app) {
+  app.component('ExpandTransition', ExpandTransition);
+
   registerComponents(app, uiComponents, 'Ui');
 }

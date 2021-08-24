@@ -4,56 +4,26 @@
     class="prose dark:text-gray-100 max-w-none prose-indigo"
     :editor="editor"
   />
-  <bubble-menu
-    v-if="editor"
-    v-bind="{ editor, shouldShow: bubbleMenuShouldShow }"
-    class="
-      bg-white
-      dark:bg-gray-800
-      px-4
-      py-2
-      rounded-lg
-      border
-      shadow-xl
-      flex
-      items-center
-    "
-  >
-    <button
-      class="mr-2 text-gray-600 dark:text-gray-200"
-      title="Remove link"
-      @click="editor.chain().focus().unsetLink().run()"
-    >
-      <v-remixicon name="riLinkUnlinkM" />
-    </button>
-    <input
-      v-model="currentLinkVal"
-      type="url"
-      placeholder="URL"
-      class="w-40 bg-transparent"
-      @keyup.enter="updateCurrentLink"
-    />
-    <hr class="h-6 border-r mx-4" />
-    <button @click="updateCurrentLink">Save</button>
-  </bubble-menu>
+  <note-bubble-menu v-if="editor" v-bind="{ editor }" />
 </template>
 
 <script>
 import { onMounted, onBeforeUnmount, shallowRef, watch } from 'vue';
-import { EditorContent, VueNodeViewRenderer, BubbleMenu } from '@tiptap/vue-3';
+import { EditorContent, VueNodeViewRenderer } from '@tiptap/vue-3';
 import { useRouter } from 'vue-router';
 import lowlight from 'lowlight';
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
 import Placeholder from '@tiptap/extension-placeholder';
 import tiptap from '@/lib/tiptap';
 import CodeBlockComponent from '@/lib/tiptap/exts/CodeBlockComponent.vue';
+import NoteBubbleMenu from './NoteBubbleMenu.vue';
 import '@/assets/css/one-dark.css';
 import '@/assets/css/one-light.css';
 
 export default {
   components: {
-    BubbleMenu,
     EditorContent,
+    NoteBubbleMenu,
   },
   props: {
     modelValue: {
@@ -70,33 +40,26 @@ export default {
     const router = useRouter();
 
     const editor = shallowRef(null);
-    const currentLinkVal = shallowRef('');
 
-    function bubbleMenuShouldShow() {
-      const isLinkActive = editor.value.isActive('link');
+    function handleClick(view, pos, { target, ctrlKey, cmdKey }) {
+      const closestAnchor = target.closest('a');
+      const isTiptapURL = closestAnchor?.hasAttribute('tiptap-url');
 
-      if (isLinkActive) {
-        currentLinkVal.value = editor.value.getAttributes('link')?.href ?? '';
-      }
-
-      return isLinkActive;
-    }
-    function updateCurrentLink() {
-      editor.value
-        .chain()
-        .focus()
-        .extendMarkRange('link')
-        .setLink({ href: currentLinkVal.value })
-        .run();
-    }
-    function linkClickHandler({ target, shiftKey }) {
-      const isTiptapURL = target.hasAttribute('tiptap-url');
       const isMentionURL = target.hasAttribute('data-mention');
 
-      if (isTiptapURL && shiftKey) {
-        window.open(target.href, '_blank', 'noopener');
+      if (isTiptapURL && (ctrlKey || cmdKey)) {
+        if (closestAnchor.href.startsWith('note://')) {
+          const noteId = closestAnchor.href.slice(7);
+
+          router.push({
+            params: { id: noteId },
+            query: { linked: true },
+          });
+        } else {
+          window.open(target.href, '_blank', 'noopener');
+        }
       } else if (isMentionURL) {
-        router.push(`/?label=${target.dataset.id}`);
+        router.push(`/?label=${encodeURIComponent(target.dataset.id)}`);
       }
     }
 
@@ -112,6 +75,9 @@ export default {
       editor.value = tiptap({
         content: props.modelValue,
         autofocus: true,
+        editorProps: {
+          handleClick,
+        },
         extensions: [
           Placeholder,
           CodeBlockLowlight.extend({
@@ -131,18 +97,13 @@ export default {
         emit('update:modelValue', data);
       });
       console.log(editor);
-      window.addEventListener('click', linkClickHandler);
     });
     onBeforeUnmount(() => {
       editor.value.destroy();
-      window.removeEventListener('click', linkClickHandler);
     });
 
     return {
       editor,
-      currentLinkVal,
-      updateCurrentLink,
-      bubbleMenuShouldShow,
     };
   },
 };

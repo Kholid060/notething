@@ -1,4 +1,4 @@
-import { app, BrowserWindow, dialog, protocol, nativeTheme } from 'electron';
+import { app, BrowserWindow, dialog, protocol, nativeTheme, shell } from 'electron';
 import { ipcMain } from 'electron-better-ipc';
 import { join, normalize } from 'path';
 import { URL } from 'url';
@@ -59,6 +59,14 @@ const createWindow = async () => {
     }
   });
 
+  mainWindow?.webContents.on('new-window', function(event, url) {
+    event.preventDefault();
+
+    if (url.startsWith('note://')) return;
+
+    shell.openExternal(url);
+  });
+
   /**
    * URL for main window.
    * Vite dev server for development.
@@ -94,7 +102,7 @@ app.whenReady()
     protocol.registerFileProtocol('assets', (request, callback) => {
       const url = request.url.substr(7);
       const dir = store.preference.get('dataDir');
-      console.log(`${dir}/notes-assets/${url}`);
+
       callback({ path: normalize(`${dir}/notes-assets/${url}`) });
     });
 
