@@ -9,11 +9,11 @@
         ui-popover__content
         bg-white
         dark:bg-gray-800
-        p-4
         rounded-lg
         shadow-xl
         border
       "
+      :class="[contentPadding]"
     >
       <slot></slot>
     </div>
@@ -32,6 +32,10 @@ export default {
     trigger: {
       type: String,
       default: 'click',
+    },
+    contentPadding: {
+      type: String,
+      default: 'p-4',
     },
     to: {
       type: [String, Object, HTMLElement],

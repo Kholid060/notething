@@ -23,7 +23,8 @@
   @apply dark:text-white;
 }
 .ProseMirror .mention {
-  @apply py-0.5 px-1 rounded-md bg-primary text-primary bg-opacity-10 dark:text-blue-400;
+  @apply py-0.5 px-1 rounded-md bg-primary text-primary bg-opacity-10 dark:text-blue-400 hover:underline;
+  cursor: pointer;
 }
 
 .ProseMirror {

@@ -7,9 +7,7 @@
       {{ note.title }}
     </router-link>
     <div class="text-primary dark:text-blue-400 mt-1 text-overflow w-full">
-      <span v-for="label in note.labels" :key="label.id">
-        #{{ label.name }}
-      </span>
+      <span v-for="label in note.labels" :key="label"> #{{ label }} </span>
     </div>
     <router-link
       :to="`/note/${note.id}`"

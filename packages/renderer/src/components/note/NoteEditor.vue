@@ -41,6 +41,7 @@
 <script>
 import { onMounted, onBeforeUnmount, shallowRef, watch } from 'vue';
 import { EditorContent, VueNodeViewRenderer, BubbleMenu } from '@tiptap/vue-3';
+import { useRouter } from 'vue-router';
 import lowlight from 'lowlight';
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
 import Placeholder from '@tiptap/extension-placeholder';
@@ -66,6 +67,8 @@ export default {
   },
   emits: ['init', 'update', 'update:modelValue'],
   setup(props, { emit }) {
+    const router = useRouter();
+
     const editor = shallowRef(null);
     const currentLinkVal = shallowRef('');
 
@@ -88,9 +91,12 @@ export default {
     }
     function linkClickHandler({ target, shiftKey }) {
       const isTiptapURL = target.hasAttribute('tiptap-url');
+      const isMentionURL = target.hasAttribute('data-mention');
 
       if (isTiptapURL && shiftKey) {
         window.open(target.href, '_blank', 'noopener');
+      } else if (isMentionURL) {
+        router.push(`/?label=${target.dataset.id}`);
       }
     }
 

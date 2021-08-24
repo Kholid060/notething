@@ -20,13 +20,15 @@
     >
       <v-remixicon
         v-if="prependIcon"
+        size="20"
         :name="prependIcon"
-        class="absolute text-gray-600 dark:text-gray-200 left-0"
+        class="absolute text-gray-600 dark:text-gray-200 left-0 ml-2"
       />
       <select
         :id="selectId"
-        class="px-4 bg-transparent py-2 z-10 appearance-none w-full h-full"
+        :class="{ 'pl-8': prependIcon }"
         :value="modelValue"
+        class="px-4 pr-8 bg-transparent py-2 z-10 appearance-none w-full h-full"
         @change="emitValue"
       >
         <option v-if="placeholder" value="" disabled selected>

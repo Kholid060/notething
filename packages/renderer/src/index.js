@@ -8,9 +8,8 @@ import './assets/css/fonts.css';
 import './assets/css/tailwind.css';
 import './assets/css/style.css';
 
-createApp(App)
-  .use(router)
-  .use(createPinia())
-  .use(compsUi)
-  .use(VRemixIcon)
-  .mount('#app');
+const app = createApp(App);
+
+app.config.unwrapInjectedRef = true;
+
+app.use(router).use(createPinia()).use(compsUi).use(VRemixIcon).mount('#app');

@@ -22,20 +22,15 @@ const schema = {
     },
 	},
   labels: {
-    type: 'object',
-    patternProperties: {
-      '[A-Za-z0-9_-]': {
-        type: 'object',
-        properties: {
-          id: { type: 'string', default: '' },
-          name: { type: 'string', default: '' },
-        },
-      },
-    },
+    type: 'array',
   },
 };
 
-export default new Store({
+const store =  new Store({
 	schema,
 	cwd: prefrence.dataDir,
 });
+
+console.log(store.path);
+
+export default store;

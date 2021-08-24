@@ -19,6 +19,7 @@
 import { shallowRef, computed, watch } from 'vue';
 import { useRouter, onBeforeRouteLeave } from 'vue-router';
 import { useNoteStore } from '@/store/note';
+import { useLabelStore } from '@/store/label';
 import { useStorage } from '@/composable/storage';
 import { debounce } from '@/utils/helper';
 import NoteEditor from '@/components/note/NoteEditor.vue';
@@ -30,6 +31,7 @@ export default {
     const router = useRouter();
     const storage = useStorage();
     const noteStore = useNoteStore();
+    const labelStore = useLabelStore();
 
     const editor = shallowRef(null);
     const note = computed(() =>
@@ -62,12 +64,12 @@ export default {
     onBeforeRouteLeave(() => {
       const labels = new Set();
       const labelEls =
-        editor.value?.options.element.querySelectorAll(
-          '[data-mention]:not([labelid=""])'
-        ) ?? [];
+        editor.value?.options.element.querySelectorAll('[data-mention]') ?? [];
 
       Array.from(labelEls).forEach((el) => {
-        labels.add(el.getAttribute('labelid'));
+        const labelId = el.dataset.id;
+        console.log(labelId, labelStore.data.includes(labelId));
+        if (labelStore.data.includes(labelId)) labels.add(labelId);
       });
 
       noteStore.update(router.currentRoute.value.params.id, {

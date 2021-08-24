@@ -65,19 +65,23 @@ export const useNoteStore = defineStore('note', {
       });
     },
   },
-  /*addLabel(id, labelId, type = 'add') {
+  addLabel(id, labelId) {
     return new Promise((resolve) => {
       if (this.data[id]) {
         const labelIndex = this.data[id].labels.indexOf(labelId);
 
-        labelIndex !== -1
-          ? this.data[id].labels.splice(labelIndex, 1)
-          : this.data[id].labels.push(labelId);
+        if (labelIndex === -1) {
+          this.data[id].labels.push(labelId);
 
-        storage
-          .set(`notes.${id}`, this.data[id])
-          .then(() => resolve(labelId));
+          storage
+            .set(`notes.${id}`, this.data[id])
+            .then(() => resolve(labelId));
+
+          return;
+        }
+
+        resolve();
       }
     });
-  }*/
+  },
 });

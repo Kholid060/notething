@@ -1,39 +1,17 @@
 <template>
   <div class="container py-5">
-    <h1 class="text-3xl mb-4 font-bold">Notes</h1>
-    <div class="flex items-center mb-8">
-      <ui-input
-        v-model.lowercase="state.query"
-        autofocus
-        class="flex-1 mr-4"
-        prepend-icon="riSearch2Line"
-        placeholder="Search..."
-      />
-      <ui-popover>
-        <template #trigger>
-          <ui-button>
-            <p class="mr-4">{{ sorts[state.sortBy] }}</p>
-            <v-remixicon size="26" name="riArrowDropDownLine" class="-mr-2" />
-          </ui-button>
-        </template>
-        <ui-list class="space-y-1 w-48">
-          <ui-list-item
-            v-for="(name, id) in sorts"
-            :key="id"
-            :active="id === state.sortBy"
-            class="cursor-pointer"
-            @click="setActiveSort(id)"
-          >
-            <span class="flex-1">{{ name }}</span>
-            <v-remixicon
-              v-show="id === state.sortBy"
-              :rotate="state.sortOrder === 'asc' ? 180 : 0"
-              name="riArrowDownLine"
-            />
-          </ui-list-item>
-        </ui-list>
-      </ui-popover>
-    </div>
+    <h1 class="text-3xl mb-8 font-bold">Notes</h1>
+    <home-note-filter
+      v-model:query="state.query"
+      v-model:label="state.activeLabel"
+      v-bind="{
+        sortOrder: state.sortOrder,
+        sortBy: state.sortBy,
+        labels: labelStore.data,
+      }"
+      @sort="setActiveSort"
+      @delete:label="deleteLabel"
+    />
     <div
       class="
         grid grid-cols-1
@@ -50,6 +28,7 @@
         :key="name"
       >
         <p
+          v-if="notes[name].length !== 0"
           class="col-span-full text-gray-600 dark:text-gray-200 capitalize"
           :class="{ 'mt-2': name === 'all' }"
         >
@@ -67,27 +46,25 @@
   </div>
 </template>
 <script>
-import { computed, reactive, watch } from 'vue';
+import { computed, reactive, watch, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
 import HomeNoteCard from '@/components/home/HomeNoteCard.vue';
+import HomeNoteFilter from '@/components/home/HomeNoteFilter.vue';
 import { useNoteStore } from '@/store/note';
 import { useLabelStore } from '@/store/label';
 import { sortArray, extractNoteText } from '@/utils/helper';
 
 export default {
-  components: { HomeNoteCard },
+  components: { HomeNoteCard, HomeNoteFilter },
   setup() {
-    const sorts = {
-      title: 'Alphabetical',
-      createdAt: 'Created date',
-      updatedAt: 'Last updated',
-    };
-
+    const route = useRoute();
     const noteStore = useNoteStore();
     const labelStore = useLabelStore();
 
     const state = reactive({
       notes: [],
       query: '',
+      activeLabel: '',
       sortBy: 'createdAt',
       sortOrder: 'asc',
     });
@@ -109,12 +86,16 @@ export default {
       };
 
       notes.forEach((note) => {
-        const { title, content, isArchived, isBookmarked } = note;
+        const { title, content, isArchived, isBookmarked, labels } = note;
+        const labelFilter = state.activeLabel
+          ? labels.includes(state.activeLabel)
+          : true;
+
         const isMatch =
           title.toLocaleLowerCase().includes(state.query) ||
           content.includes(state.query);
-
-        if (isMatch) {
+        console.log(labelFilter, state.activeLabel, labels);
+        if (isMatch && labelFilter) {
           if (isArchived) return filteredNotes.archived.push(note);
 
           isBookmarked
@@ -137,6 +118,11 @@ export default {
 
       state.sortBy = id;
     }
+    function deleteLabel(id) {
+      labelStore.delete(id).then(() => {
+        if (state.activeLabel === id) state.activeLabel = '';
+      });
+    }
 
     watch(
       () => noteStore.data,
@@ -146,11 +132,20 @@ export default {
       { immediate: true, deep: true }
     );
 
+    onMounted(() => {
+      const labelQuery = route.query.label;
+
+      if (labelQuery) {
+        state.activeLabel = labelQuery;
+      }
+    });
+
     return {
       notes,
       state,
-      sorts,
       noteStore,
+      labelStore,
+      deleteLabel,
       setActiveSort,
     };
   },

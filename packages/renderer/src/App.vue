@@ -1,10 +1,11 @@
 <template>
   <app-sidebar v-if="!store.inFocusMode" />
-  <main :class="{ 'pl-16': !store.inFocusMode }">
+  <main v-if="retrieved" :class="{ 'pl-16': !store.inFocusMode }">
     <router-view />
   </main>
 </template>
 <script>
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useTheme } from './composable/theme';
 import { useStore } from './store';
@@ -17,8 +18,10 @@ export default {
     const store = useStore();
     const router = useRouter();
 
+    const retrieved = ref(false);
+
     theme.loadTheme();
-    store.retrieve();
+    store.retrieve().then(() => (retrieved.value = true));
 
     const lastNoteEdit = localStorage.getItem('lastNoteEdit');
 
@@ -28,6 +31,7 @@ export default {
 
     return {
       store,
+      retrieved,
     };
   },
 };

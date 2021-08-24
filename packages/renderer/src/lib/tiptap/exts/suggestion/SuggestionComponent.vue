@@ -1,20 +1,30 @@
 <template>
-  <ui-card class="border" padding="p-2" small>
-    <ui-list class="max-w-xl cursor-pointer space-y-1" style="min-width: 150px">
-      <ui-list-item
-        v-for="(item, index) in items"
-        :key="index"
-        :active="index === selectedIndex"
-        small
-        class="item w-full text-overflow"
-        @click="selectItem(index)"
+  <ui-card
+    class="border max-w-xs"
+    padding="p-2"
+    style="max-width: 16rem; min-width: 6rem"
+  >
+    <ui-list class="cursor-pointer space-y-1">
+      <p
+        v-if="labelStore.data.length === 0 && query.length === 0"
+        class="text-center"
       >
-        {{ item.name }}
-      </ui-list-item>
+        No label
+      </p>
+      <template v-else>
+        <ui-list-item
+          v-for="(item, index) in items"
+          :key="index"
+          :active="index === selectedIndex"
+          class="label-item w-full text-overflow"
+          @click="selectItem(index)"
+        >
+          {{ item }}
+        </ui-list-item>
+      </template>
       <ui-list-item
         v-if="query.length !== 0"
         :active="items.length === selectedIndex"
-        small
         class="text-overflow w-full"
         @click="addLabel"
       >
@@ -44,15 +54,15 @@ const props = defineProps({
 });
 
 const selectedIndex = ref(0);
+
 const items = computed(() =>
-  labelStore.labels
-    .filter((item) =>
-      item.name.toLowerCase().startsWith(props.query.toLowerCase())
-    )
+  labelStore.data
+    .filter((item) => item.toLowerCase().startsWith(props.query.toLowerCase()))
     .slice(0, 7)
 );
 
 function onKeyDown({ event }) {
+  console.log(labelStore.data);
   if (event.key === 'ArrowUp') {
     upHandler();
     return true;
@@ -84,19 +94,19 @@ function selectItem(index) {
   const item = items.value[index];
 
   if (item) {
-    props.command({ id: item.name, labelId: item.id });
+    props.command({ id: item });
   } else if (props.query !== '') {
     addLabel();
   }
 }
 function addLabel() {
-  labelStore.add(props.query.slice(0, 50)).then(({ id, name }) => {
-    props.command({ id: name, labelId: id });
+  labelStore.add(props.query).then((name) => {
+    props.command({ id: name });
   });
 }
 
 watch(
-  () => labelStore.labels,
+  () => labelStore.data,
   () => {
     selectedIndex.value = 0;
   }

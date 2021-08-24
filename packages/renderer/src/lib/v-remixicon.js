@@ -36,6 +36,9 @@ import {
   riFocus3Line,
   riInboxUnarchiveLine,
   riBrushLine,
+  riSortAsc,
+  riSortDesc,
+  riCloseLine,
 } from 'v-remixicon/icons';
 
 VRemixIcon.add({
@@ -75,6 +78,9 @@ VRemixIcon.add({
   riFocus3Line,
   riInboxUnarchiveLine,
   riBrushLine,
+  riSortAsc,
+  riSortDesc,
+  riCloseLine,
 });
 
 export default VRemixIcon;

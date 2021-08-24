@@ -71,7 +71,7 @@ const noteStore = useNoteStore();
 
 const navs = [
   { name: 'Notes', path: '/', icon: 'riBookletLine' },
-  { name: 'Labels', path: '/labels', icon: 'riPriceTag3Line' },
+  { name: 'Labels', path: '/label', icon: 'riPriceTag3Line' },
   { name: 'Archive', path: '/?archived=true', icon: 'riArchiveLine' },
 ];
 
