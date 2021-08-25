@@ -25,7 +25,7 @@
       <v-remixicon name="riFileAddLine" />
     </button>
     <button
-      v-tooltip:right="'Edited note (Ctrl+Shift+E)'"
+      v-tooltip:right="'Edited note (Ctrl+Shift+W)'"
       class="transition dark:hover:text-white hover:text-gray-800 p-2 mb-4"
       :class="{ 'text-primary': $route.name === 'Note' }"
       @click="openLastEdited"
@@ -68,7 +68,9 @@
   </aside>
 </template>
 <script>
+import { onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
+import emitter from 'tiny-emitter/instance';
 import Mousetrap from '@/lib/mousetrap';
 import { useNoteStore } from '@/store/note';
 import { useTheme } from '@/composable/theme';
@@ -84,7 +86,7 @@ export default {
         name: 'Notes',
         path: '/',
         icon: 'riBookletLine',
-        shortcut: 'Ctrl+Shift+W',
+        shortcut: 'Ctrl+Shift+N',
       },
       {
         name: 'Archive',
@@ -100,6 +102,7 @@ export default {
       'mod+shift+a': () => router.push('/?archived=true'),
     };
 
+    emitter.on('new-note', addNote);
     Mousetrap.bind(Object.keys(shortcuts), (event, combo) => {
       shortcuts[combo]();
     });
@@ -114,6 +117,10 @@ export default {
         router.push(`/note/${id}`);
       });
     }
+
+    onUnmounted(() => {
+      emitter.off('new-note', addNote);
+    });
 
     return {
       navs,

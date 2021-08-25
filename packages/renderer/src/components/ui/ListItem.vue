@@ -13,7 +13,7 @@
     role="listitem"
     :class="[
       active
-        ? 'bg-primary bg-opacity-10 text-primary dark:bg-secondary dark:bg-opacity-10 dark:text-secondary'
+        ? 'bg-primary bg-opacity-10 text-primary dark:bg-secondary dark:bg-opacity-10 dark:text-blue-400'
         : 'hoverable',
       small ? 'p-2' : 'py-2 px-4',
       { 'pointer-events-none bg-opacity-75': disabled },

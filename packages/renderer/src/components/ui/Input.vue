@@ -32,11 +32,6 @@
 </template>
 <script>
 export default {
-  directives: {
-    autofocus: (el, { value }) => {
-      if (value) el.focus();
-    },
-  },
   props: {
     modelModifiers: {
       default: () => ({}),
