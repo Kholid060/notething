@@ -16,7 +16,13 @@ export const extensions = [
   Image,
   Suggestion,
   Code.configure({ HTMLAttributes: { class: 'inline-code' } }),
-  Link.configure({
+  Link.extend({
+    addKeyboardShortcuts() {
+      return {
+        'Mod-k': () => this.editor.chain().focus().toggleLink().run(),
+      };
+    },
+  }).configure({
     openOnClick: false,
     HTMLAttributes: {
       target: '_blank',

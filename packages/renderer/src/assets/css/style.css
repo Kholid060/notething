@@ -23,6 +23,13 @@ option {
   display: inline-block;
 }
 
+.tippy-box[data-theme~='tooltip-theme'] {
+  background-color: #040404;
+  color: white;
+  @apply px-2 py-1 text-sm text-gray-200 rounded-md;
+}
+
+
 .text-overflow {
   overflow: hidden;
   text-overflow: ellipsis;

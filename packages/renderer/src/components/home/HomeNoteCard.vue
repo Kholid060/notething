@@ -30,6 +30,7 @@
     <div class="flex z-10 items-center mt-4 text-gray-600 dark:text-gray-200">
       <button
         v-if="!note.isArchived"
+        v-tooltip.group="note.isBookmarked ? 'Remove bookmark' : 'Bookmark'"
         class="hover:text-gray-900 mr-2 dark:hover:text-white transition"
         @click="$emit('update', { isBookmarked: !note.isBookmarked })"
       >
@@ -38,6 +39,7 @@
         />
       </button>
       <button
+        v-tooltip.group="note.isArchived ? 'Unarchive' : 'Archive'"
         class="
           hover:text-gray-900
           mr-2
@@ -53,6 +55,7 @@
         />
       </button>
       <button
+        v-tooltip.group="'Delete'"
         class="
           hover:text-red-500
           dark:hover:text-red-400
@@ -73,6 +76,7 @@
 /* eslint-disable no-undef */
 import dayjs from '@/lib/dayjs';
 import { truncateText } from '@/utils/helper';
+import { useGroupTooltip } from '@/composable/groupTooltip';
 
 defineProps({
   note: {
@@ -81,6 +85,8 @@ defineProps({
   },
 });
 defineEmits(['update', 'delete', 'update:label']);
+
+useGroupTooltip();
 
 function formatDate(date) {
   return dayjs(date).fromNow();

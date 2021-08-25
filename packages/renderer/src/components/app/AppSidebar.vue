@@ -18,12 +18,14 @@
     "
   >
     <button
+      v-tooltip:right="'Add note'"
       class="transition p-2 mb-4 text-primary bg-input rounded-lg"
       @click="addNote"
     >
       <v-remixicon name="riFileAddLine" />
     </button>
     <button
+      v-tooltip:right="'Edited note'"
       class="transition dark:hover:text-white hover:text-gray-800 p-2 mb-4"
       :class="{ 'text-primary': $route.name === 'Note' }"
       @click="openLastEdited"
@@ -33,6 +35,7 @@
     <router-link
       v-for="nav in navs"
       :key="nav.name"
+      v-tooltip:right="nav.name"
       :to="nav.path"
       :class="{
         'text-primary dark:text-primary': $route.fullPath === nav.path,
@@ -43,6 +46,7 @@
     </router-link>
     <div class="flex-grow"></div>
     <button
+      v-tooltip:right="'Toggle dark theme'"
       :class="[
         theme.currentTheme.value === 'dark'
           ? 'text-primary dark:text-secondary'
@@ -55,7 +59,10 @@
     >
       <v-remixicon name="riMoonClearLine" />
     </button>
-    <button class="transition dark:hover:text-white hover:text-gray-800 p-2">
+    <button
+      v-tooltip:right="'Settings'"
+      class="transition dark:hover:text-white hover:text-gray-800 p-2"
+    >
       <v-remixicon name="riSettings3Line" />
     </button>
   </aside>

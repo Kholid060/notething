@@ -34,8 +34,8 @@
         title="Font size"
       /> -->
       <button
+        v-tooltip.group="'Paragraph (Ctrl+alt+0)'"
         :class="{ 'is-active': editor.isActive('paragraph') }"
-        title="Paragraph (Ctrl+alt+0)"
         class="transition hoverable h-8 px-1 rounded-lg"
         @click="editor.chain().focus().setParagraph().run()"
       >
@@ -44,8 +44,8 @@
       <button
         v-for="heading in [1, 2]"
         :key="heading"
+        v-tooltip.group="`Heading ${heading} (Ctrl+alt+${heading})`"
         :class="{ 'is-active': editor.isActive('heading', { level: heading }) }"
-        :title="`Heading ${heading} (Ctrl+alt+${heading})`"
         class="transition hoverable h-8 px-1 rounded-lg"
         @click="editor.chain().focus().toggleHeading({ level: heading }).run()"
       >
@@ -55,8 +55,8 @@
       <button
         v-for="action in textFormatting"
         :key="action.name"
+        v-tooltip.group="action.title"
         :class="{ 'is-active': editor.isActive(action.activeState) }"
-        :title="action.title"
         class="transition hoverable h-8 px-1 rounded-lg"
         @click="action.handler"
       >
@@ -66,8 +66,8 @@
       <button
         v-for="action in lists"
         :key="action.name"
+        v-tooltip.group="action.title"
         :class="{ 'is-active': editor.isActive(action.activeState) }"
-        :title="action.title"
         class="transition hoverable h-8 px-1 rounded-lg"
         @click="action.handler"
       >
@@ -75,15 +75,15 @@
       </button>
       <hr class="border-r mx-2 h-6" />
       <button
-        title="Image"
+        v-tooltip.group="'Image'"
         class="transition hoverable h-8 px-1 rounded-lg"
         @click="insertImage"
       >
         <v-remixicon name="riImageLine" />
       </button>
       <button
+        v-tooltip.group="'Link (Ctrl+K)'"
         :class="{ 'is-active': editor.isActive('link') }"
-        title="Link"
         class="transition hoverable h-8 px-1 rounded-lg"
         @click="editor.chain().focus().toggleLink({ href: '' }).run()"
       >
@@ -91,9 +91,9 @@
       </button>
       <hr class="border-r mx-2 h-6" />
       <button
+        v-tooltip.group="'Focus mode'"
         :class="{ 'is-active': store.inFocusMode }"
         class="hoverable h-8 px-1 rounded-lg h-full"
-        title="Focus mode"
         @click="toggleFocusMode"
       >
         <v-remixicon name="riFocus3Line" />
@@ -101,9 +101,9 @@
       <ui-popover @show="getHeadingsTree">
         <template #trigger>
           <button
+            v-tooltip.group="'Headings tree'"
             :class="{ 'is-active': tree }"
             class="hoverable h-8 px-1 rounded-lg h-full"
-            title="Headings tree"
           >
             <v-remixicon name="riNodeTree" />
           </button>
@@ -115,6 +115,7 @@
 </template>
 <script>
 import { shallowRef } from 'vue';
+import { useGroupTooltip } from '@/composable/groupTooltip';
 import { useStorage } from '@/composable/storage';
 import { useStore } from '@/store';
 import NoteMenuHeadingsTree from './NoteMenuHeadingsTree.vue';
@@ -219,6 +220,7 @@ export default {
 
     const store = useStore();
     const storage = useStorage();
+    useGroupTooltip();
 
     const headingsTree = shallowRef([]);
 
