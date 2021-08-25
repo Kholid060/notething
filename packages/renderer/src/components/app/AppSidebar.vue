@@ -18,14 +18,14 @@
     "
   >
     <button
-      v-tooltip:right="'Add note'"
+      v-tooltip:right="'Add note (Ctrl+N)'"
       class="transition p-2 mb-4 text-primary bg-input rounded-lg"
       @click="addNote"
     >
       <v-remixicon name="riFileAddLine" />
     </button>
     <button
-      v-tooltip:right="'Edited note'"
+      v-tooltip:right="'Edited note (Ctrl+Shift+E)'"
       class="transition dark:hover:text-white hover:text-gray-800 p-2 mb-4"
       :class="{ 'text-primary': $route.name === 'Note' }"
       @click="openLastEdited"
@@ -35,7 +35,7 @@
     <router-link
       v-for="nav in navs"
       :key="nav.name"
-      v-tooltip:right="nav.name"
+      v-tooltip:right="`${nav.name} (${nav.shortcut})`"
       :to="nav.path"
       :class="{
         'text-primary dark:text-primary': $route.fullPath === nav.path,
@@ -67,29 +67,61 @@
     </button>
   </aside>
 </template>
-<script setup>
+<script>
 import { useRouter } from 'vue-router';
+import Mousetrap from '@/lib/mousetrap';
 import { useNoteStore } from '@/store/note';
 import { useTheme } from '@/composable/theme';
 
-const theme = useTheme();
-const router = useRouter();
-const noteStore = useNoteStore();
+export default {
+  setup() {
+    const theme = useTheme();
+    const router = useRouter();
+    const noteStore = useNoteStore();
 
-const navs = [
-  { name: 'Notes', path: '/', icon: 'riBookletLine' },
-  { name: 'Labels', path: '/label', icon: 'riPriceTag3Line' },
-  { name: 'Archive', path: '/?archived=true', icon: 'riArchiveLine' },
-];
+    const navs = [
+      {
+        name: 'Notes',
+        path: '/',
+        icon: 'riBookletLine',
+        shortcut: 'Ctrl+Shift+W',
+      },
+      {
+        name: 'Archive',
+        path: '/?archived=true',
+        icon: 'riArchiveLine',
+        shortcut: 'Ctrl+Shift+A',
+      },
+    ];
+    const shortcuts = {
+      'mod+n': addNote,
+      'mod+shift+w': openLastEdited,
+      'mod+shift+n': () => router.push('/'),
+      'mod+shift+a': () => router.push('/?archived=true'),
+    };
 
-function openLastEdited() {
-  const noteId = localStorage.getItem('lastNoteEdit');
+    Mousetrap.bind(Object.keys(shortcuts), (event, combo) => {
+      shortcuts[combo]();
+    });
 
-  if (noteId) router.push(`/note/${noteId}`);
-}
-function addNote() {
-  noteStore.add().then(({ id }) => {
-    router.push(`/note/${id}`);
-  });
-}
+    function openLastEdited() {
+      const noteId = localStorage.getItem('lastNoteEdit');
+
+      if (noteId) router.push(`/note/${noteId}`);
+    }
+    function addNote() {
+      noteStore.add().then(({ id }) => {
+        router.push(`/note/${id}`);
+      });
+    }
+
+    return {
+      navs,
+      theme,
+      addNote,
+      noteStore,
+      openLastEdited,
+    };
+  },
+};
 </script>
