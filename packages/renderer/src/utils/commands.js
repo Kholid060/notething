@@ -11,10 +11,10 @@ const commands = [
     handler: () => emitter.emit('new-note'),
   },
   {
-    id: 'Preference',
-    title: 'Preferences',
+    id: 'settings',
+    title: 'Settings',
     shortcut: ['Ctrl', ','],
-    handler: () => emitter.emit('open-prefrence'),
+    handler: () => emitter.emit('open-settings'),
   },
   {
     id: 'dark-theme',

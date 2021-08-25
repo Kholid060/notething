@@ -101,7 +101,7 @@ app.whenReady()
   .then(async () => {
     protocol.registerFileProtocol('assets', (request, callback) => {
       const url = request.url.substr(7);
-      const dir = store.preference.get('dataDir');
+      const dir = store.settings.get('dataDir');
 
       callback({ path: normalize(`${dir}/notes-assets/${url}`) });
     });

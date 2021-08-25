@@ -248,7 +248,7 @@ export default {
           if (canceled || filePaths.length === 0) return;
 
           try {
-            const dataDir = await storage.get('dataDir', '', 'preference');
+            const dataDir = await storage.get('dataDir', '', 'settings');
             const fileName = path.basename(filePaths[0]);
 
             await ipcRenderer.callMain('helper:copy-file', {

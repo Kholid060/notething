@@ -1,6 +1,6 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import Store from 'electron-store';
-import prefrence from './preference.store';
+import settings from './settings.store';
 
 const schema = {
 	notes: {
@@ -28,7 +28,7 @@ const schema = {
 
 const store =  new Store({
 	schema,
-	cwd: prefrence.dataDir,
+	cwd: settings.dataDir,
 });
 
 console.log(store.path);
