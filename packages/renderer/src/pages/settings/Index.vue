@@ -206,14 +206,15 @@ export default {
 
         for (const { key, dfData } of keys) {
           const currentData = await storage.get(key, dfData);
+          const importedData = data[key] ?? dfData;
           let mergedData;
 
           if (key === 'labels') {
-            const mergedArr = [...currentData, ...data[key]];
+            const mergedArr = [...currentData, ...importedData];
 
             mergedData = [...new Set(mergedArr)];
           } else {
-            mergedData = { ...currentData, ...data[key] };
+            mergedData = { ...currentData, ...importedData };
           }
 
           await storage.set(key, mergedData);
