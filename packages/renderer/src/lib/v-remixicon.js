@@ -40,6 +40,12 @@ import {
   riSortDesc,
   riCloseLine,
   riSave3Line,
+  riWindowLine,
+  riKeyboardLine,
+  riCheckLine,
+  riFileDownloadLine,
+  riFileUploadLine,
+  riInformationLine,
 } from 'v-remixicon/icons';
 
 VRemixIcon.add({
@@ -83,6 +89,12 @@ VRemixIcon.add({
   riSortDesc,
   riCloseLine,
   riSave3Line,
+  riWindowLine,
+  riKeyboardLine,
+  riCheckLine,
+  riFileDownloadLine,
+  riFileUploadLine,
+  riInformationLine,
 });
 
 export default VRemixIcon;

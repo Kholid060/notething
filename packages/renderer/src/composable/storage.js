@@ -14,8 +14,11 @@ export function useStorage(name = 'data') {
       invokeEvent('set', { name: storeName || name, key, value }),
     has: (key, storeName) =>
       invokeEvent('has', { name: storeName || name, key }),
+    replace: (data, storeName) =>
+      invokeEvent('replace', { name: storeName || name, data }),
     delete: (key, storeName) =>
       invokeEvent('delete', { name: storeName || name, key }),
     clear: (storeName) => invokeEvent('clear', storeName || name),
+    store: (storeName) => invokeEvent('store', storeName || name),
   };
 }

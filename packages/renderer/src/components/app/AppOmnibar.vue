@@ -12,7 +12,7 @@
       <input
         v-model="state.query"
         v-autofocus
-        class="w-full bg-transparent"
+        class="w-full bg-transparent omnibar-input"
         placeholder="Search file or type '>' to search commands"
         @keyup.enter="selectItem"
         @keyup.esc="clear"
@@ -118,6 +118,10 @@ export default {
 
     Mousetrap.bind(['mod+p', 'mod+shift+p'], (event, combo) => {
       if (combo === 'mod+shift+p') state.query = '>';
+
+      const omnibarInput = document.querySelector('.omnibar-input');
+
+      if (omnibarInput) omnibarInput.focus();
 
       state.show = true;
     });

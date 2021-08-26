@@ -240,7 +240,7 @@ export default {
       const { ipcRenderer, path } = window.electron;
 
       ipcRenderer
-        .callMain('helper:open-dialog', {
+        .callMain('dialog:open', {
           properties: ['openFile'],
           filters: [{ name: 'Images', extensions: ['png', 'jpg', 'jpeg'] }],
         })
@@ -251,7 +251,7 @@ export default {
             const dataDir = await storage.get('dataDir', '', 'settings');
             const fileName = path.basename(filePaths[0]);
 
-            await ipcRenderer.callMain('helper:copy-file', {
+            await ipcRenderer.callMain('fs:copy', {
               path: filePaths[0],
               dest: path.join(dataDir, 'notes-assets', fileName),
             });

@@ -1,112 +1,146 @@
 <template>
-  <TransitionRoot appear :show="isOpen" as="template">
-    <Dialog as="div" @close="closeModal">
-      <div class="fixed inset-0 z-10 overflow-y-auto">
-        <div class="min-h-screen px-4 text-center">
-          <TransitionChild
-            as="template"
-            enter="duration-300 ease-out"
-            enter-from="opacity-0"
-            enter-to="opacity-100"
-            leave="duration-200 ease-in"
-            leave-from="opacity-100"
-            leave-to="opacity-0"
+  <div class="modal-ui">
+    <div v-if="$slots.activator" class="modal-ui__activator">
+      <slot name="activator" v-bind="{ open: () => (show = true) }"></slot>
+    </div>
+    <teleport :to="teleportTo" :disabled="disabledTeleport">
+      <transition name="modal" mode="out-in">
+        <div
+          v-if="show"
+          class="
+            bg-black
+            p-5
+            overflow-y-auto
+            bg-opacity-20
+            modal-ui__content-container
+            z-50
+            flex
+            justify-center
+            items-end
+            md:items-center
+          "
+          :style="{ 'backdrop-filter': blur && 'blur(2px)' }"
+          @click.self="closeModal"
+        >
+          <slot v-if="customContent"></slot>
+          <ui-card
+            v-else
+            class="modal-ui__content shadow-lg w-full"
+            :class="[contentClass]"
           >
-            <DialogOverlay class="fixed inset-0" />
-          </TransitionChild>
-
-          <span class="inline-block h-screen align-middle" aria-hidden="true">
-            &#8203;
-          </span>
-
-          <TransitionChild
-            as="template"
-            enter="duration-300 ease-out"
-            enter-from="opacity-0 scale-95"
-            enter-to="opacity-100 scale-100"
-            leave="duration-200 ease-in"
-            leave-from="opacity-100 scale-100"
-            leave-to="opacity-0 scale-95"
-          >
-            <div
-              class="
-                inline-block
-                w-full
-                max-w-md
-                p-6
-                my-8
-                overflow-hidden
-                text-left
-                align-middle
-                transition-all
-                transform
-                bg-white
-                shadow-xl
-                rounded-2xl
-              "
-            >
-              <DialogTitle
-                as="h3"
-                class="text-lg font-medium leading-6 text-gray-900"
-              >
-                <slot name="title"></slot>
-              </DialogTitle>
-              <slot></slot>
+            <div class="mb-4">
+              <div class="flex items-center justify-between">
+                <span class="content-header">
+                  <slot name="header"></slot>
+                </span>
+                <v-remixicon
+                  v-show="!persist"
+                  class="text-gray-600 cursor-pointer"
+                  name="riCloseLine"
+                  size="20"
+                  @click="closeModal"
+                ></v-remixicon>
+              </div>
             </div>
-          </TransitionChild>
+            <slot></slot>
+          </ui-card>
         </div>
-      </div>
-    </Dialog>
-  </TransitionRoot>
+      </transition>
+    </teleport>
+  </div>
 </template>
-
 <script>
 import { ref, watch } from 'vue';
-import {
-  TransitionRoot,
-  TransitionChild,
-  Dialog,
-  DialogOverlay,
-  DialogTitle,
-} from '@headlessui/vue';
 
 export default {
-  components: {
-    TransitionRoot,
-    TransitionChild,
-    Dialog,
-    DialogOverlay,
-    DialogTitle,
-  },
   props: {
     modelValue: {
       type: Boolean,
       default: false,
     },
+    teleportTo: {
+      type: String,
+      default: 'body',
+    },
+    contentClass: {
+      type: String,
+      default: 'max-w-lg',
+    },
+    customContent: Boolean,
+    persist: Boolean,
+    blur: Boolean,
+    disabledTeleport: Boolean,
   },
   emits: ['close', 'update:modelValue'],
   setup(props, { emit }) {
-    const isOpen = ref(false);
+    const show = ref(false);
+    const modalContent = ref(null);
+
+    function toggleBodyOverflow(value) {
+      document.body.classList.toggle('overflow-hidden', value);
+    }
+    function closeModal() {
+      if (props.persist) return;
+
+      show.value = false;
+      emit('close', false);
+      emit('update:modelValue', false);
+
+      toggleBodyOverflow(false);
+    }
+    function keyupHandler({ code }) {
+      if (code === 'Escape') closeModal();
+    }
 
     watch(
       () => props.modelValue,
       (value) => {
-        if (isOpen.value === value) return;
-
-        isOpen.value = value;
+        show.value = value;
+        toggleBodyOverflow(value);
       },
       { immediate: true }
     );
 
-    return {
-      isOpen,
-      closeModal() {
-        isOpen.value = false;
+    watch(show, (value) => {
+      if (value) window.addEventListener('keyup', keyupHandler);
+      else window.removeEventListener('keyup', keyupHandler);
+    });
 
-        emit('close', false);
-        emit('update:modelValue', false);
-      },
+    return {
+      show,
+      closeModal,
+      modalContent,
     };
   },
 };
 </script>
+<style>
+.modal-enter-active,
+.modal-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.modal-enter-active .modal-ui__content,
+.modal-leave-active .modal-ui__content {
+  transition: transform 0.3s ease;
+  transform: translateY(0px);
+}
+
+.modal-enter-from,
+.modal-leave-to {
+  opacity: 0;
+}
+
+.modal-enter-from .modal-ui__content,
+.modal-leave-to .modal-ui__content {
+  transform: translateY(30px);
+}
+
+.modal-ui__content-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+</style>

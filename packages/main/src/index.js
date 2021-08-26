@@ -2,7 +2,7 @@ import { app, BrowserWindow, dialog, protocol, nativeTheme, shell } from 'electr
 import { ipcMain } from 'electron-better-ipc';
 import { join, normalize } from 'path';
 import { URL } from 'url';
-import { ensureDir, copy } from 'fs-extra';
+import { readJson, ensureDir, copy, outputJson } from 'fs-extra';
 import store from './store';
 
 const isSingleInstance = app.requestSingleInstanceLock();
@@ -44,6 +44,8 @@ const createWindow = async () => {
       enableRemoteModule: env.MODE === 'test', // Spectron tests can't work with enableRemoteModule: false
     },
   });
+
+  mainWindow.setMenuBarVisibility(false);
 
   /**
    * If you install `show: true` then it can cause issues when trying to close the window.
@@ -120,13 +122,25 @@ if (env.PROD) {
     .catch((e) => console.error('Failed check updates:', e));
 }
 
-ipcMain.answerRenderer('helper:open-dialog', (props) => dialog.showOpenDialog(props));
+ipcMain.answerRenderer('dialog:open', (props) => dialog.showOpenDialog(props));
+ipcMain.answerRenderer('dialog:message', (props) => dialog.showMessageBox(props));
+ipcMain.answerRenderer('dialog:save', (props) => dialog.showSaveDialog(props));
+
+ipcMain.answerRenderer('fs:copy', ({ path, dest }) => copy(path, dest));
+ipcMain.answerRenderer('fs:output-json', ({ path, data }) => outputJson(path, data));
+ipcMain.answerRenderer('fs:read-json', (path) => readJson(path));
+
+ipcMain.answerRenderer('helper:relaunch', (options = {}) => {
+  app.relaunch({ args: process.argv.slice(1).concat(['--relaunch']), ...options });
+  app.exit(0);
+});
 ipcMain.answerRenderer('helper:get-path', (name) => app.getPath(name));
-ipcMain.answerRenderer('helper:copy-file', ({ path, dest }) => copy(path, dest));
 ipcMain.answerRenderer('helper:is-dark-theme', () => nativeTheme.shouldUseDarkColors);
 
-ipcMain.answerRenderer('storage:get', ({ name, key, def }) => store[name].get(key, def));
-ipcMain.answerRenderer('storage:set', ({ name, key, value }) => store[name].set(key, value));
-ipcMain.answerRenderer('storage:delete', ({ name, key }) => store[name].delete(key));
-ipcMain.answerRenderer('storage:has', ({ name, key }) => store[name].has(key));
-ipcMain.answerRenderer('storage:clear', (name) => store[name].clear());
+ipcMain.answerRenderer('storage:store', (name) => store[name]?.store);
+ipcMain.answerRenderer('storage:replace', ({ name, data }) => (store[name].store = data));
+ipcMain.answerRenderer('storage:get', ({ name, key, def }) => store[name]?.get(key, def));
+ipcMain.answerRenderer('storage:set', ({ name, key, value }) => store[name]?.set(key, value));
+ipcMain.answerRenderer('storage:delete', ({ name, key }) => store[name]?.delete(key));
+ipcMain.answerRenderer('storage:has', ({ name, key }) => store[name]?.has(key));
+ipcMain.answerRenderer('storage:clear', (name) => store[name]?.clear());

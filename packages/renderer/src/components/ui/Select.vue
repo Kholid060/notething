@@ -39,7 +39,7 @@
       <v-remixicon
         size="28"
         name="riArrowDropDownLine"
-        class="absolute text-gray-600 dark:text-gray-200 right-0"
+        class="absolute text-gray-600 dark:text-gray-200 mr-2 right-0"
       />
     </div>
   </div>

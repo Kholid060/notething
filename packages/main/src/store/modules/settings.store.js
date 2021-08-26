@@ -8,4 +8,4 @@ const schema = {
 	},
 };
 
-export default new Store({ schema });
+export default new Store({ name: 'settings', schema, encryptionKey: process.env.VITE_ENCRYPT_KEY });

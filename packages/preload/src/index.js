@@ -1,5 +1,7 @@
 import { contextBridge } from 'electron';
 import { ipcRenderer } from 'electron-better-ipc';
+import { constants } from 'fs';
+import { access } from 'fs/promises';
 import path from 'path';
 
 const apiKey = 'electron';
@@ -9,6 +11,7 @@ const apiKey = 'electron';
 const api = {
   path,
   ipcRenderer,
+  access: (dir) => access(dir, constants.R_OK | constants.W_OK),
   versions: process.versions,
 };
 

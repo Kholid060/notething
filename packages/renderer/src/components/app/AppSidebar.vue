@@ -38,33 +38,21 @@
       v-tooltip:right="`${nav.name} (${nav.shortcut})`"
       :to="nav.path"
       :class="{
-        'text-primary dark:text-primary': $route.fullPath === nav.path,
+        'text-primary dark:text-secondary': $route.fullPath === nav.path,
       }"
       class="transition dark:hover:text-white hover:text-gray-800 p-2 mb-4"
     >
       <v-remixicon :name="nav.icon" />
     </router-link>
     <div class="flex-grow"></div>
-    <button
-      v-tooltip:right="'Toggle dark theme'"
-      :class="[
-        theme.currentTheme.value === 'dark'
-          ? 'text-primary dark:text-secondary'
-          : 'dark:hover:text-white hover:text-gray-800',
-      ]"
-      class="transition p-2 mb-4"
-      @click="
-        theme.setTheme(theme.currentTheme.value === 'dark' ? 'light' : 'dark')
-      "
-    >
-      <v-remixicon name="riMoonClearLine" />
-    </button>
-    <button
-      v-tooltip:right="'Settings'"
+    <router-link
+      v-tooltip:right="'Settings (Ctrl+,)'"
+      to="/settings"
       class="transition dark:hover:text-white hover:text-gray-800 p-2"
+      exact-active-class="text-primary dark:text-secondary"
     >
       <v-remixicon name="riSettings3Line" />
-    </button>
+    </router-link>
   </aside>
 </template>
 <script>
@@ -73,11 +61,9 @@ import { useRouter } from 'vue-router';
 import emitter from 'tiny-emitter/instance';
 import Mousetrap from '@/lib/mousetrap';
 import { useNoteStore } from '@/store/note';
-import { useTheme } from '@/composable/theme';
 
 export default {
   setup() {
-    const theme = useTheme();
     const router = useRouter();
     const noteStore = useNoteStore();
 
@@ -97,16 +83,22 @@ export default {
     ];
     const shortcuts = {
       'mod+n': addNote,
+      'mod+,': openSettings,
       'mod+shift+w': openLastEdited,
       'mod+shift+n': () => router.push('/'),
       'mod+shift+a': () => router.push('/?archived=true'),
     };
 
     emitter.on('new-note', addNote);
+    emitter.on('open-settings', openSettings);
+
     Mousetrap.bind(Object.keys(shortcuts), (event, combo) => {
       shortcuts[combo]();
     });
 
+    function openSettings() {
+      router.push('/settings');
+    }
     function openLastEdited() {
       const noteId = localStorage.getItem('lastNoteEdit');
 
@@ -120,11 +112,11 @@ export default {
 
     onUnmounted(() => {
       emitter.off('new-note', addNote);
+      emitter.off('open-settings', openSettings);
     });
 
     return {
       navs,
-      theme,
       addNote,
       noteStore,
       openLastEdited,

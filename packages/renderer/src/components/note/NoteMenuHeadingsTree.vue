@@ -6,7 +6,7 @@
     class="mb-4"
   />
   <ui-list
-    class="w-64 space-y-1 overflow-auto"
+    class="w-64 space-y-1 overflow-auto scroll"
     style="max-height: calc(100vh - 10rem)"
   >
     <ui-list-item

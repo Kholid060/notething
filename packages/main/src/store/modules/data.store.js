@@ -1,6 +1,5 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import Store from 'electron-store';
-import settings from './settings.store';
 
 const schema = {
 	notes: {
@@ -28,9 +27,11 @@ const schema = {
 
 const store =  new Store({
 	schema,
-	cwd: settings.dataDir,
+  encryptionKey: import.meta.env.VITE_ENCRYPT_KEY,
 });
 
-console.log(store.path);
+// store.onDidChange('notes', (value) => {
+//   console.log(value);
+// });
 
 export default store;

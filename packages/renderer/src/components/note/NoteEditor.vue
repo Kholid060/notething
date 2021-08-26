@@ -1,14 +1,15 @@
 <template>
   <slot v-bind="{ editor }" />
   <editor-content
-    class="prose dark:text-gray-100 max-w-none prose-indigo"
+    ref="editorEl"
     :editor="editor"
+    class="prose dark:text-gray-100 max-w-none prose-indigo"
   />
   <note-bubble-menu v-if="editor" v-bind="{ editor }" />
 </template>
 
 <script>
-import { onMounted, onBeforeUnmount, shallowRef, watch } from 'vue';
+import { onMounted, onBeforeUnmount, ref, watch } from 'vue';
 import { EditorContent, VueNodeViewRenderer } from '@tiptap/vue-3';
 import { useRouter } from 'vue-router';
 import lowlight from 'lowlight';
@@ -39,7 +40,8 @@ export default {
   setup(props, { emit }) {
     const router = useRouter();
 
-    const editor = shallowRef(null);
+    const editor = ref(null);
+    const editorEl = ref(null);
 
     function handleClick(view, pos, { target, ctrlKey, cmdKey }) {
       const closestAnchor = target.closest('a');
@@ -90,6 +92,8 @@ export default {
 
       emit('init', editor.value);
 
+      editorEl.value.rootEl.style.fontSize =
+        (localStorage.getItem('font-size') || '16') + 'px';
       editor.value.on('update', () => {
         const data = editor.value.getJSON();
 
@@ -104,6 +108,7 @@ export default {
 
     return {
       editor,
+      editorEl,
     };
   },
 };

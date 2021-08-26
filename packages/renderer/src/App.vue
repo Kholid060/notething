@@ -4,6 +4,7 @@
   <main v-if="retrieved" :class="{ 'pl-16': !store.inFocusMode }">
     <router-view />
   </main>
+  <ui-dialog />
 </template>
 <script>
 import { ref } from 'vue';
@@ -28,7 +29,8 @@ export default {
     const lastNoteEdit = localStorage.getItem('lastNoteEdit');
 
     if (lastNoteEdit) {
-      router.push(`/note/${lastNoteEdit}`);
+      // router.push(`/note/${lastNoteEdit}`);
+      router.push(`/settings`);
     }
 
     return {
