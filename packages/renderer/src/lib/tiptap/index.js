@@ -6,7 +6,9 @@ import Underline from '@tiptap/extension-underline';
 import Link from '@tiptap/extension-link';
 import Image from '@tiptap/extension-image';
 import Code from '@tiptap/extension-code';
-import Suggestion from '@/lib/tiptap/exts/suggestion';
+import Suggestion from './exts/suggestion';
+import MathInline from './exts/math-inline';
+import MathBlock from './exts/math-block';
 
 export const extensions = [
   StarterKit,
@@ -15,6 +17,8 @@ export const extensions = [
   Underline,
   Image,
   Suggestion,
+  MathInline,
+  MathBlock,
   Code.configure({ HTMLAttributes: { class: 'inline-code' } }),
   Link.extend({
     addKeyboardShortcuts() {

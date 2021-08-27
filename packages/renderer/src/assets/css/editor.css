@@ -26,10 +26,15 @@
   @apply py-0.5 px-1 rounded-md bg-primary text-primary bg-opacity-10 dark:text-blue-400 hover:underline;
   cursor: pointer;
 }
-
+.ProseMirror .math-block {
+  @apply dark:bg-gray-800;
+}
+.math-node .math-src {
+  @apply dark:text-purple-400 text-purple-500 !important;
+}
 .ProseMirror {
   min-height:  400px;
-  &-selectednode {
+  &-selectednode image {
     @apply ring-2 ring-primary transition;
   }
   & > :first-child {

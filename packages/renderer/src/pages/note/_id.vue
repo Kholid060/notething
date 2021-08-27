@@ -70,7 +70,7 @@ export default {
         if (!noteId) return;
 
         storage.get(`notes.${noteId}`).then((data) => {
-          if (!data) {
+          if (!data || data.id === '') {
             router.push('/');
           } else {
             document.title = `${data.title.slice(0, 260)} - App Name`;
