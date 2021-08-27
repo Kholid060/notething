@@ -6,9 +6,10 @@ import Underline from '@tiptap/extension-underline';
 import Link from '@tiptap/extension-link';
 import Image from '@tiptap/extension-image';
 import Code from '@tiptap/extension-code';
-import Suggestion from './exts/suggestion';
+import LabelSuggestion from './exts/label-suggestion';
 import MathInline from './exts/math-inline';
 import MathBlock from './exts/math-block';
+import LinkNote from './exts/link-note';
 
 export const extensions = [
   StarterKit,
@@ -16,7 +17,8 @@ export const extensions = [
   Typography,
   Underline,
   Image,
-  Suggestion,
+  LinkNote,
+  LabelSuggestion,
   MathInline,
   MathBlock,
   Code.configure({ HTMLAttributes: { class: 'inline-code' } }),
@@ -32,7 +34,7 @@ export const extensions = [
       target: '_blank',
       rel: 'noopener noreferrer nofollow',
       'tiptap-url': 'true',
-      title: 'Alt+Click to open URL',
+      title: 'Ctrl+Click to open URL',
     },
   }),
 ];

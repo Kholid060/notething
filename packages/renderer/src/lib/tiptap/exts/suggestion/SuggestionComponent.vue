@@ -19,14 +19,14 @@
           class="label-item w-full text-overflow"
           @click="selectItem(index)"
         >
-          {{ item }}
+          <p class="text-overflow">{{ getLabel(item) || 'Untitled' }}</p>
         </ui-list-item>
       </template>
       <ui-list-item
-        v-if="query.length !== 0"
+        v-if="showAdd && query.length !== 0"
         :active="items.length === selectedIndex"
         class="text-overflow w-full"
-        @click="addLabel"
+        @click="onAdd(query, command)"
       >
         <v-remixicon name="riAddLine" class="mr-2" />
         Add "<strong class="text-overflow"> {{ query.slice(0, 50) }} </strong>"
@@ -37,30 +37,56 @@
 
 <script setup>
 /* eslint-disable no-undef */
-import { watch, ref, computed } from 'vue';
+import { watch, ref } from 'vue';
 import { useLabelStore } from '@/store/label';
 
 const labelStore = useLabelStore();
 
 const props = defineProps({
+  onSelect: Function,
+  labelKey: {
+    type: String,
+    default: '',
+  },
+  range: {
+    type: Object,
+    default: () => ({}),
+  },
+  onAdd: {
+    type: Function,
+    default: () => {},
+  },
   command: {
     type: Function,
     required: true,
+  },
+  editor: {
+    type: Object,
+    default: () => ({}),
   },
   query: {
     type: String,
     default: '',
   },
+  items: {
+    type: Array,
+    default: () => [],
+  },
+  showAdd: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const selectedIndex = ref(0);
 
-const items = computed(() =>
-  labelStore.data
-    .filter((item) => item.toLowerCase().startsWith(props.query.toLowerCase()))
-    .slice(0, 7)
-);
+function getLabel(item) {
+  if (props.labelKey) {
+    return item[props.labelKey];
+  }
 
+  return item;
+}
 function onKeyDown({ event }) {
   if (event.key === 'ArrowUp') {
     upHandler();
@@ -81,27 +107,22 @@ function onKeyDown({ event }) {
 }
 function upHandler() {
   selectedIndex.value =
-    (selectedIndex.value + items.value.length - 1) % items.value.length;
+    (selectedIndex.value + props.items.length - 1) % props.items.length;
 }
 function downHandler() {
-  selectedIndex.value = (selectedIndex.value + 1) % (items.value.length + 1);
+  selectedIndex.value = (selectedIndex.value + 1) % (props.items.length + 1);
 }
 function enterHandler() {
   selectItem(selectedIndex.value);
 }
 function selectItem(index) {
-  const item = items.value[index];
+  const item = props.items[index];
 
   if (item) {
-    props.command({ id: item });
-  } else if (props.query !== '') {
-    addLabel();
+    props.onSelect({ item, ...props });
+  } else if (props.showAdd && props.query !== '') {
+    props.onAdd(props.query, props.command);
   }
-}
-function addLabel() {
-  labelStore.add(props.query).then((name) => {
-    props.command({ id: name });
-  });
 }
 
 watch(
