@@ -8,7 +8,7 @@
       placeholder="Search..."
       @change="$emit('update:query', $event.toLocaleLowerCase())"
     />
-    <ui-popover content-padding="p-0">
+    <ui-popover padding="p-0">
       <template #trigger>
         <ui-button class="w-52 text-left">
           <v-remixicon

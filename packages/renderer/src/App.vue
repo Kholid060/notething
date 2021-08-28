@@ -13,7 +13,11 @@ import { useTheme } from './composable/theme';
 import { useStore } from './store';
 import AppSidebar from './components/app/AppSidebar.vue';
 import AppOmnibar from './components/app/AppOmnibar.vue';
-
+/*
+to do:
+- persist sort notes
+- allow image src from url
+*/
 export default {
   components: { AppSidebar, AppOmnibar },
   setup() {

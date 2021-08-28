@@ -62,6 +62,7 @@
     "@tiptap/starter-kit": "^2.0.0-beta.97",
     "@tiptap/vue-3": "^2.0.0-beta.52",
     "crypto-js": "^4.1.1",
+    "custom-electron-titlebar": "^3.2.7",
     "d3": "^7.0.1",
     "dayjs": "^1.10.6",
     "electron-better-ipc": "^2.0.1",

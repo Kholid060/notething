@@ -100,7 +100,6 @@ export default {
         emit('update', data);
         emit('update:modelValue', data);
       });
-      console.log(editor);
     });
     onBeforeUnmount(() => {
       editor.value.destroy();

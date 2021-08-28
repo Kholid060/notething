@@ -2,7 +2,7 @@ import { app, BrowserWindow, dialog, protocol, nativeTheme, shell } from 'electr
 import { ipcMain } from 'electron-better-ipc';
 import { join, normalize } from 'path';
 import { URL } from 'url';
-import { readJson, ensureDir, copy, outputJson } from 'fs-extra';
+import { readJson, ensureDir, copy, outputJson, pathExistsSync } from 'fs-extra';
 import store from './store';
 
 const isSingleInstance = app.requestSingleInstanceLock();
@@ -102,10 +102,17 @@ app.on('window-all-closed', () => {
 app.whenReady()
   .then(async () => {
     protocol.registerFileProtocol('assets', (request, callback) => {
-      const url = request.url.substr(7);
-      const dir = store.settings.get('dataDir');
+      const url = request.url.substr(9);
+      let imgPath = '';
 
-      callback({ path: normalize(`${dir}/notes-assets/${url}`) });
+      if (pathExistsSync(url)) {
+        imgPath = url;
+      } else {
+        const dir = store.settings.get('dataDir');
+        imgPath = `${dir}/notes-assets/${url}`;
+      }
+
+      callback({ path: normalize(imgPath) });
     });
 
     await ensureDir(join(app.getPath('userData'), 'notes-assets'));

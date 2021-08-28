@@ -8,3 +8,9 @@
 .bg-input {
   @apply bg-gray-800 bg-opacity-5 hover:bg-opacity-10 dark:bg-gray-200 dark:bg-opacity-5 dark:hover:bg-opacity-10 focus:ring-2;
 }
+
+kbd {
+  font-family: inherit;
+  min-width: 28px;
+  @apply p-1 text-center shadow text-sm rounded text-gray-600 ml-1 dark:text-white bg-gray-100 dark:bg-gray-700;
+}

@@ -74,13 +74,32 @@
         <v-remixicon :name="action.icon" />
       </button>
       <hr class="border-r mx-2 h-6" />
-      <button
-        v-tooltip.group="'Image'"
-        class="transition hoverable h-8 px-1 rounded-lg"
-        @click="insertImage"
-      >
-        <v-remixicon name="riImageLine" />
-      </button>
+      <ui-popover padding="p-2 flex items-center">
+        <template #trigger>
+          <button
+            v-tooltip.group="'Image'"
+            class="transition hoverable h-8 px-1 rounded-lg"
+          >
+            <v-remixicon name="riImageLine" />
+          </button>
+        </template>
+        <input
+          v-model="imgUrl"
+          class="bg-transparent mr-2"
+          placeholder="Image url"
+          @keyup.enter="insertImage"
+        />
+        <v-remixicon
+          name="riFolderOpenLine"
+          class="mr-2 cursor-pointer"
+          @click="editorImage.select(true)"
+        />
+        <v-remixicon
+          name="riSave3Line"
+          class="mr-2 cursor-pointer"
+          @click="insertImage"
+        />
+      </ui-popover>
       <button
         v-tooltip.group="'Link (Ctrl+K)'"
         :class="{ 'is-active': editor.isActive('link') }"
@@ -116,8 +135,8 @@
 <script>
 import { shallowRef } from 'vue';
 import { useGroupTooltip } from '@/composable/groupTooltip';
-import { useStorage } from '@/composable/storage';
 import { useStore } from '@/store';
+import { useEditorImage } from '@/composable/editorImage';
 import NoteMenuHeadingsTree from './NoteMenuHeadingsTree.vue';
 
 export default {
@@ -219,11 +238,18 @@ export default {
     ];
 
     const store = useStore();
-    const storage = useStorage();
+    const editorImage = useEditorImage(props.editor);
+
     useGroupTooltip();
 
+    const imgUrl = shallowRef('');
     const headingsTree = shallowRef([]);
 
+    function insertImage() {
+      editorImage.set(imgUrl.value);
+      imgUrl.value = '';
+      props.editor.commands.focus();
+    }
     function getHeadingsTree() {
       const editorEl = props.editor.options.element;
       const headingEls = editorEl.querySelectorAll('h1, h2, h3, h4');
@@ -235,36 +261,6 @@ export default {
       }));
 
       headingsTree.value = headingsArr;
-    }
-    function insertImage() {
-      const { ipcRenderer, path } = window.electron;
-
-      ipcRenderer
-        .callMain('dialog:open', {
-          properties: ['openFile'],
-          filters: [{ name: 'Images', extensions: ['png', 'jpg', 'jpeg'] }],
-        })
-        .then(async ({ canceled, filePaths }) => {
-          if (canceled || filePaths.length === 0) return;
-
-          try {
-            const dataDir = await storage.get('dataDir', '', 'settings');
-            const fileName = path.basename(filePaths[0]);
-
-            await ipcRenderer.callMain('fs:copy', {
-              path: filePaths[0],
-              dest: path.join(dataDir, 'notes-assets', fileName),
-            });
-
-            props.editor
-              .chain()
-              .focus()
-              .setImage({ src: `assets://${fileName}` })
-              .run();
-          } catch (error) {
-            console.error(error);
-          }
-        });
     }
     function toggleFocusMode() {
       store.inFocusMode = !store.inFocusMode;
@@ -280,11 +276,13 @@ export default {
     return {
       store,
       lists,
+      imgUrl,
       headings,
       insertImage,
+      editorImage,
       headingsTree,
-      getHeadingsTree,
       textFormatting,
+      getHeadingsTree,
       toggleFocusMode,
     };
   },

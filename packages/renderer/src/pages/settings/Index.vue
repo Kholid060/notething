@@ -3,7 +3,7 @@
     <section>
       <p class="mb-2">App theme</p>
       <div class="flex space-x-4 text-gray-600 dark:text-gray-200">
-        <div
+        <button
           v-for="item in themes"
           :key="item.name"
           :class="{
@@ -14,7 +14,7 @@
         >
           <img :src="item.img" class="w-40 border-2 mb-1 rounded-lg" />
           <p class="capitalize text-center text-sm">{{ item.name }}</p>
-        </div>
+        </button>
       </div>
     </section>
     <!-- <section>

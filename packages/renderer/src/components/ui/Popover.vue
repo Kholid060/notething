@@ -13,7 +13,7 @@
         shadow-xl
         border
       "
-      :class="[contentPadding]"
+      :class="[padding]"
     >
       <slot></slot>
     </div>
@@ -33,7 +33,7 @@ export default {
       type: String,
       default: 'click',
     },
-    contentPadding: {
+    padding: {
       type: String,
       default: 'p-4',
     },

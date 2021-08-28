@@ -32,11 +32,12 @@
 .math-node .math-src {
   @apply dark:text-purple-400 text-purple-500 !important;
 }
+img.ProseMirror-selectednode {
+  @apply ring-2 ring-primary transition;
+}
+
 .ProseMirror {
   min-height:  400px;
-  &-selectednode image {
-    @apply ring-2 ring-primary transition;
-  }
   & > :first-child {
     margin-top: 0;
   }

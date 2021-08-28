@@ -30,25 +30,9 @@
       >
         <p class="text-overflow flex-1">{{ item.title || 'Untitled note' }}</p>
         <template v-if="item.shortcut">
-          <span
-            v-for="key in item.shortcut"
-            :key="key"
-            class="
-              p-1
-              text-center
-              shadow
-              text-sm
-              rounded
-              text-gray-600
-              ml-1
-              dark:text-white
-              bg-gray-100
-              dark:bg-gray-700
-            "
-            style="min-width: 28px"
-          >
+          <kbd v-for="key in item.shortcut" :key="key">
             {{ key }}
-          </span>
+          </kbd>
         </template>
       </ui-list-item>
     </ui-list>

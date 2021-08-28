@@ -3,7 +3,7 @@
     <h1 class="text-3xl mb-10 font-bold">Settings</h1>
     <div class="flex">
       <ui-list
-        class="w-64 space-y-1 mr-6 rounded-lg dark:text-gray-200 text-gray-600"
+        class="w-64 space-y-1 mr-8 rounded-lg dark:text-gray-200 text-gray-600"
       >
         <router-link
           v-for="(item, id) in settings"
