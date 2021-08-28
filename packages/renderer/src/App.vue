@@ -13,10 +13,7 @@ import { useTheme } from './composable/theme';
 import { useStore } from './store';
 import AppSidebar from './components/app/AppSidebar.vue';
 import AppOmnibar from './components/app/AppOmnibar.vue';
-/*
-to do:
-- persist sort notes
-*/
+
 export default {
   components: { AppSidebar, AppOmnibar },
   setup() {
@@ -32,8 +29,7 @@ export default {
     const lastNoteEdit = localStorage.getItem('lastNoteEdit');
 
     if (lastNoteEdit) {
-      // router.push(`/note/${lastNoteEdit}`);
-      router.push(`/settings/shortcuts`);
+      router.push(`/note/${lastNoteEdit}`);
     }
 
     return {

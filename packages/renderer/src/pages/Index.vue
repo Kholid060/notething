@@ -47,7 +47,7 @@
   </div>
 </template>
 <script>
-import { computed, reactive, watch } from 'vue';
+import { computed, reactive, watch, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import HomeNoteCard from '@/components/home/HomeNoteCard.vue';
 import HomeNoteFilter from '@/components/home/HomeNoteFilter.vue';
@@ -140,6 +140,23 @@ export default {
       },
       { immediate: true }
     );
+    watch(
+      () => [state.sortBy, state.sortOrder],
+      ([sortBy, sortOrder]) => {
+        localStorage.setItem(
+          'sort-notes',
+          JSON.stringify({ sortBy, sortOrder })
+        );
+      }
+    );
+
+    onMounted(() => {
+      const sortState = JSON.parse(localStorage.getItem('sort-notes'));
+
+      if (sortState) {
+        Object.assign(state, sortState);
+      }
+    });
 
     return {
       notes,

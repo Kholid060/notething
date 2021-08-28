@@ -45,6 +45,18 @@
       <v-remixicon :name="nav.icon" />
     </router-link>
     <div class="flex-grow"></div>
+    <button
+      v-tooltip:right="'Toggle dark theme'"
+      :class="[
+        theme.isDark()
+          ? 'text-primary dark:text-secondary'
+          : 'dark:hover:text-white hover:text-gray-800',
+      ]"
+      class="transition p-2 mb-4"
+      @click="theme.setTheme(theme.isDark() ? 'light' : 'dark')"
+    >
+      <v-remixicon name="riMoonClearLine" />
+    </button>
     <router-link
       v-tooltip:right="'Settings (Ctrl+,)'"
       to="/settings"
@@ -57,6 +69,7 @@
 </template>
 <script>
 import { onUnmounted } from 'vue';
+import { useTheme } from '@/composable/theme';
 import { useRouter } from 'vue-router';
 import emitter from 'tiny-emitter/instance';
 import Mousetrap from '@/lib/mousetrap';
@@ -64,6 +77,7 @@ import { useNoteStore } from '@/store/note';
 
 export default {
   setup() {
+    const theme = useTheme();
     const router = useRouter();
     const noteStore = useNoteStore();
 
@@ -117,6 +131,7 @@ export default {
 
     return {
       navs,
+      theme,
       addNote,
       noteStore,
       openLastEdited,

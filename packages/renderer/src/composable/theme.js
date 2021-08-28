@@ -2,6 +2,14 @@ import { ref } from 'vue';
 
 const currentTheme = ref('');
 
+function isDark() {
+  if (currentTheme.value === 'system') {
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  }
+
+  return currentTheme.value === 'dark';
+}
+
 function setTheme(name, isSystem) {
   const rootElement = document.documentElement;
 
@@ -11,9 +19,8 @@ function setTheme(name, isSystem) {
     rootElement.classList.remove('dark');
   } else if (name === 'system') {
     localStorage.removeItem('theme');
-    const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
-    setTheme(isDark ? 'dark' : 'light', true);
+    setTheme(isDark() ? 'dark' : 'light', true);
   }
 
   currentTheme.value = isSystem ? 'system' : name;
@@ -21,10 +28,9 @@ function setTheme(name, isSystem) {
 }
 
 function loadTheme() {
-  const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
   const theme = localStorage.getItem('theme') || 'system';
 
-  if (localStorage.theme === 'dark' || (theme === 'system' && isDark)) {
+  if (localStorage.theme === 'dark' || (theme === 'system' && isDark())) {
     document.documentElement.classList.add('dark');
   } else {
     document.documentElement.classList.remove('dark');
@@ -35,6 +41,7 @@ function loadTheme() {
 
 export function useTheme() {
   return {
+    isDark,
     setTheme,
     loadTheme,
     currentTheme,
