@@ -38,6 +38,8 @@ let mainWindow = null;
 const createWindow = async () => {
   mainWindow = new BrowserWindow({
     show: false, // Use 'ready-to-show' event to show window
+    width: 950,
+    height: 600,
     webPreferences: {
       preload: join(__dirname, '../../preload/dist/index.cjs'),
       contextIsolation: env.MODE !== 'test',   // Spectron tests can't work with contextIsolation: true

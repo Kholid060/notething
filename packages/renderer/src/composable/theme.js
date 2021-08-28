@@ -13,6 +13,8 @@ function isDark() {
 function setTheme(name, isSystem) {
   const rootElement = document.documentElement;
 
+  currentTheme.value = isSystem ? 'system' : name;
+
   if (name === 'dark' && !rootElement.classList.contains('dark')) {
     rootElement.classList.add('dark');
   } else if (name === 'light') {
@@ -23,20 +25,19 @@ function setTheme(name, isSystem) {
     setTheme(isDark() ? 'dark' : 'light', true);
   }
 
-  currentTheme.value = isSystem ? 'system' : name;
-  localStorage.theme = name;
+  localStorage.theme = currentTheme.value;
 }
 
 function loadTheme() {
   const theme = localStorage.getItem('theme') || 'system';
+
+  currentTheme.value = theme;
 
   if (localStorage.theme === 'dark' || (theme === 'system' && isDark())) {
     document.documentElement.classList.add('dark');
   } else {
     document.documentElement.classList.remove('dark');
   }
-
-  currentTheme.value = theme;
 }
 
 export function useTheme() {

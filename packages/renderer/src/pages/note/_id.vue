@@ -73,7 +73,6 @@ export default {
           if (!data || data.id === '') {
             router.push('/');
           } else {
-            document.title = `${data.title.slice(0, 260)} - App Name`;
             localStorage.setItem('lastNoteEdit', noteId);
           }
         });
