@@ -49,7 +49,7 @@
       v-tooltip:right="'Settings (Ctrl+,)'"
       to="/settings"
       class="transition dark:hover:text-white hover:text-gray-800 p-2"
-      exact-active-class="text-primary dark:text-secondary"
+      active-class="text-primary dark:text-secondary"
     >
       <v-remixicon name="riSettings3Line" />
     </router-link>

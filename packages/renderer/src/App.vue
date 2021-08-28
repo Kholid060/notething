@@ -16,7 +16,6 @@ import AppOmnibar from './components/app/AppOmnibar.vue';
 /*
 to do:
 - persist sort notes
-- allow image src from url
 */
 export default {
   components: { AppSidebar, AppOmnibar },
@@ -33,8 +32,8 @@ export default {
     const lastNoteEdit = localStorage.getItem('lastNoteEdit');
 
     if (lastNoteEdit) {
-      router.push(`/note/${lastNoteEdit}`);
-      // router.push(`/settings`);
+      // router.push(`/note/${lastNoteEdit}`);
+      router.push(`/settings/shortcuts`);
     }
 
     return {

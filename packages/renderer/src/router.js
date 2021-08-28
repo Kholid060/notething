@@ -26,7 +26,7 @@ const routes = [
         component: SettingsIndex,
       },
       {
-        path: '/shortcuts',
+        path: 'shortcuts',
         name: 'Settings-Shortcuts',
         component: SettingsShortcuts,
       },

@@ -101,12 +101,11 @@ export default {
     }
 
     Mousetrap.bind(['mod+p', 'mod+shift+p'], (event, combo) => {
+      if (state.show) return clear();
+
       if (combo === 'mod+shift+p') state.query = '>';
 
-      const omnibarInput = document.querySelector('.omnibar-input');
-
-      if (omnibarInput) omnibarInput.focus();
-
+      document.querySelector('.omnibar-input')?.focus();
       state.show = true;
     });
 

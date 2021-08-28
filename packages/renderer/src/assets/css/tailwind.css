@@ -12,5 +12,5 @@
 kbd {
   font-family: inherit;
   min-width: 28px;
-  @apply p-1 text-center shadow text-sm rounded text-gray-600 ml-1 dark:text-white bg-gray-100 dark:bg-gray-700;
+  @apply p-1 text-center shadow text-sm rounded-md text-gray-600 ml-1 dark:text-white bg-gray-100 dark:bg-gray-700;
 }
