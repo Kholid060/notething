@@ -53,16 +53,27 @@ export const useNoteStore = defineStore('note', {
           .then(() => resolve(this.data[id]));
       });
     },
-    delete(id) {
-      return new Promise((resolve) => {
+    async delete(id) {
+      try {
         const lastEditedNote = localStorage.getItem('lastNoteEdit');
 
         if (lastEditedNote === id) localStorage.removeItem('lastNoteEdit');
 
+        const { path, ipcRenderer } = window.electron;
+        const dataDir = await storage.get('dataDir', '', 'settings');
+
         delete this.data[id];
 
-        storage.delete(`notes.${id}`).then(() => resolve(id));
-      });
+        await ipcRenderer.callMain(
+          'fs:remove',
+          path.join(dataDir, 'notes-assets', id)
+        );
+        await storage.delete(`notes.${id}`);
+
+        return id;
+      } catch (error) {
+        console.error(error);
+      }
     },
   },
   addLabel(id, labelId) {

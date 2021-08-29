@@ -29,8 +29,7 @@ export default {
     const lastNoteEdit = localStorage.getItem('lastNoteEdit');
 
     if (lastNoteEdit) {
-      // router.push(`/note/${lastNoteEdit}`);
-      router.push(`/settings/about`);
+      router.push(`/note/${lastNoteEdit}`);
     }
 
     return {

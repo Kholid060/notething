@@ -2,7 +2,7 @@ import { app, BrowserWindow, dialog, protocol, nativeTheme, shell } from 'electr
 import { ipcMain } from 'electron-better-ipc';
 import { join, normalize } from 'path';
 import { URL } from 'url';
-import { readJson, ensureDir, copy, outputJson, pathExistsSync } from 'fs-extra';
+import { remove, readJson, ensureDir, copy, outputJson, pathExistsSync } from 'fs-extra';
 import store from './store';
 
 const isSingleInstance = app.requestSingleInstanceLock();
@@ -105,14 +105,9 @@ app.whenReady()
   .then(async () => {
     protocol.registerFileProtocol('assets', (request, callback) => {
       const url = request.url.substr(9);
-      let imgPath = '';
 
-      if (pathExistsSync(url)) {
-        imgPath = url;
-      } else {
-        const dir = store.settings.get('dataDir');
-        imgPath = `${dir}/notes-assets/${url}`;
-      }
+      const dir = store.settings.get('dataDir');
+      const imgPath = `${dir}/notes-assets/${url}`;
 
       callback({ path: normalize(imgPath) });
     });
@@ -143,6 +138,9 @@ ipcMain.answerRenderer('dialog:save', (props) => dialog.showSaveDialog(props));
 ipcMain.answerRenderer('fs:copy', ({ path, dest }) => copy(path, dest));
 ipcMain.answerRenderer('fs:output-json', ({ path, data }) => outputJson(path, data));
 ipcMain.answerRenderer('fs:read-json', (path) => readJson(path));
+ipcMain.answerRenderer('fs:ensureDir', (path) => ensureDir(path));
+ipcMain.answerRenderer('fs:pathExists', (path) => pathExistsSync(path));
+ipcMain.answerRenderer('fs:remove', (path) => remove(path));
 
 ipcMain.answerRenderer('helper:relaunch', (options = {}) => {
   app.relaunch({ args: process.argv.slice(1).concat(['--relaunch']), ...options });

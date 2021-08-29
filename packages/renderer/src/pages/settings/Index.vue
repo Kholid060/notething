@@ -91,9 +91,9 @@
             </span>
           </div>
           <div class="flex-grow"></div>
-          <ui-button class="w-full mt-6" @click="importData"
-            >Import Data</ui-button
-          >
+          <ui-button class="w-full mt-6" @click="importData">
+            Import Data
+          </ui-button>
         </div>
       </div>
     </section>
@@ -112,7 +112,7 @@ import systemImg from '@/assets/images/system.png';
 
 export default {
   setup() {
-    const { ipcRenderer } = window.electron;
+    const { ipcRenderer, path } = window.electron;
     const fontSize = [8, 10, 12, 14, 16, 18, 20, 22, 24, 26];
     const themes = [
       { name: 'light', img: lightImg },
@@ -168,13 +168,11 @@ export default {
     }
     async function exportData() {
       try {
-        const filename = dayjs().format('[appname]-YYYY-MM-DD[.json]');
-        const { canceled, filePath } = await ipcRenderer.callMain(
-          'dialog:save',
+        const { canceled, filePaths } = await ipcRenderer.callMain(
+          'dialog:open',
           {
             title: 'Export data',
-            defaultPath: filename,
-            filters: [{ name: 'JSON', extensions: ['json'] }],
+            properties: ['openDirectory'],
           }
         );
 
@@ -186,10 +184,21 @@ export default {
           data = AES.encrypt(JSON.stringify(data), state.password).toString();
         }
 
+        const folderName = dayjs().format('[Notething] YYYY-MM-DD');
+        const folderPath = path.join(filePaths[0], folderName);
+        const dataDir = await storage.get('dataDir', '', 'settings');
+
+        await ipcRenderer.callMain('fs:ensureDir', folderPath);
         await ipcRenderer.callMain('fs:output-json', {
-          path: filePath,
+          path: path.join(folderPath, 'data.json'),
           data: { data },
         });
+        await ipcRenderer.callMain('fs:copy', {
+          path: path.join(dataDir, 'notes-assets'),
+          dest: path.join(folderPath, 'assets'),
+        });
+
+        alert(`Notes is exported in "${folderName}" folder`);
 
         state.withPassword = false;
         state.password = '';
@@ -229,15 +238,19 @@ export default {
       try {
         const {
           canceled,
-          filePaths: [path],
+          filePaths: [dirPath],
         } = await ipcRenderer.callMain('dialog:open', {
           title: 'Import data',
+          properties: ['openDirectory'],
           filters: [{ name: 'JSON', extensions: ['json'] }],
         });
 
         if (canceled) return;
 
-        let { data } = await ipcRenderer.callMain('fs:read-json', path);
+        let { data } = await ipcRenderer.callMain(
+          'fs:read-json',
+          path.join(dirPath, 'data.json')
+        );
 
         if (!data) return showAlert('Invalid data');
 
@@ -263,6 +276,13 @@ export default {
         } else {
           mergeImportedData(data);
         }
+
+        const dataDir = await storage.get('dataDir', '', 'settings');
+
+        await ipcRenderer.callMain('fs:copy', {
+          path: path.join(dirPath, 'assets'),
+          dest: path.join(dataDir, 'notes-assets'),
+        });
       } catch (error) {
         console.error(error);
       }

@@ -8,8 +8,8 @@
     </div>
     <h1 class="font-semibold capitalize">{{ state.name }}</h1>
     <p>
-      Notething is a simple and full keyboard compatible <br />
-      note taking app.
+      Notething is a note taking app with full keyboard compatibility and some
+      other things.
     </p>
     <div class="mt-4">
       <div class="flex">
