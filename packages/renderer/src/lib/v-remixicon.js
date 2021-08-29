@@ -46,6 +46,8 @@ import {
   riFileDownloadLine,
   riFileUploadLine,
   riInformationLine,
+  riGlobalLine,
+  riGithubFill,
 } from 'v-remixicon/icons';
 
 VRemixIcon.add({
@@ -95,6 +97,8 @@ VRemixIcon.add({
   riFileDownloadLine,
   riFileUploadLine,
   riInformationLine,
+  riGlobalLine,
+  riGithubFill,
 });
 
 export default VRemixIcon;

@@ -4,6 +4,7 @@ import Note from './pages/note/_id.vue';
 import Settings from './pages/Settings.vue';
 import SettingsIndex from './pages/settings/Index.vue';
 import SettingsShortcuts from './pages/settings/Shortcuts.vue';
+import SettingsAbout from './pages/settings/About.vue';
 
 const routes = [
   {
@@ -29,6 +30,11 @@ const routes = [
         path: 'shortcuts',
         name: 'Settings-Shortcuts',
         component: SettingsShortcuts,
+      },
+      {
+        path: 'about',
+        name: 'Settings-About',
+        component: SettingsAbout,
       },
     ],
   },

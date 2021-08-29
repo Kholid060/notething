@@ -1,6 +1,7 @@
 import { mergeAttributes } from '@tiptap/core';
-import Suggestion from './suggestion';
 import { useNoteStore } from '@/store/note';
+import router from '@/router';
+import Suggestion from './suggestion';
 
 const props = {
   labelKey: 'title',
@@ -51,8 +52,10 @@ const LinkNote = Suggestion({ name: 'linkNote', props, configure }).configure({
       const noteStore = useNoteStore();
 
       return noteStore.notes
-        .filter((item) =>
-          item.title.toLocaleLowerCase().startsWith(query.toLowerCase())
+        .filter(
+          (item) =>
+            item.title.toLocaleLowerCase().startsWith(query.toLowerCase()) &&
+            router.currentRoute.value.params.id !== item.id
         )
         .slice(0, 7);
     },

@@ -5,11 +5,8 @@
     style="max-width: 16rem; min-width: 6rem"
   >
     <ui-list class="cursor-pointer space-y-1">
-      <p
-        v-if="labelStore.data.length === 0 && query.length === 0"
-        class="text-center"
-      >
-        No label
+      <p v-if="items.length === 0 && query.length === 0" class="text-center">
+        No data
       </p>
       <template v-else>
         <ui-list-item
@@ -38,9 +35,6 @@
 <script setup>
 /* eslint-disable no-undef */
 import { watch, ref } from 'vue';
-import { useLabelStore } from '@/store/label';
-
-const labelStore = useLabelStore();
 
 const props = defineProps({
   onSelect: Function,
@@ -126,7 +120,7 @@ function selectItem(index) {
 }
 
 watch(
-  () => labelStore.data,
+  () => props.items,
   () => {
     selectedIndex.value = 0;
   }

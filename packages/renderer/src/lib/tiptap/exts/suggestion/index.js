@@ -22,7 +22,6 @@ export default function ({ name, props: customProps = {}, configure = {} }) {
 
           return {
             onStart: (props) => {
-              console.log(props, customProps);
               component = new VueRenderer(SuggestionComponent, {
                 props: { ...props, ...customProps },
                 editor: props.editor,
