@@ -73,6 +73,7 @@ export default {
           if (!data || data.id === '') {
             router.push('/');
           } else {
+            store.activeNoteId = data.id;
             localStorage.setItem('lastNoteEdit', noteId);
           }
         });

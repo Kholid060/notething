@@ -5,6 +5,7 @@ import { useLabelStore } from './label';
 export const useStore = defineStore('main', {
   state: () => ({
     inFocusMode: false,
+    activeNoteId: '',
   }),
   actions: {
     retrieve() {
