@@ -5,6 +5,7 @@
       type="text"
       class="flex-1 bg-transparent w-52 mr-4"
       placeholder="Image url"
+      @keyup.enter="editorImage.set(currentImage)"
     />
     <v-remixicon
       name="riFolderOpenLine"

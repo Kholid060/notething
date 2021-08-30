@@ -48,7 +48,6 @@ export default {
     });
 
     return {
-      languages: [],
       selectedLanguage,
     };
   },

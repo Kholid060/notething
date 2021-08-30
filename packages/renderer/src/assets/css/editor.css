@@ -48,7 +48,7 @@ img.ProseMirror-selectednode {
     @apply bg-yellow-400;
   }
   .inline-code {
-    @apply py-0.5 px-1 rounded;
+    @apply p-0.5 px-1 rounded;
   }
   p.is-editor-empty:first-child::before {
     content: attr(data-placeholder);
