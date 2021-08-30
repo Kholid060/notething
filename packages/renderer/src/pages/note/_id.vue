@@ -18,7 +18,14 @@
       />
       <span>Previous note</span>
     </button>
-    <note-menu v-if="editor" v-bind="{ editor }" class="mb-6" />
+    <template v-if="editor">
+      <note-menu v-bind="{ editor }" class="mb-6" />
+      <note-search
+        v-if="showSearch"
+        v-bind="{ editor }"
+        @keyup.esc="closeSearch"
+      />
+    </template>
     <input
       :value="note.title"
       class="text-4xl block font-bold bg-transparent w-full mb-6"
@@ -41,11 +48,13 @@ import { useLabelStore } from '@/store/label';
 import { useStore } from '@/store';
 import { useStorage } from '@/composable/storage';
 import { debounce } from '@/utils/helper';
+import Mousetrap from '@/lib/mousetrap';
 import NoteEditor from '@/components/note/NoteEditor.vue';
 import NoteMenu from '@/components/note/NoteMenu.vue';
+import NoteSearch from '@/components/note/NoteSearch.vue';
 
 export default {
-  components: { NoteEditor, NoteMenu },
+  components: { NoteEditor, NoteMenu, NoteSearch },
   setup() {
     const store = useStore();
     const route = useRoute();
@@ -55,6 +64,7 @@ export default {
     const labelStore = useLabelStore();
 
     const editor = shallowRef(null);
+    const showSearch = shallowRef(false);
 
     const note = computed(() => noteStore.getById(route.params.id));
 
@@ -63,6 +73,10 @@ export default {
 
       noteStore.update(note.value.id, data);
     }, 250);
+    function closeSearch() {
+      showSearch.value = false;
+      editor.value.commands.focus();
+    }
 
     watch(
       () => route.params.id,
@@ -81,6 +95,13 @@ export default {
       { immediate: true }
     );
 
+    Mousetrap.bind('mod+f', (event, combo) => {
+      console.log(event, combo);
+      document.querySelector('.editor-search input')?.focus();
+
+      showSearch.value = true;
+    });
+
     onBeforeRouteLeave(() => {
       const labels = new Set();
       const labelEls =
@@ -95,13 +116,17 @@ export default {
       noteStore.update(route.params.id, {
         labels: [...labels],
       });
+
+      Mousetrap.unbind('mod+f');
     });
 
     return {
       note,
       store,
       editor,
+      showSearch,
       updateNote,
+      closeSearch,
     };
   },
 };

@@ -23,21 +23,21 @@ export default Image.extend({
     const handleImagePaste = new Plugin({
       key: new PluginKey('handlePasteLink'),
       props: {
-        handlePaste: async (view, event) => {
-          insertImages(event.clipboardData.files, (src, alt) => {
-            if (this.editor.isActive('image')) {
-              this.editor.commands.setTextSelection(
-                view.state.tr.curSelection.to + 1
-              );
-            }
+        handleDOMEvents: {
+          paste: async (view, event) => {
+            insertImages(event.clipboardData.files, (src, alt) => {
+              if (this.editor.isActive('image')) {
+                this.editor.commands.setTextSelection(
+                  view.state.tr.curSelection.to + 1
+                );
+              }
 
-            this.editor.commands.setImage({
-              alt,
-              src,
+              this.editor.commands.setImage({
+                alt,
+                src,
+              });
             });
-          });
-
-          return true;
+          },
         },
         handleDrop: (view, event) => {
           insertImages(event.dataTransfer.files, (src, alt) => {

@@ -44,6 +44,9 @@ img.ProseMirror-selectednode {
   &:focus {
     outline: none;
   }
+  .find {
+    @apply bg-yellow-400;
+  }
   .inline-code {
     @apply py-0.5 px-1 rounded;
   }

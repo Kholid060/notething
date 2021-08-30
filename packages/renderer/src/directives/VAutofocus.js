@@ -1,3 +1,5 @@
-export default function (el, { value = true }) {
-  if (value) el.focus();
-}
+export default {
+  mounted(el, { value = true }) {
+    if (value) el.focus();
+  },
+};

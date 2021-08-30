@@ -9,6 +9,7 @@ import LabelSuggestion from './exts/label-suggestion';
 import MathInline from './exts/math-inline';
 import MathBlock from './exts/math-block';
 import LinkNote from './exts/link-note';
+import Search from './exts/search';
 import Image from './exts/image';
 
 export const extensions = [
@@ -21,6 +22,7 @@ export const extensions = [
   MathInline,
   MathBlock,
   Image,
+  Search,
   Code.configure({ HTMLAttributes: { class: 'inline-code' } }),
   Link.extend({
     addKeyboardShortcuts() {

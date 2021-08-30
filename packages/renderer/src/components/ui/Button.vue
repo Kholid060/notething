@@ -49,8 +49,7 @@ export default {
   },
   setup() {
     const variants = {
-      default:
-        'bg-gray-800 dark:bg-gray-100 dark:bg-opacity-5 dark:hover:bg-opacity-10 bg-opacity-5 hover:bg-opacity-10',
+      default: 'bg-input',
       primary:
         'bg-primary text-white dark:bg-secondary dark:hover:bg-primary hover:bg-secondary',
       danger:
