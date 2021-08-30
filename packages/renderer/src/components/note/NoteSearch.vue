@@ -108,7 +108,6 @@ export default {
       'mod+alt+enter': replaceAllText,
     };
     Mousetrap.bind(Object.keys(shortcuts), (event, combo) => {
-      console.log(combo);
       shortcuts[combo]();
     });
 

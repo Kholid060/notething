@@ -95,8 +95,7 @@ export default {
       { immediate: true }
     );
 
-    Mousetrap.bind('mod+f', (event, combo) => {
-      console.log(event, combo);
+    Mousetrap.bind('mod+f', () => {
       document.querySelector('.editor-search input')?.focus();
 
       showSearch.value = true;

@@ -13,6 +13,7 @@
       @delete:label="deleteLabel"
     />
     <div
+      v-if="noteStore.notes.length !== 0"
       class="
         grid grid-cols-1
         md:grid-cols-2
@@ -43,6 +44,14 @@
           @update="noteStore.update(note.id, $event)"
         />
       </template>
+    </div>
+    <div v-else class="text-center">
+      <img src="../assets/svg/Notes_Outline.svg" class="mx-auto" />
+      <h1 class="text-xl">It looks like you don't have a note</h1>
+      <p class="max-w-md mx-auto dark:text-gray-300 text-gray-600 mt-2">
+        To create a new note, you can press <kbd>Ctrl</kbd> + <kbd>N</kbd> or
+        click the <kbd>+</kbd> button on top left
+      </p>
     </div>
   </div>
 </template>
