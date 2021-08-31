@@ -16,6 +16,7 @@ const schema = {
       		updatedAt: { type: 'number', default: Date.now() },
       		isBookmarked: { type: 'boolean', default: false },
       		isArchived: { type: 'boolean', default: false },
+          lastCursorPosition: { type: 'number', default: 0 },
       	},
       },
     },

@@ -34,7 +34,9 @@
     />
     <note-editor
       :id="$route.params.id"
+      :key="$route.params.id"
       :model-value="note.content"
+      :cursor-position="note.lastCursorPosition"
       @update="updateNote({ content: $event })"
       @init="editor = $event"
     />
@@ -73,6 +75,7 @@ export default {
 
       noteStore.update(note.value.id, data);
     }, 250);
+
     function closeSearch() {
       showSearch.value = false;
       editor.value.commands.focus();
@@ -80,7 +83,13 @@ export default {
 
     watch(
       () => route.params.id,
-      (noteId) => {
+      (noteId, oldNoteId) => {
+        if (oldNoteId) {
+          noteStore.update(oldNoteId, {
+            lastCursorPosition: editor.value?.state.selection.to,
+          });
+        }
+
         if (!noteId) return;
 
         storage.get(`notes.${noteId}`).then((data) => {

@@ -2,6 +2,7 @@
   "name": "notething",
   "private": false,
   "version": "0.0.1",
+  "license": "MIT",
   "engines": {
     "node": ">=v14.16",
     "npm": ">=7.7"
@@ -10,7 +11,7 @@
   "scripts": {
     "build": "node scripts/build.js",
     "precompile": "cross-env MODE=production npm run build",
-    "compile": "electron-builder build --config electron-builder.config.js --dir --config.asar=false",
+    "compile": "electron-builder build --config electron-builder.config.js --dir",
     "pretest": "cross-env MODE=test npm run build",
     "test": "node tests/app.spec.js",
     "watch": "node scripts/watch.js",
