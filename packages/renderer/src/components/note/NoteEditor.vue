@@ -1,10 +1,12 @@
 <template>
-  <slot v-bind="{ editor }" />
-  <editor-content
-    :editor="editor"
-    class="prose dark:text-gray-100 max-w-none prose-indigo"
-  />
-  <note-bubble-menu v-if="editor" v-bind="{ editor }" />
+  <div class="note-editor">
+    <slot v-bind="{ editor }" />
+    <editor-content
+      :editor="editor"
+      class="prose dark:text-gray-100 max-w-none prose-indigo"
+    />
+    <note-bubble-menu v-if="editor" v-bind="{ editor }" />
+  </div>
 </template>
 
 <script>
