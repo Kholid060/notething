@@ -15,7 +15,7 @@
       "
       :class="[padding]"
     >
-      <slot></slot>
+      <slot v-bind="{ isShow }"></slot>
     </div>
   </div>
 </template>
@@ -50,7 +50,7 @@ export default {
       default: false,
     },
   },
-  emits: ['show', 'trigger'],
+  emits: ['show', 'trigger', 'close'],
   setup(props, { emit }) {
     const targetEl = ref(null);
     const content = ref(null);
@@ -99,6 +99,7 @@ export default {
           isShow.value = true;
         },
         onHide: () => {
+          emit('close');
           isShow.value = false;
         },
         onTrigger: () => emit('trigger'),

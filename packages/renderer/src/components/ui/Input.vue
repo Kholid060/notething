@@ -24,6 +24,7 @@
             'pl-10': prependIcon || $slots.prepend,
           }"
           :value="modelValue"
+          @keydown="$emit('keydown', $event)"
           @input="emitValue"
         />
       </div>
@@ -69,7 +70,7 @@ export default {
       default: '',
     },
   },
-  emits: ['update:modelValue', 'change'],
+  emits: ['update:modelValue', 'change', 'keydown'],
   setup(props, { emit }) {
     function emitValue(event) {
       let { value } = event.target;

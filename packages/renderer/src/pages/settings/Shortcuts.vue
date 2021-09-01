@@ -19,6 +19,7 @@ const shortcuts = [
       { name: 'Create new note', keys: ['Ctrl', 'N'] },
       { name: 'Toggle notes omnibar', keys: ['Ctrl', 'P'] },
       { name: 'Toggle commands omnibar', keys: ['Ctrl', 'Shift', 'P'] },
+      { name: 'Toggle dark theme', keys: ['Ctrl', 'Shift', 'L'] },
     ],
   },
   {

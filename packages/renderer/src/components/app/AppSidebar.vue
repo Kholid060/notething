@@ -46,7 +46,7 @@
     </router-link>
     <div class="flex-grow"></div>
     <button
-      v-tooltip:right="'Toggle dark theme'"
+      v-tooltip:right="'Toggle dark theme (Ctrl+Shift+L)'"
       :class="[
         theme.isDark()
           ? 'text-primary dark:text-secondary'
@@ -101,6 +101,7 @@ export default {
       'mod+shift+w': openLastEdited,
       'mod+shift+n': () => router.push('/'),
       'mod+shift+a': () => router.push('/?archived=true'),
+      'mod+shift+l': () => theme.setTheme(theme.isDark() ? 'light' : 'dark'),
     };
 
     emitter.on('new-note', addNote);

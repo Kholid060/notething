@@ -82,29 +82,28 @@ function getLabel(item) {
   return item;
 }
 function onKeyDown({ event }) {
-  if (event.key === 'ArrowUp') {
-    upHandler();
-    return true;
+  switch (event.key) {
+    case 'ArrowUp':
+      upHandler();
+      return true;
+    case 'ArrowDown':
+      downHandler();
+      return true;
+    case 'Enter':
+      enterHandler();
+      return true;
+    default:
+      return false;
   }
-
-  if (event.key === 'ArrowDown') {
-    downHandler();
-    return true;
-  }
-
-  if (event.key === 'Enter') {
-    enterHandler();
-    return true;
-  }
-
-  return false;
 }
 function upHandler() {
   selectedIndex.value =
     (selectedIndex.value + props.items.length - 1) % props.items.length;
 }
 function downHandler() {
-  selectedIndex.value = (selectedIndex.value + 1) % (props.items.length + 1);
+  const itemsLength =
+    props.items.length + (props.showAdd && props.query !== '' ? 1 : 0);
+  selectedIndex.value = (selectedIndex.value + 1) % itemsLength;
 }
 function enterHandler() {
   selectItem(selectedIndex.value);

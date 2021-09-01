@@ -110,33 +110,46 @@
       </button>
       <hr class="border-r mx-2 h-6" />
       <button
-        v-tooltip.group="'Focus mode'"
+        v-tooltip.group="'Focus mode (Ctrl+Shift+F)'"
         :class="{ 'is-active': store.inFocusMode }"
         class="hoverable h-8 px-1 rounded-lg h-full"
         @click="toggleFocusMode"
       >
         <v-remixicon name="riFocus3Line" />
       </button>
-      <ui-popover @show="getHeadingsTree">
-        <template #trigger>
-          <button
-            v-tooltip.group="'Headings tree'"
-            :class="{ 'is-active': tree }"
-            class="hoverable h-8 px-1 rounded-lg h-full"
-          >
-            <v-remixicon name="riNodeTree" />
-          </button>
-        </template>
-        <note-menu-headings-tree :headings="headingsTree" />
+      <button
+        v-tooltip.group="'Headings tree (Ctrl+Alt+H)'"
+        :class="{ 'is-active': tree }"
+        class="hoverable h-8 px-1 rounded-lg h-full"
+        @click="showHeadingsTree = !showHeadingsTree"
+      >
+        <v-remixicon name="riNodeTree" />
+      </button>
+      <ui-popover
+        v-slot="{ isShow }"
+        v-model="showHeadingsTree"
+        trigger="manual"
+        @show="getHeadingsTree"
+        @close="editor.commands.focus()"
+      >
+        <note-menu-headings-tree
+          v-if="isShow"
+          :headings="headingsTree"
+          @close="
+            showHeadingsTree = false;
+            editor.commands.focus();
+          "
+        />
       </ui-popover>
     </div>
   </div>
 </template>
 <script>
-import { shallowRef } from 'vue';
+import { shallowRef, onUnmounted } from 'vue';
 import { useGroupTooltip } from '@/composable/groupTooltip';
 import { useStore } from '@/store';
 import { useEditorImage } from '@/composable/editorImage';
+import Mousetrap from '@/lib/mousetrap';
 import NoteMenuHeadingsTree from './NoteMenuHeadingsTree.vue';
 
 export default {
@@ -244,6 +257,7 @@ export default {
 
     const imgUrl = shallowRef('');
     const headingsTree = shallowRef([]);
+    const showHeadingsTree = shallowRef(false);
 
     function insertImage() {
       editorImage.set(imgUrl.value);
@@ -273,6 +287,18 @@ export default {
       }
     }
 
+    const shortcuts = {
+      'ctrl+alt+h': () => (showHeadingsTree.value = !showHeadingsTree.value),
+      'ctrl+shift+f': toggleFocusMode,
+    };
+    Mousetrap.bind(Object.keys(shortcuts), (event, combo) => {
+      shortcuts[combo]();
+    });
+
+    onUnmounted(() => {
+      Mousetrap.unbind(Object.keys(shortcuts));
+    });
+
     return {
       store,
       lists,
@@ -284,6 +310,7 @@ export default {
       textFormatting,
       getHeadingsTree,
       toggleFocusMode,
+      showHeadingsTree,
     };
   },
 };
