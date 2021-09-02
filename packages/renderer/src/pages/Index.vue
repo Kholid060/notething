@@ -101,9 +101,12 @@ export default {
           ? labels.includes(state.activeLabel)
           : true;
 
-        const isMatch =
-          title.toLocaleLowerCase().includes(state.query) ||
-          content.includes(state.query);
+        const isMatch = state.query.startsWith('#')
+          ? labels.some((label) =>
+              label.toLocaleLowerCase().includes(state.query.substr(1))
+            )
+          : title.toLocaleLowerCase().includes(state.query) ||
+            content.includes(state.query);
 
         if (isMatch && labelFilter) {
           if (isArchived) return filteredNotes.archived.push(note);
