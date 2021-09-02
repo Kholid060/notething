@@ -6,6 +6,7 @@
       bg-gray-50
       dark:bg-gray-900 dark:text-gray-50
       overflow-x-auto
+      scroll
       border-b
       z-20
       top-0

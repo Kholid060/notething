@@ -2,7 +2,7 @@
   <ui-card
     v-if="state.show"
     padding="p-4"
-    class="omnibar w-full max-w-lg mx-auto shadow-xl m-4"
+    class="command-prompt w-full max-w-lg mx-auto shadow-xl m-4"
   >
     <div class="flex items-center border-b pb-4 mb-4">
       <v-remixicon
@@ -12,19 +12,19 @@
       <input
         v-model="state.query"
         v-autofocus
-        class="w-full bg-transparent omnibar-input"
+        class="w-full bg-transparent command-input"
         placeholder="Search file or type '>' to search commands"
         @keyup.enter="selectItem"
         @keyup.esc="clear"
         @keydown="keydownHandler"
       />
     </div>
-    <ui-list class="max-h-80 overflow-auto space-y-1 scroll omnibar-scroll">
+    <ui-list class="max-h-80 overflow-auto space-y-1 scroll command-scroll">
       <ui-list-item
         v-for="(item, index) in items"
         :key="item.id"
         :active="index === state.selectedIndex"
-        :class="{ 'active-omnibar-item': index === state.selectedIndex }"
+        :class="{ 'active-command-item': index === state.selectedIndex }"
         class="cursor-pointer"
         @click="selectItem(item, true)"
       >
@@ -105,7 +105,7 @@ export default {
 
       if (combo === 'mod+shift+p') state.query = '>';
 
-      document.querySelector('.omnibar-input')?.focus();
+      document.querySelector('.command-input')?.focus();
       state.show = true;
     });
 
@@ -117,12 +117,12 @@ export default {
       debounce(() => {
         if (items.value.length <= 6) return;
 
-        const activeOmnibarItem = document.querySelector(
-          '.active-omnibar-item'
+        const activeCommandItem = document.querySelector(
+          '.active-command-item'
         );
 
-        activeOmnibarItem &&
-          activeOmnibarItem.scrollIntoView({
+        activeCommandItem &&
+          activeCommandItem.scrollIntoView({
             behavior: 'smooth',
             block: 'center',
           });
@@ -140,7 +140,7 @@ export default {
 };
 </script>
 <style scoped>
-.omnibar {
+.command-prompt {
   position: fixed;
   transform: translateX(-50%);
   left: 50%;

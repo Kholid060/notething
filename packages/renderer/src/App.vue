@@ -1,5 +1,5 @@
 <template>
-  <app-omnibar />
+  <app-command-prompt />
   <app-sidebar v-if="!store.inFocusMode" />
   <main v-if="retrieved" :class="{ 'pl-16': !store.inFocusMode }">
     <router-view />
@@ -12,10 +12,10 @@ import { useRouter } from 'vue-router';
 import { useTheme } from './composable/theme';
 import { useStore } from './store';
 import AppSidebar from './components/app/AppSidebar.vue';
-import AppOmnibar from './components/app/AppOmnibar.vue';
+import AppCommandPrompt from './components/app/AppCommandPrompt.vue';
 
 export default {
-  components: { AppSidebar, AppOmnibar },
+  components: { AppSidebar, AppCommandPrompt },
   setup() {
     const theme = useTheme();
     const store = useStore();
