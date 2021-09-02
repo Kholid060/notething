@@ -11,6 +11,8 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useTheme } from './composable/theme';
 import { useStore } from './store';
+import { useNoteStore } from './store/note';
+import notes from './utils/notes';
 import AppSidebar from './components/app/AppSidebar.vue';
 import AppCommandPrompt from './components/app/AppCommandPrompt.vue';
 
@@ -20,17 +22,40 @@ export default {
     const theme = useTheme();
     const store = useStore();
     const router = useRouter();
+    const noteStore = useNoteStore();
 
     const retrieved = ref(false);
 
-    theme.loadTheme();
-    store.retrieve().then(() => (retrieved.value = true));
+    const isFirstTime = localStorage.getItem('first-time');
 
-    const lastNoteEdit = localStorage.getItem('lastNoteEdit');
+    if (!isFirstTime) {
+      const promises = Promise.allSettled(
+        Object.values(notes).map(({ title, content }) =>
+          noteStore.add({ title, content: JSON.parse(content) })
+        )
+      );
 
-    if (lastNoteEdit) {
-      router.push(`/note/${lastNoteEdit}`);
+      promises.then(() => {
+        const note = noteStore.notes.find(
+          ({ title }) => title === 'Welcome to Notething'
+        );
+
+        if (note) router.push(`/note/${note.id}`);
+
+        localStorage.setItem('first-time', false);
+        retrieved.value = true;
+      });
+    } else {
+      store.retrieve().then(() => (retrieved.value = true));
+
+      const lastNoteEdit = localStorage.getItem('lastNoteEdit');
+
+      if (lastNoteEdit) {
+        router.push(`/note/${lastNoteEdit}`);
+      }
     }
+
+    theme.loadTheme();
 
     return {
       store,

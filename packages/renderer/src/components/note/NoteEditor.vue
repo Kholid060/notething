@@ -42,7 +42,7 @@ export default {
     const router = useRouter();
     const editor = useEditor({
       content: props.modelValue,
-      autofocus: true,
+      autofocus: props.cursorPosition,
       editorProps: {
         handleClick,
       },
@@ -82,11 +82,6 @@ export default {
         emit('update', data);
         emit('update:modelValue', data);
       });
-
-      setTimeout(() => {
-        editor.value.commands.setTextSelection(props.cursorPosition);
-        editor.value.commands.scrollIntoView();
-      }, 100);
     });
 
     return {
