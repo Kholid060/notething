@@ -16,6 +16,10 @@ const config = {
   extraMetadata: {
     version: buildVersion,
   },
+  win: {
+    target: 'nsis',
+    artifactName: '${productName}Setup-${arch}-${version}.${ext}',
+  },
 };
 
 module.exports = config;

@@ -13,6 +13,9 @@ export default Node.create({
       content: {
         default: '',
       },
+      macros: {
+        default: '{\n  \\f: "#1f(#2)"\n}',
+      },
       init: {
         default: '',
       },
