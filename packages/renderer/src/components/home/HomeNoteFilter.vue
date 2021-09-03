@@ -1,13 +1,17 @@
 <template>
-  <div class="flex items-center mb-6 space-x-4">
-    <ui-input
-      :model-value="query"
-      autofocus
-      class="flex-1"
-      prepend-icon="riSearch2Line"
-      placeholder="Search..."
-      @change="$emit('update:query', $event.toLocaleLowerCase())"
-    />
+  <div class="flex items-start mb-6 space-x-4">
+    <div class="flex-1">
+      <ui-input
+        :model-value="query"
+        class="w-full note-search-input"
+        prepend-icon="riSearch2Line"
+        placeholder="Search..."
+        @change="$emit('update:query', $event.toLocaleLowerCase())"
+      />
+      <span class="text-sm text-gray-600 dark:text-gray-300 ml-2"
+        >Press Ctrl+F to start search</span
+      >
+    </div>
     <div class="flex items-center divide-x btn-group">
       <ui-button
         v-tooltip="label === '' ? 'Select label' : 'Delete current label'"
@@ -44,6 +48,9 @@
   </div>
 </template>
 <script>
+import { onUnmounted } from 'vue';
+import Mousetrap from '@/lib/mousetrap';
+
 export default {
   props: {
     sortOrder: {
@@ -80,6 +87,14 @@ export default {
       createdAt: 'Created date',
       updatedAt: 'Last updated',
     };
+
+    Mousetrap.bind('mod+f', () => {
+      document.querySelector('.note-search-input input')?.focus();
+    });
+
+    onUnmounted(() => {
+      Mousetrap.unbind('mod+f');
+    });
 
     return {
       sorts,

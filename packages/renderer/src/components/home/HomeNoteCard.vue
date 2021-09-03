@@ -1,5 +1,8 @@
 <template>
-  <ui-card class="hover:ring-2 group transition flex flex-col" padding="p-5">
+  <ui-card
+    class="hover:ring-2 group note-card transition flex flex-col"
+    padding="p-5"
+  >
     <router-link
       :to="`/note/${note.id}`"
       class="font-semibold text-lg block line-clamp leading-tight"
@@ -92,3 +95,8 @@ function formatDate(date) {
   return dayjs(date).fromNow();
 }
 </script>
+<style>
+.note-card.active-note .group-hover\:visible {
+  visibility: visible;
+}
+</style>

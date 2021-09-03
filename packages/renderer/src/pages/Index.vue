@@ -37,6 +37,7 @@
         <home-note-card
           v-for="note in notes[name]"
           :key="note.id"
+          :note-id="note.id"
           v-bind="{ note }"
           @update:label="state.activeLabel = $event"
           @delete="noteStore.delete(note.id)"
@@ -55,21 +56,31 @@
   </div>
 </template>
 <script>
-import { computed, reactive, watch, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
-import HomeNoteCard from '@/components/home/HomeNoteCard.vue';
-import HomeNoteFilter from '@/components/home/HomeNoteFilter.vue';
+import {
+  computed,
+  reactive,
+  watch,
+  shallowRef,
+  onMounted,
+  onUnmounted,
+} from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { useNoteStore } from '@/store/note';
 import { useLabelStore } from '@/store/label';
 import { sortArray, extractNoteText } from '@/utils/helper';
+import HomeNoteCard from '@/components/home/HomeNoteCard.vue';
+import HomeNoteFilter from '@/components/home/HomeNoteFilter.vue';
+import KeyboardNavigation from '@/utils/keyboard-navigation';
 
 export default {
   components: { HomeNoteCard, HomeNoteFilter },
   setup() {
     const route = useRoute();
+    const router = useRouter();
     const noteStore = useNoteStore();
     const labelStore = useLabelStore();
 
+    const keyboardNavigation = shallowRef(null);
     const state = reactive({
       notes: [],
       query: '',
@@ -154,6 +165,11 @@ export default {
         );
       }
     );
+    watch(notes, () => {
+      setTimeout(() => {
+        keyboardNavigation.value.refresh();
+      }, 250);
+    });
 
     onMounted(() => {
       const sortState = JSON.parse(localStorage.getItem('sort-notes'));
@@ -161,6 +177,26 @@ export default {
       if (sortState) {
         Object.assign(state, sortState);
       }
+
+      keyboardNavigation.value = new KeyboardNavigation({
+        itemSelector: '.note-card',
+        activeClass: 'ring-2 active-note',
+        breakpoints: {
+          default: 1,
+          '(min-width: 768px)': 2,
+          '(min-width: 1024px)': 3,
+          '(min-width: 1280px)': 4,
+        },
+      });
+
+      keyboardNavigation.value.on('select', (el) => {
+        const noteId = el.getAttribute('note-id');
+
+        if (noteId) router.push(`/note/${noteId}`);
+      });
+    });
+    onUnmounted(() => {
+      keyboardNavigation.value.destroy();
     });
 
     return {
