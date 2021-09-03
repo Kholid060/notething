@@ -44,6 +44,29 @@ img.ProseMirror-selectednode {
   &:focus {
     outline: none;
   }
+  ul[data-type="taskList"] {
+    list-style: none;
+    padding: 0;
+    li {
+      &::before {
+        height: 0 !important;
+        width: 0 !important;
+      }
+      > label {
+        flex: 0 0 auto;
+        margin-right: 0.5rem;
+      }
+      p {
+        margin: 0;
+      }
+      input[type="checkbox"] {
+        margin-top: 8px;
+      }
+
+      display: flex;
+      align-items: flex-start;
+    }
+  }
   .find {
     @apply bg-yellow-400;
   }
