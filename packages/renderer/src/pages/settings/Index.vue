@@ -101,7 +101,8 @@
 </template>
 <script>
 import { shallowReactive, onMounted } from 'vue';
-import { AES, enc } from 'crypto-js';
+import { AES } from 'crypto-es/lib/aes';
+import { Utf8 } from 'crypto-es/lib/core';
 import { useTheme } from '@/composable/theme';
 import { useStorage } from '@/composable/storage';
 import { useDialog } from '@/composable/dialog';
@@ -263,7 +264,7 @@ export default {
             onConfirm: (pass) => {
               try {
                 const bytes = AES.decrypt(data, pass);
-                const result = bytes.toString(enc.Utf8);
+                const result = bytes.toString(Utf8);
                 const resultObj = JSON.parse(result);
 
                 mergeImportedData(resultObj);

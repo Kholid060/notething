@@ -1,4 +1,4 @@
-import sha256 from 'crypto-js/sha256';
+import { SHA256 } from 'crypto-es/lib/sha256';
 import { useStorage } from '@/composable/storage';
 
 const storage = useStorage('settings');
@@ -8,7 +8,7 @@ export default async function (filePath, id) {
   try {
     const dataDir = await storage.get('dataDir');
     const { ext, name } = path.parse(filePath);
-    const fileName = sha256(name).toString() + ext;
+    const fileName = SHA256(name).toString() + ext;
     const destPath = path.join(dataDir, 'notes-assets', id, fileName);
 
     await ipcRenderer.callMain('fs:copy', {
