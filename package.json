@@ -49,7 +49,6 @@
   },
   "dependencies": {
     "@benrbray/prosemirror-math": "^0.2.2",
-    "@headlessui/vue": "^1.4.0",
     "@mdi/js": "^5.9.55",
     "@tailwindcss/typography": "^0.4.1",
     "@tiptap/extension-code": "^2.0.0-beta.16",
@@ -64,9 +63,6 @@
     "@tiptap/starter-kit": "^2.0.0-beta.97",
     "@tiptap/vue-3": "^2.0.0-beta.52",
     "crypto-es": "^1.2.7",
-    "crypto-js": "^4.1.1",
-    "custom-electron-titlebar": "^3.2.7",
-    "d3": "^7.0.1",
     "dayjs": "^1.10.6",
     "electron-better-ipc": "^2.0.1",
     "electron-store": "^8.0.0",
@@ -74,19 +70,13 @@
     "fs-extra": "^10.0.0",
     "katex": "^0.13.13",
     "lowlight": "1.20.0",
-    "macy": "^2.5.1",
-    "make-fetch-happen": "^9.1.0",
-    "metascraper": "^5.24.2",
     "mousetrap": "^1.6.5",
     "nanoid": "^3.1.25",
     "pinia": "^2.0.0-rc.4",
-    "simplify-js": "^1.2.4",
     "tiny-emitter": "^2.1.0",
     "tippy.js": "^6.3.1",
     "v-remixicon": "^0.0.9",
     "vue": "^3.2.2",
-    "vue-masonry": "^0.13.0",
-    "vue-mdijs": "^0.5.12",
     "vue-router": "^4.0.11"
   }
 }
