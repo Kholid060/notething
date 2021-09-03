@@ -4,12 +4,11 @@
     <home-note-filter
       v-model:query="state.query"
       v-model:label="state.activeLabel"
+      v-model:sortBy="state.sortBy"
+      v-model:sortOrder="state.sortOrder"
       v-bind="{
-        sortOrder: state.sortOrder,
-        sortBy: state.sortBy,
         labels: labelStore.data,
       }"
-      @sort="setActiveSort"
       @delete:label="deleteLabel"
     />
     <div
@@ -124,15 +123,9 @@ export default {
 
       return { ...note, content: text };
     }
-    function setActiveSort(id) {
-      if (state.sortBy === id)
-        state.sortOrder = state.sortOrder === 'asc' ? 'desc' : 'asc';
-
-      state.sortBy = id;
-    }
     function deleteLabel(id) {
       labelStore.delete(id).then(() => {
-        if (state.activeLabel === id) state.activeLabel = '';
+        state.activeLabel = '';
       });
     }
 
@@ -176,7 +169,6 @@ export default {
       noteStore,
       labelStore,
       deleteLabel,
-      setActiveSort,
     };
   },
 };

@@ -1,18 +1,19 @@
 <template>
-  <div :class="{ 'inline-block': !block }" class="ui-select">
+  <div :class="{ 'inline-block': !block }" class="ui-select cursor-pointer">
     <label v-if="label" :for="selectId" class="text-gray-200 text-sm ml-2">
       {{ label }}
     </label>
     <div
       class="
+        ui-select__content
         flex
         items-center
-        rounded-lg
         w-full
         block
         transition
         focus-within:ring-2
         bg-input
+        rounded-lg
         appearance-none
         focus:outline-none
         relative

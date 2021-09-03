@@ -8,66 +8,39 @@
       placeholder="Search..."
       @change="$emit('update:query', $event.toLocaleLowerCase())"
     />
-    <ui-popover padding="p-0">
-      <template #trigger>
-        <ui-button class="w-52 text-left">
-          <v-remixicon
-            :name="label ? 'riCloseLine' : 'riPriceTag3Line'"
-            class="mr-1 -ml-1"
-            @click.stop="$emit('update:label', '')"
-          />
-          <p class="mr-4 text-overflow flex-1">{{ label || 'Select label' }}</p>
-          <v-remixicon size="28" name="riArrowDropDownLine" class="-mr-2" />
-        </ui-button>
-      </template>
-      <ui-list
-        class="space-y-1 w-60 p-4 overflow-auto"
-        style="max-height: calc(100vh - 14rem)"
+    <div class="flex items-center divide-x btn-group">
+      <ui-button
+        v-tooltip="label === '' ? 'Select label' : 'Delete current label'"
+        icon
+        class="rounded-r-none"
+        @click="$emit('delete:label', label)"
       >
-        <ui-list-item
-          v-for="item in labels"
-          :key="item"
-          :active="item === label"
-          class="cursor-pointer group"
-          @click="$emit('update:label', item)"
-        >
-          <span class="flex-1 text-overflow mr-2">{{ item }}</span>
-          <v-remixicon
-            name="riDeleteBin6Line"
-            class="group-hover:visible invisible"
-            @click.stop="$emit('delete:label', item)"
-          />
-        </ui-list-item>
-      </ui-list>
-    </ui-popover>
-    <ui-popover>
-      <template #trigger>
-        <ui-button>
-          <v-remixicon
-            :name="sortOrder === 'asc' ? 'riSortAsc' : 'riSortDesc'"
-            class="mr-2"
-          />
-          <p class="mr-4">{{ sorts[sortBy] }}</p>
-          <v-remixicon size="28" name="riArrowDropDownLine" class="-mr-2" />
-        </ui-button>
-      </template>
-      <ui-list class="space-y-1 w-48">
-        <ui-list-item
-          v-for="(name, id) in sorts"
-          :key="id"
-          :active="id === sortBy"
-          class="cursor-pointer"
-          @click="$emit('sort', id)"
-        >
-          <span class="flex-1">{{ name }}</span>
-          <v-remixicon
-            v-show="id === sortBy"
-            :rotate="sortOrder === 'asc' ? 180 : 0"
-            name="riArrowDownLine"
-          />
-        </ui-list-item>
-      </ui-list>
-    </ui-popover>
+        <v-remixicon
+          :name="label === '' ? 'riPriceTag3Line' : 'riDeleteBin6Line'"
+        />
+      </ui-button>
+      <ui-select :model-value="label" @change="$emit('update:label', $event)">
+        <option value="" selected>Select label</option>
+        <option v-for="item in labels" :key="item" :valye="item">
+          {{ item }}
+        </option>
+      </ui-select>
+    </div>
+    <div class="flex items-center divide-x btn-group">
+      <ui-button
+        v-tooltip="sortOrder === 'asc' ? 'Ascending' : 'Descending'"
+        icon
+        class="rounded-r-none"
+        @click="$emit('update:sortOrder', sortOrder === 'asc' ? 'desc' : 'asc')"
+      >
+        <v-remixicon :name="sortOrder === 'asc' ? 'riSortAsc' : 'riSortDesc'" />
+      </ui-button>
+      <ui-select :model-value="sortBy" @change="$emit('update:sortBy', $event)">
+        <option v-for="(name, id) in sorts" :key="id" :value="id">
+          {{ name }}
+        </option>
+      </ui-select>
+    </div>
   </div>
 </template>
 <script>
@@ -94,7 +67,13 @@ export default {
       default: () => ({}),
     },
   },
-  emits: ['update:query', 'update:label', 'sort', 'delete:label'],
+  emits: [
+    'update:query',
+    'update:label',
+    'update:sortOrder',
+    'update:sortBy',
+    'delete:label',
+  ],
   setup() {
     const sorts = {
       title: 'Alphabetical',
@@ -108,3 +87,8 @@ export default {
   },
 };
 </script>
+<style>
+.btn-group .ui-select__content {
+  @apply rounded-l-none;
+}
+</style>

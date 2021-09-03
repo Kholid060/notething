@@ -1,5 +1,6 @@
 import VRemixIcon from 'v-remixicon';
 import {
+  riPencilLine,
   riBold,
   riItalic,
   riUnderline,
@@ -52,6 +53,7 @@ import {
 } from 'v-remixicon/icons';
 
 VRemixIcon.add({
+  riPencilLine,
   riBold,
   riItalic,
   riUnderline,
