@@ -135,6 +135,7 @@
       >
         <note-menu-headings-tree
           v-if="isShow"
+          :editor="editor"
           :headings="headingsTree"
           @close="
             showHeadingsTree = false;

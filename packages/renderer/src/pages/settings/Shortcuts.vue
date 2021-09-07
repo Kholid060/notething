@@ -45,6 +45,7 @@ const shortcuts = [
       { name: 'Bullet list', keys: ['Ctrl', 'Shift', '8'] },
       { name: 'Blockquote', keys: ['Ctrl', 'Shift', 'B'] },
       { name: 'Block code', keys: ['Ctrl', 'Alt', 'C'] },
+      { name: 'Previous note', keys: ['Alt', 'Arrow left'] },
     ],
   },
 ];

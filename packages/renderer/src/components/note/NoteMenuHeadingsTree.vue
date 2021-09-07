@@ -34,6 +34,10 @@ export default {
       type: Array,
       default: () => [],
     },
+    editor: {
+      type: Object,
+      default: () => ({}),
+    },
   },
   emits: ['close'],
   setup(props, { emit }) {
@@ -63,9 +67,14 @@ export default {
           event.preventDefault();
           downHandler();
           break;
-        case 'Enter':
-          scrollIntoView(filteredHeadings.value[selectedIndex.value].el);
+        case 'Enter': {
+          const activeElement = filteredHeadings.value[selectedIndex.value].el;
+          props.editor.commands.setTextSelection(
+            activeElement.pmViewDesc.posAtEnd
+          );
+          scrollIntoView(activeElement);
           break;
+        }
         case 'Escape':
           emit('close');
           break;
