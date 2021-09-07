@@ -189,11 +189,18 @@ export default {
         },
       });
 
-      keyboardNavigation.value.on('select', (el) => {
-        const noteId = el.getAttribute('note-id');
+      keyboardNavigation.value.on(
+        'keydown',
+        ({ event: { key }, activeItem }) => {
+          const noteId = activeItem?.getAttribute('note-id');
 
-        if (noteId) router.push(`/note/${noteId}`);
-      });
+          if (!activeItem || !noteId) return;
+
+          if (key === 'Enter') router.push(`/note/${noteId}`);
+          else if (key === 'Backspace' || key === 'Delete')
+            noteStore.delete(noteId);
+        }
+      );
     });
     onUnmounted(() => {
       keyboardNavigation.value.destroy();

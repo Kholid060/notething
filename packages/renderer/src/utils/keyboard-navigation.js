@@ -39,6 +39,8 @@ class EventHandler {
     } else if (event.key === 'Enter') {
       this._fireEvent('select', this.activeItem);
     }
+
+    this._fireEvent('keydown', { event, activeItem: this.activeItem });
   }
 
   upHandler() {
