@@ -1,27 +1,29 @@
 <template>
-  <ui-input
-    v-model.lowercase="query"
-    prepend-icon="riSearch2Line"
-    placeholder="Search headings"
-    autofocus
-    class="mb-4"
-    @keydown="keydownHandler"
-  />
-  <ui-list
-    class="w-64 space-y-1 overflow-auto scroll"
-    style="max-height: calc(100vh - 10rem)"
-  >
-    <ui-list-item
-      v-for="(heading, index) in filteredHeadings"
-      :key="heading.text"
-      :class="paddings[heading.tag]"
-      :active="index === selectedIndex"
-      class="cursor-pointer"
-      @click="scrollIntoView(heading.el)"
+  <div class="w-64">
+    <ui-input
+      v-model.lowercase="query"
+      prepend-icon="riSearch2Line"
+      placeholder="Search headings"
+      autofocus
+      class="mb-4"
+      @keydown="keydownHandler"
+    />
+    <ui-list
+      class="space-y-1 overflow-auto scroll"
+      style="max-height: calc(100vh - 10rem)"
     >
-      <p class="text-overflow">{{ heading.text }}</p>
-    </ui-list-item>
-  </ui-list>
+      <ui-list-item
+        v-for="(heading, index) in filteredHeadings"
+        :key="heading.text"
+        :class="paddings[heading.tag]"
+        :active="index === selectedIndex"
+        class="cursor-pointer"
+        @click="scrollIntoView(heading.el)"
+      >
+        <p class="text-overflow">{{ heading.text }}</p>
+      </ui-list-item>
+    </ui-list>
+  </div>
 </template>
 <script>
 import { shallowRef, computed } from 'vue';

@@ -3,6 +3,7 @@
     <button
       v-if="$route.query.linked && !store.inFocusMode"
       class="left-0 ml-24 mt-4 fixed group"
+      title="Alt+Arrow left"
       @click="$router.back()"
     >
       <v-remixicon
@@ -105,10 +106,14 @@ export default {
     );
 
     onMounted(() => {
-      Mousetrap.bind('mod+f', () => {
-        document.querySelector('.editor-search input')?.focus();
+      Mousetrap.bind(['mod+f', 'alt+left'], (event, combo) => {
+        if (combo === 'mod+f') {
+          document.querySelector('.editor-search input')?.focus();
 
-        showSearch.value = true;
+          showSearch.value = true;
+        } else if (route.query.linked) {
+          router.back();
+        }
       });
     });
     onBeforeRouteLeave(() => {
