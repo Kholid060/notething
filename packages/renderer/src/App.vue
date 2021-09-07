@@ -30,8 +30,8 @@ export default {
 
     if (!isFirstTime) {
       const promises = Promise.allSettled(
-        Object.values(notes).map(({ title, content }) =>
-          noteStore.add({ title, content: JSON.parse(content) })
+        Object.values(notes).map(({ title, content, id }) =>
+          noteStore.add({ id, title, content: JSON.parse(content) })
         )
       );
 

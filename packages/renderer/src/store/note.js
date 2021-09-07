@@ -24,7 +24,7 @@ export const useNoteStore = defineStore('note', {
     },
     add(note = {}) {
       return new Promise((resolve) => {
-        const id = nanoid();
+        const id = note.id || nanoid();
 
         this.data[id] = {
           id,
