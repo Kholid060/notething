@@ -43,7 +43,7 @@
   </div>
 </template>
 <script>
-import { shallowRef, computed, watch } from 'vue';
+import { shallowRef, computed, watch, onMounted } from 'vue';
 import { useRouter, onBeforeRouteLeave, useRoute } from 'vue-router';
 import { useNoteStore } from '@/store/note';
 import { useLabelStore } from '@/store/label';
@@ -104,12 +104,13 @@ export default {
       { immediate: true }
     );
 
-    Mousetrap.bind('mod+f', () => {
-      document.querySelector('.editor-search input')?.focus();
+    onMounted(() => {
+      Mousetrap.bind('mod+f', () => {
+        document.querySelector('.editor-search input')?.focus();
 
-      showSearch.value = true;
+        showSearch.value = true;
+      });
     });
-
     onBeforeRouteLeave(() => {
       const labels = new Set();
       const labelEls =
