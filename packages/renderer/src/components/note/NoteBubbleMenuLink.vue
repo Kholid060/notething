@@ -17,30 +17,37 @@
       </ui-list-item>
     </ui-list>
   </expand-transition>
-  <div class="flex items-center p-2 space-x-2">
-    <input
-      v-model="currentLinkVal"
-      type="url"
-      placeholder="URL or type @ to link a note"
-      class="flex-1 bg-transparent"
-      @keydown="keydownHandler"
-      @keyup.enter="updateCurrentLink"
-    />
-    <button
-      icon
-      class="text-gray-600 dark:text-gray-200"
-      title="Remove link"
-      @click="editor.chain().focus().unsetLink().run()"
+  <div class="p-2">
+    <div class="flex items-center space-x-2">
+      <input
+        id="bubble-input"
+        v-model="currentLinkVal"
+        type="url"
+        placeholder="URL or type @ to link a note"
+        class="flex-1 bg-transparent"
+        @keydown="keydownHandler"
+        @keydown.esc="editor.commands.focus()"
+        @keyup.enter="updateCurrentLink"
+      />
+      <button
+        icon
+        class="text-gray-600 dark:text-gray-200"
+        title="Remove link"
+        @click="editor.chain().focus().unsetLink().run()"
+      >
+        <v-remixicon name="riLinkUnlinkM" />
+      </button>
+      <button
+        icon
+        class="text-gray-600 -mr-1 dark:text-gray-200"
+        @click="updateCurrentLink"
+      >
+        <v-remixicon name="riSave3Line" />
+      </button>
+    </div>
+    <span class="text-xs text-gray-600 dark:text-gray-300 leading-none"
+      >Press Ctrl+L to focus the input</span
     >
-      <v-remixicon name="riLinkUnlinkM" />
-    </button>
-    <button
-      icon
-      class="text-gray-600 -mr-1 dark:text-gray-200"
-      @click="updateCurrentLink"
-    >
-      <v-remixicon name="riSave3Line" />
-    </button>
   </div>
 </template>
 <script>

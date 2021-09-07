@@ -6,16 +6,18 @@
   >
     <component
       :is="
-        editor.isActive('link')
-          ? 'note-bubble-menu-link'
-          : 'note-bubble-menu-image'
+        editor.isActive('image')
+          ? 'note-bubble-menu-image'
+          : 'note-bubble-menu-link'
       "
       v-bind="{ editor }"
     />
   </bubble-menu>
 </template>
 <script>
+import { onMounted, onUnmounted } from 'vue';
 import { BubbleMenu } from '@tiptap/vue-3';
+import Mousetrap from '@/lib/mousetrap';
 import NoteBubbleMenuLink from './NoteBubbleMenuLink.vue';
 import NoteBubbleMenuImage from './NoteBubbleMenuImage.vue';
 
@@ -26,6 +28,20 @@ export default {
       type: Object,
       default: () => ({}),
     },
+  },
+  setup(props) {
+    onMounted(() => {
+      Mousetrap.bind('mod+l', () => {
+        if (props.editor.isActive('image') || props.editor.isActive('link')) {
+          const input = document.getElementById('bubble-input');
+
+          input?.focus();
+        }
+      });
+    });
+    onUnmounted(() => {
+      Mousetrap.unbind('mod+l');
+    });
   },
 };
 </script>
