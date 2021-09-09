@@ -21,7 +21,7 @@ const config = {
   },
   win: {
     target: 'nsis',
-    artifactName: '${productName}Setup-${arch}-${version}.${ext}',
+    artifactName: '${productName}Setup-${arch}.${ext}',
   },
 };
 
