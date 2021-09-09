@@ -6,11 +6,12 @@
         class="w-full note-search-input"
         prepend-icon="riSearch2Line"
         placeholder="Search..."
+        @keydown.esc="$event.target.blur()"
         @change="$emit('update:query', $event.toLocaleLowerCase())"
       />
-      <span class="text-sm text-gray-600 dark:text-gray-300 ml-2"
-        >Press Ctrl+F to start search</span
-      >
+      <span class="text-sm text-gray-600 dark:text-gray-300 ml-2">
+        Press Ctrl+F to start search
+      </span>
     </div>
     <div class="flex items-center divide-x btn-group">
       <ui-button

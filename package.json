@@ -11,7 +11,7 @@
   "scripts": {
     "build": "node scripts/build.js",
     "precompile": "cross-env MODE=production npm run build",
-    "compile": "electron-builder build --config electron-builder.config.js",
+    "compile": "electron-builder build --config electron-builder.config.js --dir --config.asar=false",
     "pretest": "cross-env MODE=test npm run build",
     "test": "node tests/app.spec.js",
     "watch": "node scripts/watch.js",
@@ -49,7 +49,6 @@
   },
   "dependencies": {
     "@benrbray/prosemirror-math": "^0.2.2",
-    "@mdi/js": "^5.9.55",
     "@tailwindcss/typography": "^0.4.1",
     "@tiptap/extension-code": "^2.0.0-beta.16",
     "@tiptap/extension-code-block-lowlight": "^2.0.0-beta.34",
