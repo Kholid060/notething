@@ -1,5 +1,3 @@
-![license](https://img.shields.io/github/license/kholid060/notething)
-
 # Notething
 a note-taking app with full keyboard compatibility.
 
