@@ -1,4 +1,5 @@
 <img src="./buildResources/notething.png" />
+
 # Notething
 a note-taking app with full keyboard compatibility.
 
