@@ -26,7 +26,7 @@ const schema = {
   },
 };
 
-const store =  new Store({
+const store = new Store({
 	schema,
   encryptionKey: import.meta.env.VITE_ENCRYPT_KEY,
 });

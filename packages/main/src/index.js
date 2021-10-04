@@ -3,6 +3,7 @@ import { ipcMain } from 'electron-better-ipc';
 import { join, normalize } from 'path';
 import { URL } from 'url';
 import { remove, readJson, ensureDir, copy, outputJson, pathExistsSync } from 'fs-extra';
+import { autoUpdater } from 'electron-updater';
 import store from './store';
 
 const isSingleInstance = app.requestSingleInstanceLock();
@@ -60,6 +61,8 @@ const createWindow = async () => {
 
     if (env.MODE === 'development') {
       mainWindow?.webContents.openDevTools();
+    } else {
+      autoUpdater.checkForUpdatesAndNotify();
     }
   });
 
