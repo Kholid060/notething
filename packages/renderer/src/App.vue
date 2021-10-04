@@ -12,6 +12,7 @@ import { useRouter } from 'vue-router';
 import { useTheme } from './composable/theme';
 import { useStore } from './store';
 import { useNoteStore } from './store/note';
+import { useLabelStore } from './store/label';
 import notes from './utils/notes';
 import AppSidebar from './components/app/AppSidebar.vue';
 import AppCommandPrompt from './components/app/AppCommandPrompt.vue';
@@ -23,6 +24,7 @@ export default {
     const store = useStore();
     const router = useRouter();
     const noteStore = useNoteStore();
+    const labelStore = useLabelStore();
 
     const retrieved = ref(false);
 
@@ -34,6 +36,9 @@ export default {
           noteStore.add({ id, title, content: JSON.parse(content) })
         )
       );
+
+      labelStore.add('Introduction');
+      labelStore.add('Tutorial');
 
       promises.then(() => {
         const note = noteStore.notes.find(
